@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+input {
+  height: 22px;
+}
+
+.container {
+  margin: 20px;
+}
+
+.minutes {
+  width: 40px;
+}
+
+.mobbers {
+  margin-top: 30px;
+}
+
+.mobbersLabel {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.mobber {
+  display: flex;
+  padding: 4px;
+  align-items: center;
+}
+
+.mobber:nth-child(odd) {
+  background-color: #dcdcdc;
+}
+
+.mobber .name {
+
+}
+
+.mobber .rmBtn {
+  display: block;
+  margin-left: auto;
+}
+
+.addLabel {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+}
+.btn {
+  background-color: #f15b2a;
+  border: 0;
+  border-radius: 3px;
+  padding: 7px 10px;
+  color: #fff;
+  margin-left: 5px;
+}

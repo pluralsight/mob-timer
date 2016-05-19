@@ -9,17 +9,17 @@
     <div class="container">
       <div class="time">
         <label for="minutes">
-          Minutes in Turn
-          <input type="number" id="minutes" min="1" />
+          Each turn lasts:
+          <input type="number" id="minutes" min="1" class="minutes" /> minutes
         </label>
       </div>
       <div class="mobbers">
-        <label for="mobbers">
+        <label for="mobbers" class="mobbersLabel">
           Mobbers
         </label>
-        <div id="mobbers" class="mobbers"></div>
+        <div id="mobbers"></div>
         <form id="addMobberForm">
-          <label for="add">
+          <label for="add" class="addLabel">
             <input type="text" id="add" />
             <button class="btn add">Add</button>
           </label>

@@ -15,7 +15,7 @@ function createMobberEl(mobber) {
   el.appendChild(nameEl)
 
   const rmBtn = document.createElement('button')
-  rmBtn.classList.add('rmBtn')
+  rmBtn.classList.add('btn', 'rmBtn')
   rmBtn.innerHTML = 'Remove'
   el.appendChild(rmBtn)
 

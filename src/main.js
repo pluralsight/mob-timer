@@ -13,9 +13,9 @@ function createTimerWindow() {
   timerWindow = new electron.BrowserWindow({
     width: 800,
     height: 600,
-    //resizable: false,
-    //alwaysOnTop: true,
-    //frame: false
+    resizable: false,
+    alwaysOnTop: true,
+    frame: false
   });
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
@@ -32,8 +32,9 @@ function showConfigWindow() {
 
 function createConfigWindow() {
   configWindow = new electron.BrowserWindow({
-    width: 800,
-    height: 600
+    width: 380,
+    height: 500,
+    autoHideMenuBar: true
   });
 
   configWindow.loadURL(`file://${__dirname}/config/index.html`)
