@@ -50,3 +50,36 @@ body {
 .hidden {
   display: none;
 }
+
+@keyframes pulse {
+  0% {
+    background: #f15b2a;
+  }
+  50% {
+    background: #ec008c;
+  }
+  100% {
+    background: #f15b2a;
+  }
+}
+
+.isTurnEnded {
+  animation-duration: 1s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  color: #fff;
+}
+.isTurnEnded .btn {
+  background: #fff;
+  color: #333;
+}
+
+.isPaused {
+  color: #999;
+  background: #333;
+}
+
+.isPaused .btn {
+  color: #222;
+  background: #666;
+}

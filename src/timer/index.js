@@ -1,5 +1,6 @@
 const ipc = require('electron').ipcRenderer
 
+const containerEl = document.getElementById('container')
 const pauseBtn = document.getElementById('pause')
 const unpauseBtn = document.getElementById('unpause')
 const skipBtn = document.getElementById('skip')
@@ -34,17 +35,22 @@ ipc.on('rotated', (event, data) => {
 })
 
 ipc.on('paused', _ => {
+  container.classList.add('isPaused')
   pauseBtn.classList.add('hidden')
   unpauseBtn.classList.remove('hidden')
 })
 
 ipc.on('started', _ => {
+  container.classList.remove('isPaused')
+  containerEl.classList.remove('isTurnEnded')
   pauseBtn.classList.remove('hidden')
   unpauseBtn.classList.add('hidden')
   startTurnBtn.classList.add('hidden')
 })
 
 ipc.on('turnEnded', (event, data) => {
+  container.classList.remove('isPaused')
+  containerEl.classList.add('isTurnEnded')
   unpauseBtn.classList.add('hidden')
   startTurnBtn.classList.remove('hidden')
 })
