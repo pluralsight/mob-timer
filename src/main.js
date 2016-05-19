@@ -10,7 +10,10 @@ app.on('ready', () => {
 })
 
 function createTimerWindow() {
+  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   timerWindow = new electron.BrowserWindow({
+    x: width - 200,
+    y: height - 100,
     width: 200,
     height: 100,
     resizable: false,
