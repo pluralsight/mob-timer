@@ -7,8 +7,6 @@ let timerState = require('./timer-state')
 app.on('ready', () => {
   createTimerWindow()
   timerState.setCallback(onTimerEvent)
-  timerState.reset()
-  timerState.start()
 })
 
 function createTimerWindow() {
@@ -30,9 +28,12 @@ function onTimerEvent(event, data) {
   }
 }
 
+ipc.on('timerWindowReady', _ => timerState.initialize())
+
 ipc.on('pause', _ => timerState.pause())
 ipc.on('unpause', _ => timerState.start())
 ipc.on('skip', _ => timerState.rotate())
+ipc.on('startTurn', _ => timerState.start())
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {

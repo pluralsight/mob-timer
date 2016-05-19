@@ -9,19 +9,18 @@
 
     <div class="container">
 
-      <div id="current" class="current">
-        Eric
-      </div>
+      <div id="current" class="current">{name}</div>
       <div id="count" class="count">
-        10:00
+        {time}
       </div>
       <div class="controls">
+        <button id="startTurn" class="btn">Start</button>
         <button id="pause" class="btn pause">Pause</button>
         <button id="unpause" class="btn unpause hidden">Unpause</button>
         <button id="skip" class="btn skip">Skip</button>
       </div>
       <div class="next">
-        Up Next: <span id="next">Jake</span>
+        Up Next: <span id="next">{name}</span>
       </div>
 
     </div>

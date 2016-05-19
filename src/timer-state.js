@@ -11,16 +11,30 @@ let mobbers = [
 ]
 
 let currentMobber = 0
+let secondsPerTurn = 3
 
 function reset() {
-  secondsRemaining = 3
+  secondsRemaining = secondsPerTurn
   callback('timerChange', secondsRemaining)
+}
+
+function getCurrentAndNextMobbers() {
+  return {
+    current: mobbers[currentMobber],
+    next: mobbers[(currentMobber + 1) % mobbers.length]
+  }
 }
 
 function start() {
   if (!timerInterval) {
     timerInterval = setInterval(() => {
-      callback('timerChange', secondsRemaining--)
+      secondsRemaining--
+      callback('timerChange', secondsRemaining)
+      if (secondsRemaining < 0) {
+        pause();
+        rotate();
+        callback('turnEnded')
+      }
     }, 1000)
   }
   callback('started')
@@ -38,10 +52,13 @@ function rotate() {
   console.log('rotate')
   reset()
   currentMobber = (currentMobber + 1) % mobbers.length
-  callback('rotated', {
-    current: mobbers[currentMobber],
-    next: mobbers[(currentMobber + 1) % mobbers.length]
-  })
+  callback('rotated', getCurrentAndNextMobbers())
+}
+
+function initialize() {
+  reset()
+  rotate()
+  callback('turnEnded')
 }
 
 module.exports = {
@@ -51,5 +68,6 @@ module.exports = {
   reset,
   start,
   pause,
-  rotate
+  rotate,
+  initialize
 }
