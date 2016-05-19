@@ -1,13 +1,15 @@
 const electron = require('electron')
-const app = electron.app
+const { app, ipcMain: ipc } = electron
 
 let timerWindow
-
+let timerState = require('./timer-state')
 
 app.on('ready', () => {
-  createTimerWindow();
+  createTimerWindow()
+  timerState.setCallback(onTimerEvent)
+  timerState.reset()
+  timerState.start()
 })
-
 
 function createTimerWindow() {
   timerWindow = new electron.BrowserWindow({
@@ -20,3 +22,12 @@ function createTimerWindow() {
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
 }
+
+function onTimerEvent(event, data) {
+  timerWindow.webContents.send(event, data)
+}
+
+ipc.on('pause', _ => {
+  console.log('paused')
+  timerState.pause()
+})
