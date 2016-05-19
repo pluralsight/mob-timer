@@ -68,6 +68,11 @@ function publishConfig() {
   })
 }
 
+function addMobber(mobber) {
+  mobbers.push(mobber)
+  publishConfig()
+}
+
 module.exports = {
   setCallback(cb) {
     callback = cb
@@ -77,5 +82,6 @@ module.exports = {
   pause,
   rotate,
   initialize,
-  publishConfig
+  publishConfig,
+  addMobber
 }
