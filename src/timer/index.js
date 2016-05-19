@@ -28,8 +28,21 @@ ipc.on('rotated', (event, data) => {
   nextEl.innerHTML = data.next.name
 })
 
+ipc.on('paused', _ => {
+  pauseBtn.classList.add('hidden')
+  unpauseBtn.classList.remove('hidden')
+})
+
+ipc.on('started', _ => {
+  pauseBtn.classList.remove('hidden')
+  unpauseBtn.classList.add('hidden')
+})
+
 const pauseBtn = document.getElementById('pause')
 pauseBtn.addEventListener('click', _ => ipc.send('pause'))
+
+const unpauseBtn = document.getElementById('unpause')
+unpauseBtn.addEventListener('click', _ => ipc.send('unpause'))
 
 const skipBtn = document.getElementById('skip')
 skipBtn.addEventListener('click', _ => ipc.send('skip'))

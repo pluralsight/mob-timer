@@ -14,16 +14,23 @@ let currentMobber = 0
 
 function reset() {
   secondsRemaining = 3
+  callback('timerChange', secondsRemaining)
 }
 
 function start() {
-  timerInterval = setInterval(() => {
-    callback('timerChange', secondsRemaining--)
-  }, 1000)
+  if (!timerInterval) {
+    timerInterval = setInterval(() => {
+      callback('timerChange', secondsRemaining--)
+    }, 1000)
+  }
+  callback('started')
 }
 
 function pause() {
-  clearInterval(timerInterval)
+  if (timerInterval) {
+    clearInterval(timerInterval)
+    timerInterval = null
+  }
   callback('paused')
 }
 

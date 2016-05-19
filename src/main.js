@@ -31,6 +31,7 @@ function onTimerEvent(event, data) {
 }
 
 ipc.on('pause', _ => timerState.pause())
+ipc.on('unpause', _ => timerState.start())
 ipc.on('skip', _ => timerState.rotate())
 
 app.on('window-all-closed', function () {
