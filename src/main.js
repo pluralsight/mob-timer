@@ -11,8 +11,8 @@ app.on('ready', () => {
 
 function createTimerWindow() {
   timerWindow = new electron.BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 200,
+    height: 100,
     resizable: false,
     alwaysOnTop: true,
     frame: false

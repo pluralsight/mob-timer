@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+
 }
 
 input {
@@ -35,10 +36,6 @@ input {
   background-color: #dcdcdc;
 }
 
-.mobber .name {
-
-}
-
 .mobber .rmBtn {
   display: block;
   margin-left: auto;
@@ -56,4 +53,5 @@ input {
   padding: 7px 10px;
   color: #fff;
   margin-left: 5px;
+  cursor: pointer;
 }

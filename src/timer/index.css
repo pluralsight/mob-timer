@@ -2,6 +2,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  -webkit-app-region: drag;
+  user-select: none;
 }
 .container {
   display: flex;
@@ -11,25 +13,39 @@ body {
   height: 100vh;
 }
 .current {
-  font-size: 30px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+  text-align: center;
 }
 .count {
-  font-size: 40px;
+  font-size: 18px;
+  font-weight: bold;
 }
 .controls {
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 .btn {
   background: #f15b2a;
   border-radius: 3px;
   border: 0;
   color: #fff;
-  padding: 7px 10px;
+  padding: 3px 7px;
   margin: 0 2px;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  font-size: 12px;
 }
 .next {
-  font-size: 16px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+  text-align: center;
 }
 .hidden {
   display: none;
