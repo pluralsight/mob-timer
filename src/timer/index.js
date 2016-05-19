@@ -36,6 +36,7 @@ ipc.on('started', _ => {
 })
 
 ipc.on('turnEnded', (event, data) => {
+  unpauseBtn.classList.add('hidden')
   startTurnBtn.classList.remove('hidden')
 })
 
