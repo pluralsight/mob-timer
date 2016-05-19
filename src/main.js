@@ -44,9 +44,13 @@ function onTimerEvent(event, data) {
   if (timerWindow) {
     timerWindow.webContents.send(event, data)
   }
+  if (configWindow) {
+    configWindow.webContents.send(event, data)
+  }
 }
 
 ipc.on('timerWindowReady', _ => timerState.initialize())
+ipc.on('configWindowReady', _ => timerState.publishConfig())
 
 ipc.on('pause', _ => timerState.pause())
 ipc.on('unpause', _ => timerState.start())

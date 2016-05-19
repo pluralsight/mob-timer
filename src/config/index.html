@@ -7,7 +7,23 @@
   </head>
   <body>
     <div class="container">
-      Configure me!
+      <div class="time">
+        <label for="minutes">
+          Minutes in Turn
+          <input type="number" id="minutes" min="1" />
+        </label>
+      </div>
+      <div class="mobbers">
+        <label for="mobbers">
+          Mobbers
+        </label>
+        <div id="mobbers"></div>
+        <label for="add">
+          <input type="text" id="add" />
+          <button id="addBtn" class="btn add">Add</button>
+        </label>
+
+      </div>
     </div>
     <script type="text/javascript">
       require('./index.js')

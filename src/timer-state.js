@@ -31,8 +31,8 @@ function start() {
       secondsRemaining--
       callback('timerChange', secondsRemaining)
       if (secondsRemaining < 0) {
-        pause();
-        rotate();
+        pause()
+        rotate()
         callback('turnEnded')
       }
     }, 1000)
@@ -61,6 +61,13 @@ function initialize() {
   callback('turnEnded')
 }
 
+function publishConfig() {
+  callback('configUpdated', {
+    mobbers,
+    secondsPerTurn
+  })
+}
+
 module.exports = {
   setCallback(cb) {
     callback = cb
@@ -69,5 +76,6 @@ module.exports = {
   start,
   pause,
   rotate,
-  initialize
+  initialize,
+  publishConfig
 }
