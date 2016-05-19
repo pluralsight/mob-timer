@@ -72,7 +72,15 @@ function addMobber(mobber) {
 }
 
 function removeMobber(mobber) {
+  let removedMobberIndex = mobbers.findIndex(x => x.name === mobber.name)
   mobbers = mobbers.filter(m => m.name !== mobber.name)
+
+  if (currentMobber === removedMobberIndex) {
+    pause()
+    reset()
+    callback('turnEnded')
+  }
+
   publishConfig()
   callback('rotated', getCurrentAndNextMobbers())
 }
