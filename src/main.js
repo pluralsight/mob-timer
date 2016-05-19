@@ -1,7 +1,7 @@
 const electron = require('electron')
 const { app, ipcMain: ipc } = electron
 
-let timerWindow
+let timerWindow, configWindow
 let timerState = require('./timer-state')
 
 app.on('ready', () => {
@@ -22,6 +22,24 @@ function createTimerWindow() {
   timerWindow.on('closed', _ => timerWindow = null)
 }
 
+function showConfigWindow() {
+  if (configWindow) {
+    configWindow.show();
+    return;
+  }
+  createConfigWindow();
+}
+
+function createConfigWindow() {
+  configWindow = new electron.BrowserWindow({
+    width: 800,
+    height: 600
+  });
+
+  configWindow.loadURL(`file://${__dirname}/config/index.html`)
+  configWindow.on('closed', _ => configWindow = null)
+}
+
 function onTimerEvent(event, data) {
   if (timerWindow) {
     timerWindow.webContents.send(event, data)
@@ -34,6 +52,7 @@ ipc.on('pause', _ => timerState.pause())
 ipc.on('unpause', _ => timerState.start())
 ipc.on('skip', _ => timerState.rotate())
 ipc.on('startTurn', _ => timerState.start())
+ipc.on('configure', _ => showConfigWindow())
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
