@@ -5,7 +5,7 @@ let callback
 let mobbers = []
 
 let currentMobber = 0
-let secondsPerTurn = 3
+let secondsPerTurn = 600
 
 function reset() {
   secondsRemaining = secondsPerTurn
@@ -71,6 +71,12 @@ function addMobber(mobber) {
   callback('rotated', getCurrentAndNextMobbers())
 }
 
+function removeMobber(mobber) {
+  mobbers = mobbers.filter(m => m.name !== mobber.name)
+  publishConfig()
+  callback('rotated', getCurrentAndNextMobbers())
+}
+
 function setSecondsPerTurn(value) {
   secondsPerTurn = value
   publishConfig()
@@ -88,5 +94,6 @@ module.exports = {
   initialize,
   publishConfig,
   addMobber,
+  removeMobber,
   setSecondsPerTurn
 }

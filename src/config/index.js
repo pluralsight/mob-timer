@@ -7,7 +7,20 @@ const addMobberForm = document.getElementById('addMobberForm')
 
 function createMobberEl(mobber) {
   const el = document.createElement('div')
+  el.classList.add('mobber')
   el.innerHTML = mobber.name
+
+  const nameEl = document.createElement('div')
+  nameEl.classList.add('name')
+  el.appendChild(nameEl)
+
+  const rmBtn = document.createElement('button')
+  rmBtn.classList.add('rmBtn')
+  rmBtn.innerHTML = 'Remove'
+  el.appendChild(rmBtn)
+
+  rmBtn.addEventListener('click', _ => ipc.send('removeMobber', mobber))
+
   return el
 }
 
