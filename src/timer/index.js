@@ -26,8 +26,11 @@ ipc.on('timerChange', (event, seconds) => {
 })
 
 ipc.on('rotated', (event, data) => {
-  currentEl.innerHTML = data.current.name
-  nextEl.innerHTML = data.next.name
+  currentEl.innerHTML = data.current ? data.current.name : "Add a mobber"
+  if (!data.next) {
+    data.next = data.current
+  }
+  nextEl.innerHTML = data.next ? data.next.name : "Add a mobber"
 })
 
 ipc.on('paused', _ => {

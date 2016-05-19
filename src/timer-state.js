@@ -2,13 +2,7 @@ let timerInterval
 let secondsRemaining
 let callback
 
-let mobbers = [
-  { name: "Maik" },
-  { name: "Eric" },
-  { name: "Allan" },
-  { name: "Kurt" },
-  { name: "Jake" }
-]
+let mobbers = []
 
 let currentMobber = 0
 let secondsPerTurn = 3
@@ -19,6 +13,10 @@ function reset() {
 }
 
 function getCurrentAndNextMobbers() {
+  if (!mobbers.length) {
+    return { current: null, next: null }
+  }
+
   return {
     current: mobbers[currentMobber],
     next: mobbers[(currentMobber + 1) % mobbers.length]
@@ -49,9 +47,8 @@ function pause() {
 }
 
 function rotate() {
-  console.log('rotate')
   reset()
-  currentMobber = (currentMobber + 1) % mobbers.length
+  currentMobber = mobbers.length ? (currentMobber + 1) % mobbers.length : 0
   callback('rotated', getCurrentAndNextMobbers())
 }
 
@@ -71,6 +68,7 @@ function publishConfig() {
 function addMobber(mobber) {
   mobbers.push(mobber)
   publishConfig()
+  callback('rotated', getCurrentAndNextMobbers())
 }
 
 module.exports = {
