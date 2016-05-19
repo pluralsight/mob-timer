@@ -1,5 +1,13 @@
 const ipc = require('electron').ipcRenderer
 
+const pauseBtn = document.getElementById('pause')
+const unpauseBtn = document.getElementById('unpause')
+const skipBtn = document.getElementById('skip')
+const startTurnBtn = document.getElementById('startTurn')
+const currentEl = document.getElementById('current')
+const nextEl = document.getElementById('next')
+const countEl = document.getElementById('count')
+
 function lpad(val) {
   return val < 10
     ? '0' + val
@@ -13,13 +21,10 @@ function formatTime(totalSeconds) {
 }
 
 ipc.on('timerChange', (event, seconds) => {
-  const countEl = document.getElementById('count')
   countEl.innerHTML = formatTime(seconds)
 })
 
 ipc.on('rotated', (event, data) => {
-  const currentEl = document.getElementById('current')
-  const nextEl = document.getElementById('next')
   currentEl.innerHTML = data.current.name
   nextEl.innerHTML = data.next.name
 })
@@ -40,16 +45,9 @@ ipc.on('turnEnded', (event, data) => {
   startTurnBtn.classList.remove('hidden')
 })
 
-const pauseBtn = document.getElementById('pause')
 pauseBtn.addEventListener('click', _ => ipc.send('pause'))
-
-const unpauseBtn = document.getElementById('unpause')
 unpauseBtn.addEventListener('click', _ => ipc.send('unpause'))
-
-const skipBtn = document.getElementById('skip')
 skipBtn.addEventListener('click', _ => ipc.send('skip'))
-
-const startTurnBtn = document.getElementById('startTurn')
 startTurnBtn.addEventListener('click', _ => ipc.send('startTurn'))
 
 ipc.send('timerWindowReady')
