@@ -21,13 +21,28 @@ function createTimerWindow() {
   });
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
+  timerWindow.on('closed', _ => timerWindow = null)
 }
 
 function onTimerEvent(event, data) {
-  timerWindow.webContents.send(event, data)
+  if (timerWindow) {
+    timerWindow.webContents.send(event, data)
+  }
 }
 
 ipc.on('pause', _ => {
   console.log('paused')
   timerState.pause()
+})
+
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', function () {
+  if (timerWindow === null) {
+    createTimerWindow()
+  }
 })
