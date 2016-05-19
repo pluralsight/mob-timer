@@ -23,7 +23,11 @@ ipc.on('configUpdated', (event, data) => {
 
 addMobberForm.addEventListener('submit', event => {
   event.preventDefault()
-  ipc.send('addMobber', { name: addEl.value })
+  let value = addEl.value.trim()
+  if (!value) {
+    return
+  }
+  ipc.send('addMobber', { name: value })
   addEl.value = ''
 })
 
