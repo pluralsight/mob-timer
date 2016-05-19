@@ -21,6 +21,11 @@ ipc.on('configUpdated', (event, data) => {
   mobbersEl.appendChild(frag)
 })
 
+minutesEl.addEventListener('change', _ => {
+  console.log(minutesEl.value)
+  ipc.send('setSecondsPerTurn', minutesEl.value * 60)
+})
+
 addMobberForm.addEventListener('submit', event => {
   event.preventDefault()
   let value = addEl.value.trim()
@@ -30,6 +35,5 @@ addMobberForm.addEventListener('submit', event => {
   ipc.send('addMobber', { name: value })
   addEl.value = ''
 })
-
 
 ipc.send('configWindowReady')

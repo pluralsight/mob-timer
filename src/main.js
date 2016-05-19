@@ -58,6 +58,7 @@ ipc.on('skip', _ => timerState.rotate())
 ipc.on('startTurn', _ => timerState.start())
 ipc.on('configure', _ => showConfigWindow())
 ipc.on('addMobber', (event, mobber) => timerState.addMobber(mobber))
+ipc.on('setSecondsPerTurn', (event, secondsPerTurn) => timerState.setSecondsPerTurn(secondsPerTurn))
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {

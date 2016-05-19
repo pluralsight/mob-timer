@@ -71,6 +71,12 @@ function addMobber(mobber) {
   callback('rotated', getCurrentAndNextMobbers())
 }
 
+function setSecondsPerTurn(value) {
+  secondsPerTurn = value
+  publishConfig()
+  reset()
+}
+
 module.exports = {
   setCallback(cb) {
     callback = cb
@@ -81,5 +87,6 @@ module.exports = {
   rotate,
   initialize,
   publishConfig,
-  addMobber
+  addMobber,
+  setSecondsPerTurn
 }
