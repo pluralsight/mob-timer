@@ -30,10 +30,8 @@ function onTimerEvent(event, data) {
   }
 }
 
-ipc.on('pause', _ => {
-  console.log('paused')
-  timerState.pause()
-})
+ipc.on('pause', _ => timerState.pause())
+ipc.on('skip', _ => timerState.rotate())
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
