@@ -6,6 +6,7 @@ let mobbers = []
 
 let currentMobber = 0
 let secondsPerTurn = 600
+let millisecondsPerSecond = 1000
 
 function reset() {
   secondsRemaining = secondsPerTurn
@@ -16,7 +17,6 @@ function getCurrentAndNextMobbers() {
   if (!mobbers.length) {
     return { current: null, next: null }
   }
-
   return {
     current: mobbers[currentMobber],
     next: mobbers[(currentMobber + 1) % mobbers.length]
@@ -33,7 +33,7 @@ function start() {
         rotate()
         callback('turnEnded')
       }
-    }, 1000)
+    }, millisecondsPerSecond)
   }
   callback('started')
 }
@@ -53,7 +53,6 @@ function rotate() {
 }
 
 function initialize() {
-  reset()
   rotate()
   callback('turnEnded')
 }
@@ -81,6 +80,10 @@ function removeMobber(mobber) {
     callback('turnEnded')
   }
 
+  if (currentMobber >= mobbers.length) {
+    currentMobber = 0
+  }
+
   publishConfig()
   callback('rotated', getCurrentAndNextMobbers())
 }
@@ -89,6 +92,10 @@ function setSecondsPerTurn(value) {
   secondsPerTurn = value
   publishConfig()
   reset()
+}
+
+function setTestingSpeed(value) {
+  millisecondsPerSecond = value
 }
 
 module.exports = {
@@ -103,5 +110,6 @@ module.exports = {
   publishConfig,
   addMobber,
   removeMobber,
-  setSecondsPerTurn
+  setSecondsPerTurn,
+  setTestingSpeed
 }
