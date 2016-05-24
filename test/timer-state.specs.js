@@ -53,6 +53,10 @@ describe('timer-state', () => {
       assertEvent('started')
     })
 
+    it('should publish a stopAlerts event', () => {
+      assertEvent('stopAlerts')
+    })
+
     it('should publish a timerChange event after 1 second', done => {
       setTimeout(() => {
         var event = assertEvent('timerChange')
@@ -71,6 +75,16 @@ describe('timer-state', () => {
         done()
       }, 12)
     })
+
+    it('should publish alert events after the time is up', done => {
+      timerState.setSecondsPerTurn(0)
+      setTimeout(() => {
+        timerState.setSecondsPerTurn(600)
+        var event = assertEvent('alert')
+        assert.equal(event.data, 1)
+        done()
+      }, 22)
+    })
   })
 
   describe('pause', () => {
@@ -78,6 +92,10 @@ describe('timer-state', () => {
 
     it('should publish a paused event', () => {
       assertEvent('paused')
+    })
+
+    it('should publish a stopAlerts event', () => {
+      assertEvent('stopAlerts')
     })
 
     it('should stop the timerChange events', done => {

@@ -1,5 +1,7 @@
 let timerInterval
+let alertInterval
 let secondsRemaining
+let alertSeconds
 let callback
 
 let mobbers = []
@@ -23,6 +25,24 @@ function getCurrentAndNextMobbers() {
   }
 }
 
+function startAlerts() {
+  if (!alertInterval) {
+    alertSeconds = 0
+    alertInterval = setInterval(() => {
+      alertSeconds++
+      callback('alert', alertSeconds)
+    }, millisecondsPerSecond)
+  }
+}
+
+function stopAlerts() {
+  if (alertInterval) {
+    clearInterval(alertInterval)
+    alertInterval = null
+  }
+  callback('stopAlerts')
+}
+
 function start() {
   if (!timerInterval) {
     timerInterval = setInterval(() => {
@@ -32,10 +52,12 @@ function start() {
         pause()
         rotate()
         callback('turnEnded')
+        startAlerts()
       }
     }, millisecondsPerSecond)
   }
   callback('started')
+  stopAlerts()
 }
 
 function pause() {
@@ -44,6 +66,7 @@ function pause() {
     timerInterval = null
   }
   callback('paused')
+  stopAlerts()
 }
 
 function rotate() {
