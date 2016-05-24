@@ -85,6 +85,7 @@ function publishConfig() {
     mobbers,
     secondsPerTurn
   })
+  callback('rotated', getCurrentAndNextMobbers())
 }
 
 function addMobber(mobber) {

@@ -1,7 +1,7 @@
 const electron = require('electron')
 const { app, ipcMain: ipc } = electron
 
-let timerWindow, configWindow
+let timerWindow, configWindow, fullscreenWindow
 let timerState = require('./timer-state')
 
 app.on('ready', () => {
@@ -44,6 +44,26 @@ function createConfigWindow() {
   configWindow.on('closed', _ => configWindow = null)
 }
 
+function createFullscreenWindow() {
+  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+  fullscreenWindow = new electron.BrowserWindow({
+    width,
+    height,
+    resizable: false,
+    alwaysOnTop: true,
+    frame: false
+  });
+
+  fullscreenWindow.loadURL(`file://${__dirname}/fullscreen/index.html`)
+  fullscreenWindow.on('closed', _ => fullscreenWindow = null)
+}
+
+function closeFullscreenWindow() {
+  if (fullscreenWindow) {
+    fullscreenWindow.close()
+  }
+}
+
 function onTimerEvent(event, data) {
   if (timerWindow) {
     timerWindow.webContents.send(event, data)
@@ -51,16 +71,29 @@ function onTimerEvent(event, data) {
   if (configWindow) {
     configWindow.webContents.send(event, data)
   }
+  if (fullscreenWindow) {
+    fullscreenWindow.webContents.send(event, data)
+  }
+  if (event === 'alert' && data === 30) {
+    createFullscreenWindow()
+  }
+  if (event === 'stopAlerts') {
+    closeFullscreenWindow()
+  }
 }
 
 ipc.on('timerWindowReady', _ => timerState.initialize())
 ipc.on('configWindowReady', _ => timerState.publishConfig())
+ipc.on('fullscreenWindowReady', _ => timerState.publishConfig())
 
 ipc.on('pause', _ => timerState.pause())
 ipc.on('unpause', _ => timerState.start())
 ipc.on('skip', _ => timerState.rotate())
 ipc.on('startTurn', _ => timerState.start())
-ipc.on('configure', _ => showConfigWindow())
+ipc.on('configure', _ => {
+  showConfigWindow()
+  closeFullscreenWindow()
+})
 ipc.on('addMobber', (event, mobber) => timerState.addMobber(mobber))
 ipc.on('removeMobber', (event, mobber) => timerState.removeMobber(mobber))
 ipc.on('setSecondsPerTurn', (event, secondsPerTurn) => timerState.setSecondsPerTurn(secondsPerTurn))

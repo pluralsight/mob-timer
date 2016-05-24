@@ -83,7 +83,7 @@ describe('timer-state', () => {
         var event = assertEvent('alert')
         assert.equal(event.data, 1)
         done()
-      }, 22)
+      }, 24)
     })
   })
 
@@ -166,6 +166,10 @@ describe('timer-state', () => {
       ])
       timerState.removeMobber({name: 'A'})
       timerState.removeMobber({name: 'B'})
+    })
+
+    it('should publish a rotated event', () => {
+      assertEvent('rotated')
     })
   })
 
