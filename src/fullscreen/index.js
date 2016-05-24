@@ -6,6 +6,7 @@ const configureBtn = document.getElementById('configure')
 const currentEl = document.getElementById('current')
 const nextEl = document.getElementById('next')
 const countEl = document.getElementById('count')
+const ambience = document.getElementById('fullscreenAudio')
 
 function lpad(val) {
   return val < 10
@@ -40,3 +41,5 @@ startTurnBtn.addEventListener('click', _ => ipc.send('startTurn'))
 configureBtn.addEventListener('click', _ => ipc.send('configure'))
 
 ipc.send('fullscreenWindowReady')
+
+ambience.play();

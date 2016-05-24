@@ -47,3 +47,7 @@ body {
   width: 90%;
   text-align: center;
 }
+
+audio {
+  display: none;
+}
