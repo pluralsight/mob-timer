@@ -321,7 +321,7 @@ describe('timer-state', () => {
     
     it('should get correct mobber', () => {
       var actualJack = result.mobbers.find(x => x.name === expectedJack.name)
-
+ 
       assert.deepEqual(expectedJack, actualJack)
     })
     
@@ -338,5 +338,80 @@ describe('timer-state', () => {
     it('should have a default that is greater than zero', () => assert(result.secondsPerTurn > 0))
     
     let result = {}
+  })
+  
+  describe('when loading state', () => {
+    before(() => {
+      state = {
+        mobbers: [jack, jill],
+        secondsPerTurn: secondsPerTurn
+      }
+      
+      timerState.loadState(state)
+      
+      result = timerState.getState()
+    })
+    
+    after(() => {
+      timerState.removeMobber(jack)
+      timerState.removeMobber(jill)
+    })
+    
+    it('should load mobbers', () => assert.deepEqual(state.mobbers, result.mobbers))
+    it('should load secondsPerTurn', () => assert.equal(state.secondsPerTurn, result.secondsPerTurn))
+    
+    let result = {}
+    let state = {}
+    let jack = {name: 'jack'}
+    let jill = {name: 'jill'}
+    let secondsPerTurn = 400
+  })
+  
+  describe('when loading state with NO mobbers', () => {
+    before(() => {     
+      timerState.loadState(state)
+      
+      result = timerState.getState()
+    })
+    
+    it('should NOT load any mobbers', () => assert.equal(result.mobbers.length, 0))
+    
+    let result = {}
+    let state = {}
+  })
+  
+  describe('when loading state with one mobber', () => {
+    before(() => {
+      state = {
+        mobbers: [jack],
+      }
+      
+      timerState.loadState(state)
+      
+      result = timerState.getState()
+    })
+    
+    after(() => {
+      timerState.removeMobber(jack)
+    })
+    
+    it('should load one mobber', () => assert.deepEqual(state.mobbers, result.mobbers))
+    
+    let result = {}
+    let state = {}
+    let jack = {name: 'jack'}
+  })
+  
+  describe('when loading state with no secondsPerTurn', () => {
+    before(() => {     
+      timerState.loadState(state)
+      
+      result = timerState.getState()
+    })
+    
+    it('should have a default that is greater than zero', () => assert(result.secondsPerTurn > 0))
+    
+    let result = {}
+    let state = {}
   })
 })

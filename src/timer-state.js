@@ -129,6 +129,16 @@ function getState() {
   }
 }
 
+function loadState(state) {
+  if(state.mobbers) {
+    for(var i=0;i<state.mobbers.length;i++){
+      addMobber(state.mobbers[i])
+    }    
+  }
+  
+  setSecondsPerTurn(state.secondsPerTurn || secondsPerTurn)
+}
+
 module.exports = {
   setCallback(cb) {
     callback = cb
@@ -143,5 +153,6 @@ module.exports = {
   removeMobber,
   setSecondsPerTurn,
   setTestingSpeed,
-  getState
+  getState,
+  loadState
 }
