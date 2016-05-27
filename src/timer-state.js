@@ -122,6 +122,13 @@ function setTestingSpeed(value) {
   millisecondsPerSecond = value
 }
 
+function getState() {
+  return {
+    mobbers: mobbers,
+    secondsPerTurn: secondsPerTurn
+  }
+}
+
 module.exports = {
   setCallback(cb) {
     callback = cb
@@ -135,5 +142,6 @@ module.exports = {
   addMobber,
   removeMobber,
   setSecondsPerTurn,
-  setTestingSpeed
+  setTestingSpeed,
+  getState
 }

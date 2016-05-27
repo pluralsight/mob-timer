@@ -266,4 +266,77 @@ describe('timer-state', () => {
         assert.equal(event.data, 300)
     })
   })
+  
+  describe('when getting state', () => {  
+    before(() => {
+      
+      timerState.addMobber(expectedJack)
+      timerState.addMobber(expectedJill)
+      timerState.setSecondsPerTurn(expectedSecondsPerTurn)
+      
+      result = timerState.getState()
+    })
+    
+    after(() => {
+      timerState.removeMobber(expectedJack)
+      timerState.removeMobber(expectedJill)
+    })
+    
+    it('should get correct mobbers', () => {
+      var actualJack = result.mobbers.find(x => x.name === expectedJack.name)
+      var actualJill = result.mobbers.find(x => x.name === expectedJill.name)
+
+      assert.deepEqual(expectedJack, actualJack)
+      assert.deepEqual(expectedJill, actualJill)
+    })
+    
+    it('should get correct seconds per turn', () => {
+      assert.equal(result.secondsPerTurn, expectedSecondsPerTurn)
+    })
+    
+    let result = {}
+    let expectedJack = {name: 'jack'}
+    let expectedJill = {name: 'jill'}
+    let expectedSecondsPerTurn = 599
+  })
+  
+  describe('when getting state and there are no mobbers', () => {
+    before(() => result = timerState.getState())
+    
+    it('should get no mobbers', () => assert(result.mobbers.length === 0))
+    
+    let result = {}
+  })
+  
+  describe('when getting state and there is one mobber', () => {
+    before(() => {
+      timerState.addMobber(expectedJack)
+      
+      result = timerState.getState()
+    })
+    
+    after(() => {
+      timerState.removeMobber(expectedJack)
+    })
+    
+    it('should get correct mobber', () => {
+      var actualJack = result.mobbers.find(x => x.name === expectedJack.name)
+
+      assert.deepEqual(expectedJack, actualJack)
+    })
+    
+    let result = {}
+    let expectedJack = {name: 'jack'}
+    let expectedJill = {name: 'jill'}
+  })
+  
+  describe('when getting state and secondsPerTurn has not been set by user', () => {
+    before(() => {
+      result = timerState.getState()
+    })
+    
+    it('should have a default that is greater than zero', () => assert(result.secondsPerTurn > 0))
+    
+    let result = {}
+  })
 })
