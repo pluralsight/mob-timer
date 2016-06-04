@@ -1,6 +1,7 @@
 let fs = require('fs')
+let os = require('os')
 
-let stateFilePath = __dirname + '/state.json'
+let stateFilePath = os.tmpdir() + '/state.json'
 
 module.exports = {
     read
