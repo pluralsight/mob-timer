@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . --platform=win32,darwin --arch=x64 --out=dist",
+    "build": "electron-packager . --platform=win32,darwin --arch=x64 --out=dist --overwrite",
     "test": "mocha -w --use_strict"
   },
   "repository": {
