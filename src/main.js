@@ -4,9 +4,13 @@ const { app, ipcMain: ipc } = electron
 let timerWindow, configWindow, fullscreenWindow
 let timerState = require('./timer-state')
 
+let writeState = require('./write-state')
+let readState = require('./read-state')
+
 app.on('ready', () => {
   createTimerWindow()
   timerState.setCallback(onTimerEvent)
+  timerState.loadState(readState.read())
 })
 
 function createTimerWindow() {
@@ -79,6 +83,9 @@ function onTimerEvent(event, data) {
   }
   if (event === 'stopAlerts') {
     closeFullscreenWindow()
+  }
+  if(event === 'configUpdated') {
+    writeState.write(timerState.getState())
   }
 }
 
