@@ -1,7 +1,7 @@
-let timerInterval
-let alertInterval
-let secondsRemaining
-let alertSeconds
+const Timer = require('./state/timer')
+
+let mainTimer
+let alertsTimer
 let callback
 
 let mobbers = []
@@ -10,9 +10,31 @@ let currentMobber = 0
 let secondsPerTurn = 600
 let millisecondsPerSecond = 1000
 
+function createTimers() {
+  if (mainTimer) {
+    mainTimer.pause()
+  }
+  mainTimer = new Timer({countDown: true, time: secondsPerTurn, rateMilliseconds: millisecondsPerSecond}, secondsRemaining => {
+    callback('timerChange', secondsRemaining)
+    if (secondsRemaining < 0) {
+      pause()
+      rotate()
+      callback('turnEnded')
+      startAlerts()
+    }
+  })
+
+  if (alertsTimer) {
+    alertsTimer.pause()
+  }
+  alertsTimer = new Timer({countDown: false, rateMilliseconds: millisecondsPerSecond}, alertSeconds => {
+    callback('alert', alertSeconds)
+  })
+}
+
 function reset() {
-  secondsRemaining = secondsPerTurn
-  callback('timerChange', secondsRemaining)
+  mainTimer.reset(secondsPerTurn)
+  callback('timerChange', secondsPerTurn)
 }
 
 function getCurrentAndNextMobbers() {
@@ -26,45 +48,23 @@ function getCurrentAndNextMobbers() {
 }
 
 function startAlerts() {
-  if (!alertInterval) {
-    alertSeconds = 0
-    alertInterval = setInterval(() => {
-      alertSeconds++
-      callback('alert', alertSeconds)
-    }, millisecondsPerSecond)
-  }
+  alertsTimer.reset(0)
+  alertsTimer.start()
 }
 
 function stopAlerts() {
-  if (alertInterval) {
-    clearInterval(alertInterval)
-    alertInterval = null
-  }
+  alertsTimer.pause()
   callback('stopAlerts')
 }
 
 function start() {
-  if (!timerInterval) {
-    timerInterval = setInterval(() => {
-      secondsRemaining--
-      callback('timerChange', secondsRemaining)
-      if (secondsRemaining < 0) {
-        pause()
-        rotate()
-        callback('turnEnded')
-        startAlerts()
-      }
-    }, millisecondsPerSecond)
-  }
+  mainTimer.start()
   callback('started')
   stopAlerts()
 }
 
 function pause() {
-  if (timerInterval) {
-    clearInterval(timerInterval)
-    timerInterval = null
-  }
+  mainTimer.pause()
   callback('paused')
   stopAlerts()
 }
@@ -120,6 +120,7 @@ function setSecondsPerTurn(value) {
 
 function setTestingSpeed(value) {
   millisecondsPerSecond = value
+  createTimers()
 }
 
 function getState() {
@@ -133,11 +134,13 @@ function loadState(state) {
   if(state.mobbers) {
     for(var i=0;i<state.mobbers.length;i++){
       addMobber(state.mobbers[i])
-    }    
+    }
   }
-  
+
   setSecondsPerTurn(state.secondsPerTurn || secondsPerTurn)
 }
+
+createTimers()
 
 module.exports = {
   setCallback(cb) {
