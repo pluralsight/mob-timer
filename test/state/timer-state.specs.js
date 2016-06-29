@@ -1,4 +1,4 @@
-let timerState = require('../src/timer-state')
+let timerState = require('../../src/state/timer-state')
 let assert = require('assert')
 
 describe('timer-state', () => {
@@ -266,22 +266,22 @@ describe('timer-state', () => {
         assert.equal(event.data, 300)
     })
   })
-  
-  describe('when getting state', () => {  
+
+  describe('when getting state', () => {
     before(() => {
-      
+
       timerState.addMobber(expectedJack)
       timerState.addMobber(expectedJill)
       timerState.setSecondsPerTurn(expectedSecondsPerTurn)
-      
+
       result = timerState.getState()
     })
-    
+
     after(() => {
       timerState.removeMobber(expectedJack)
       timerState.removeMobber(expectedJill)
     })
-    
+
     it('should get correct mobbers', () => {
       var actualJack = result.mobbers.find(x => x.name === expectedJack.name)
       var actualJill = result.mobbers.find(x => x.name === expectedJill.name)
@@ -289,128 +289,128 @@ describe('timer-state', () => {
       assert.deepEqual(expectedJack, actualJack)
       assert.deepEqual(expectedJill, actualJill)
     })
-    
+
     it('should get correct seconds per turn', () => {
       assert.equal(result.secondsPerTurn, expectedSecondsPerTurn)
     })
-    
+
     let result = {}
     let expectedJack = {name: 'jack'}
     let expectedJill = {name: 'jill'}
     let expectedSecondsPerTurn = 599
   })
-  
+
   describe('when getting state and there are no mobbers', () => {
     before(() => result = timerState.getState())
-    
+
     it('should get no mobbers', () => assert(result.mobbers.length === 0))
-    
+
     let result = {}
   })
-  
+
   describe('when getting state and there is one mobber', () => {
     before(() => {
       timerState.addMobber(expectedJack)
-      
+
       result = timerState.getState()
     })
-    
+
     after(() => {
       timerState.removeMobber(expectedJack)
     })
-    
+
     it('should get correct mobber', () => {
       var actualJack = result.mobbers.find(x => x.name === expectedJack.name)
- 
+
       assert.deepEqual(expectedJack, actualJack)
     })
-    
+
     let result = {}
     let expectedJack = {name: 'jack'}
     let expectedJill = {name: 'jill'}
   })
-  
+
   describe('when getting state and secondsPerTurn has not been set by user', () => {
     before(() => {
       result = timerState.getState()
     })
-    
+
     it('should have a default that is greater than zero', () => assert(result.secondsPerTurn > 0))
-    
+
     let result = {}
   })
-  
+
   describe('when loading state', () => {
     before(() => {
       state = {
         mobbers: [jack, jill],
         secondsPerTurn: secondsPerTurn
       }
-      
+
       timerState.loadState(state)
-      
+
       result = timerState.getState()
     })
-    
+
     after(() => {
       timerState.removeMobber(jack)
       timerState.removeMobber(jill)
     })
-    
+
     it('should load mobbers', () => assert.deepEqual(state.mobbers, result.mobbers))
     it('should load secondsPerTurn', () => assert.equal(state.secondsPerTurn, result.secondsPerTurn))
-    
+
     let result = {}
     let state = {}
     let jack = {name: 'jack'}
     let jill = {name: 'jill'}
     let secondsPerTurn = 400
   })
-  
+
   describe('when loading state with NO mobbers', () => {
-    before(() => {     
+    before(() => {
       timerState.loadState(state)
-      
+
       result = timerState.getState()
     })
-    
+
     it('should NOT load any mobbers', () => assert.equal(result.mobbers.length, 0))
-    
+
     let result = {}
     let state = {}
   })
-  
+
   describe('when loading state with one mobber', () => {
     before(() => {
       state = {
         mobbers: [jack],
       }
-      
+
       timerState.loadState(state)
-      
+
       result = timerState.getState()
     })
-    
+
     after(() => {
       timerState.removeMobber(jack)
     })
-    
+
     it('should load one mobber', () => assert.deepEqual(state.mobbers, result.mobbers))
-    
+
     let result = {}
     let state = {}
     let jack = {name: 'jack'}
   })
-  
+
   describe('when loading state with no secondsPerTurn', () => {
-    before(() => {     
+    before(() => {
       timerState.loadState(state)
-      
+
       result = timerState.getState()
     })
-    
+
     it('should have a default that is greater than zero', () => assert(result.secondsPerTurn > 0))
-    
+
     let result = {}
     let state = {}
   })

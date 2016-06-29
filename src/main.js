@@ -2,10 +2,9 @@ const electron = require('electron')
 const { app, ipcMain: ipc } = electron
 
 let windows = require('./windows/windows')
-let timerState = require('./timer-state')
-
-let writeState = require('./write-state')
-let readState = require('./read-state')
+let timerState = require('./state/timer-state')
+let writeState = require('./state/write-state')
+let readState = require('./state/read-state')
 
 app.on('ready', () => {
   windows.createTimerWindow()

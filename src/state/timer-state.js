@@ -1,5 +1,5 @@
-const Timer = require('./state/timer')
-const Mobbers = require('./state/mobbers')
+const Timer = require('./timer')
+const Mobbers = require('./mobbers')
 
 let mainTimer
 let alertsTimer
