@@ -1,12 +1,12 @@
 const Timer = require('./state/timer')
+const Mobbers = require('./state/mobbers')
 
 let mainTimer
 let alertsTimer
 let callback
 
-let mobbers = []
+let mobbers = new Mobbers()
 
-let currentMobber = 0
 let secondsPerTurn = 600
 let millisecondsPerSecond = 1000
 
@@ -37,16 +37,6 @@ function reset() {
   callback('timerChange', secondsPerTurn)
 }
 
-function getCurrentAndNextMobbers() {
-  if (!mobbers.length) {
-    return { current: null, next: null }
-  }
-  return {
-    current: mobbers[currentMobber],
-    next: mobbers[(currentMobber + 1) % mobbers.length]
-  }
-}
-
 function startAlerts() {
   alertsTimer.reset(0)
   alertsTimer.start()
@@ -71,8 +61,8 @@ function pause() {
 
 function rotate() {
   reset()
-  currentMobber = mobbers.length ? (currentMobber + 1) % mobbers.length : 0
-  callback('rotated', getCurrentAndNextMobbers())
+  mobbers.rotate()
+  callback('rotated', mobbers.getCurrentAndNextMobbers())
 }
 
 function initialize() {
@@ -82,34 +72,32 @@ function initialize() {
 
 function publishConfig() {
   callback('configUpdated', {
-    mobbers,
+    mobbers: mobbers.getAll(),
     secondsPerTurn
   })
-  callback('rotated', getCurrentAndNextMobbers())
+  callback('rotated', mobbers.getCurrentAndNextMobbers())
 }
 
 function addMobber(mobber) {
-  mobbers.push(mobber)
+  mobbers.addMobber(mobber)
   publishConfig()
-  callback('rotated', getCurrentAndNextMobbers())
+  callback('rotated', mobbers.getCurrentAndNextMobbers())
 }
 
 function removeMobber(mobber) {
-  let removedMobberIndex = mobbers.findIndex(x => x.name === mobber.name)
-  mobbers = mobbers.filter(m => m.name !== mobber.name)
+  let currentMobber = mobbers.getCurrentAndNextMobbers().current
+  let isRemovingCurrentMobber = currentMobber ? currentMobber.name == mobber.name : false
 
-  if (currentMobber === removedMobberIndex) {
+  mobbers.removeMobber(mobber)
+
+  if (isRemovingCurrentMobber) {
     pause()
     reset()
     callback('turnEnded')
   }
 
-  if (currentMobber >= mobbers.length) {
-    currentMobber = 0
-  }
-
   publishConfig()
-  callback('rotated', getCurrentAndNextMobbers())
+  callback('rotated', mobbers.getCurrentAndNextMobbers())
 }
 
 function setSecondsPerTurn(value) {
@@ -125,7 +113,7 @@ function setTestingSpeed(value) {
 
 function getState() {
   return {
-    mobbers: mobbers,
+    mobbers: mobbers.getAll(),
     secondsPerTurn: secondsPerTurn
   }
 }
