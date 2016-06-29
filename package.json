@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-packager . --platform=win32,darwin --arch=x64 --out=dist --overwrite",
-    "test": "mocha -w --use_strict --recursive"
+    "test": "mocha -w --use_strict --recursive",
+    "integration_test": "mocha --use_strict --recursive ./integration_test"
   },
   "repository": {
     "type": "git",

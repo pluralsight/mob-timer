@@ -5,21 +5,21 @@ describe('when writing state', () => {
     before(() => {
         classUnderTest.setStateFilePath(filePath)
         classUnderTest.write(state)
-        
+
         fileData = getFileData(classUnderTest.getStateFilePath())
     })
-    
+
     after(() => {
         deleteFile(filePath)
     })
 
     it('should write state data to disc', () => assert.deepEqual(fileData, state))
-  
+
     let state = { some: 'state' }
     let fileData = {}
     let filePath = __dirname + '/testing-state.json' + Date.now()
-  
-    let classUnderTest = require('../src/write-state') 
+
+    let classUnderTest = require('../../src/state/write-state')
 })
 
 function fileExists(filePath) {
