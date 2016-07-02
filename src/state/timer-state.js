@@ -3,6 +3,9 @@ const Mobbers = require('./mobbers')
 
 class TimerState {
   constructor(options) {
+    if (!options) {
+      options = {}
+    }
     this.secondsPerTurn = 600
     this.mobbers = new Mobbers();
 
