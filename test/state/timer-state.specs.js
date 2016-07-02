@@ -1,14 +1,9 @@
 let TimerState = require('../../src/state/timer-state')
 let assert = require('assert')
 
-let timerState = new TimerState()
-
 describe('timer-state', () => {
+  let timerState
   let events
-  timerState.setCallback((event, data) => {
-    events.push({event, data})
-  })
-  timerState.setTestingSpeed(10)
 
   let assertEvent = (eventName) => {
     var event = events.find(x => x.event == eventName);
@@ -18,7 +13,14 @@ describe('timer-state', () => {
 
   beforeEach(() => {
     events = []
+    timerState = new TimerState()
+    timerState.setCallback((event, data) => {
+      events.push({event, data})
+    })
+    timerState.setTestingSpeed(10)
   })
+
+  afterEach(() => timerState.pause())
 
   describe('initialize', () => {
     beforeEach(() => timerState.initialize())
@@ -49,7 +51,6 @@ describe('timer-state', () => {
 
   describe('start', () => {
     beforeEach(() => timerState.start())
-    afterEach(() => timerState.pause())
 
     it('should publish a started event', () => {
       assertEvent('started')
@@ -121,11 +122,6 @@ describe('timer-state', () => {
       events = []
       timerState.rotate()
     })
-    afterEach(() => {
-      timerState.removeMobber({name: 'A'})
-      timerState.removeMobber({name: 'B'})
-      timerState.removeMobber({name: 'C'})
-    })
 
     it('should publish a rotated event', () => {
       var event = assertEvent('rotated')
@@ -177,7 +173,6 @@ describe('timer-state', () => {
 
   describe('addMobber', () => {
     beforeEach(() => timerState.addMobber({name: 'A'}))
-    afterEach(() => timerState.removeMobber({name: 'A'}))
 
     it('should publish a configUpdated event', () => {
       var event = assertEvent('configUpdated')
@@ -201,10 +196,6 @@ describe('timer-state', () => {
       timerState.addMobber({name: 'C'})
       events = []
       timerState.removeMobber({name: 'B'})
-    })
-    afterEach(() => {
-      timerState.removeMobber({name: 'A'})
-      timerState.removeMobber({name: 'C'})
     })
 
     it('should publish a configUpdated event', () => {
@@ -256,7 +247,6 @@ describe('timer-state', () => {
 
   describe('setSecondsPerTurn', () => {
     beforeEach(() => timerState.setSecondsPerTurn(300))
-    afterEach(() => timerState.setSecondsPerTurn(600))
 
     it('should publish a configUpdated event', () => {
       var event = assertEvent('configUpdated')
@@ -277,11 +267,6 @@ describe('timer-state', () => {
       timerState.setSecondsPerTurn(expectedSecondsPerTurn)
 
       result = timerState.getState()
-    })
-
-    after(() => {
-      timerState.removeMobber(expectedJack)
-      timerState.removeMobber(expectedJill)
     })
 
     it('should get correct mobbers', () => {
@@ -317,10 +302,6 @@ describe('timer-state', () => {
       result = timerState.getState()
     })
 
-    after(() => {
-      timerState.removeMobber(expectedJack)
-    })
-
     it('should get correct mobber', () => {
       var actualJack = result.mobbers.find(x => x.name === expectedJack.name)
 
@@ -352,11 +333,6 @@ describe('timer-state', () => {
       timerState.loadState(state)
 
       result = timerState.getState()
-    })
-
-    after(() => {
-      timerState.removeMobber(jack)
-      timerState.removeMobber(jill)
     })
 
     it('should load mobbers', () => assert.deepEqual(state.mobbers, result.mobbers))
@@ -391,10 +367,6 @@ describe('timer-state', () => {
       timerState.loadState(state)
 
       result = timerState.getState()
-    })
-
-    after(() => {
-      timerState.removeMobber(jack)
     })
 
     it('should load one mobber', () => assert.deepEqual(state.mobbers, result.mobbers))
