@@ -18,7 +18,6 @@ describe('timer-state', () => {
     timerState.setCallback((event, data) => {
       events.push({event, data})
     })
-    timerState.setTestingSpeed(10)
   })
 
   afterEach(() => timerState.pause())

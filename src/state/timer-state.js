@@ -3,7 +3,6 @@ const Mobbers = require('./mobbers')
 
 class TimerState {
   constructor(options) {
-    this.millisecondsPerSecond = 1000
     this.secondsPerTurn = 600
     this.mobbers = new Mobbers();
     this.Timer = options.Timer || Timer
@@ -16,10 +15,7 @@ class TimerState {
   }
 
   createTimers() {
-    if (this.mainTimer) {
-      this.mainTimer.pause()
-    }
-    this.mainTimer = new this.Timer({countDown: true, time: this.secondsPerTurn, rateMilliseconds: this.millisecondsPerSecond}, secondsRemaining => {
+    this.mainTimer = new this.Timer({countDown: true, time: this.secondsPerTurn}, secondsRemaining => {
       this.callback('timerChange', secondsRemaining)
       if (secondsRemaining < 0) {
         this.pause()
@@ -29,10 +25,7 @@ class TimerState {
       }
     })
 
-    if (this.alertsTimer) {
-      this.alertsTimer.pause()
-    }
-    this.alertsTimer = new this.Timer({countDown: false, rateMilliseconds: this.millisecondsPerSecond}, alertSeconds => {
+    this.alertsTimer = new this.Timer({countDown: false}, alertSeconds => {
       this.callback('alert', alertSeconds)
     })
   }
@@ -109,11 +102,6 @@ class TimerState {
     this.secondsPerTurn = value
     this.publishConfig()
     this.reset()
-  }
-
-  setTestingSpeed(value) {
-    this.millisecondsPerSecond = value
-    this.createTimers()
   }
 
   getState() {
