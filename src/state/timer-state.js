@@ -1,149 +1,136 @@
 const Timer = require('./timer')
 const Mobbers = require('./mobbers')
 
-let mainTimer
-let alertsTimer
-let callback
+class TimerState {
+  constructor() {
+    this.millisecondsPerSecond = 1000
+    this.secondsPerTurn = 600
+    this.mobbers = new Mobbers();
 
-let mobbers = new Mobbers()
-
-let secondsPerTurn = 600
-let millisecondsPerSecond = 1000
-
-function createTimers() {
-  if (mainTimer) {
-    mainTimer.pause()
+    this.createTimers()
   }
-  mainTimer = new Timer({countDown: true, time: secondsPerTurn, rateMilliseconds: millisecondsPerSecond}, secondsRemaining => {
-    callback('timerChange', secondsRemaining)
-    if (secondsRemaining < 0) {
-      pause()
-      rotate()
-      callback('turnEnded')
-      startAlerts()
+
+  setCallback(callback) {
+    this.callback = callback
+  }
+
+  createTimers() {
+    if (this.mainTimer) {
+      this.mainTimer.pause()
     }
-  })
+    this.mainTimer = new Timer({countDown: true, time: this.secondsPerTurn, rateMilliseconds: this.millisecondsPerSecond}, secondsRemaining => {
+      this.callback('timerChange', secondsRemaining)
+      if (secondsRemaining < 0) {
+        this.pause()
+        this.rotate()
+        this.callback('turnEnded')
+        this.startAlerts()
+      }
+    })
 
-  if (alertsTimer) {
-    alertsTimer.pause()
-  }
-  alertsTimer = new Timer({countDown: false, rateMilliseconds: millisecondsPerSecond}, alertSeconds => {
-    callback('alert', alertSeconds)
-  })
-}
-
-function reset() {
-  mainTimer.reset(secondsPerTurn)
-  callback('timerChange', secondsPerTurn)
-}
-
-function startAlerts() {
-  alertsTimer.reset(0)
-  alertsTimer.start()
-}
-
-function stopAlerts() {
-  alertsTimer.pause()
-  callback('stopAlerts')
-}
-
-function start() {
-  mainTimer.start()
-  callback('started')
-  stopAlerts()
-}
-
-function pause() {
-  mainTimer.pause()
-  callback('paused')
-  stopAlerts()
-}
-
-function rotate() {
-  reset()
-  mobbers.rotate()
-  callback('rotated', mobbers.getCurrentAndNextMobbers())
-}
-
-function initialize() {
-  rotate()
-  callback('turnEnded')
-}
-
-function publishConfig() {
-  callback('configUpdated', {
-    mobbers: mobbers.getAll(),
-    secondsPerTurn
-  })
-  callback('rotated', mobbers.getCurrentAndNextMobbers())
-}
-
-function addMobber(mobber) {
-  mobbers.addMobber(mobber)
-  publishConfig()
-  callback('rotated', mobbers.getCurrentAndNextMobbers())
-}
-
-function removeMobber(mobber) {
-  let currentMobber = mobbers.getCurrentAndNextMobbers().current
-  let isRemovingCurrentMobber = currentMobber ? currentMobber.name == mobber.name : false
-
-  mobbers.removeMobber(mobber)
-
-  if (isRemovingCurrentMobber) {
-    pause()
-    reset()
-    callback('turnEnded')
+    if (this.alertsTimer) {
+      this.alertsTimer.pause()
+    }
+    this.alertsTimer = new Timer({countDown: false, rateMilliseconds: this.millisecondsPerSecond}, alertSeconds => {
+      this.callback('alert', alertSeconds)
+    })
   }
 
-  publishConfig()
-  callback('rotated', mobbers.getCurrentAndNextMobbers())
-}
-
-function setSecondsPerTurn(value) {
-  secondsPerTurn = value
-  publishConfig()
-  reset()
-}
-
-function setTestingSpeed(value) {
-  millisecondsPerSecond = value
-  createTimers()
-}
-
-function getState() {
-  return {
-    mobbers: mobbers.getAll(),
-    secondsPerTurn: secondsPerTurn
+  reset() {
+    this.mainTimer.reset(this.secondsPerTurn)
+    this.callback('timerChange', this.secondsPerTurn)
   }
-}
 
-function loadState(state) {
-  if(state.mobbers) {
-    for(var i=0;i<state.mobbers.length;i++){
-      addMobber(state.mobbers[i])
+  startAlerts() {
+    this.alertsTimer.reset(0)
+    this.alertsTimer.start()
+  }
+
+  stopAlerts() {
+    this.alertsTimer.pause()
+    this.callback('stopAlerts')
+  }
+
+  start() {
+    this.mainTimer.start()
+    this.callback('started')
+    this.stopAlerts()
+  }
+
+  pause() {
+    this.mainTimer.pause()
+    this.callback('paused')
+    this.stopAlerts()
+  }
+
+  rotate() {
+    this.reset()
+    this.mobbers.rotate()
+    this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
+  }
+
+  initialize() {
+    this.rotate()
+    this.callback('turnEnded')
+  }
+
+  publishConfig() {
+    this.callback('configUpdated', {
+      mobbers: this.mobbers.getAll(),
+      secondsPerTurn: this.secondsPerTurn
+    })
+    this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
+  }
+
+  addMobber(mobber) {
+    this.mobbers.addMobber(mobber)
+    this.publishConfig()
+    this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
+  }
+
+  removeMobber(mobber) {
+    let currentMobber = this.mobbers.getCurrentAndNextMobbers().current
+    let isRemovingCurrentMobber = currentMobber ? currentMobber.name == mobber.name : false
+
+    this.mobbers.removeMobber(mobber)
+
+    if (isRemovingCurrentMobber) {
+      this.pause()
+      this.reset()
+      this.callback('turnEnded')
+    }
+
+    this.publishConfig()
+    this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
+  }
+
+  setSecondsPerTurn(value) {
+    this.secondsPerTurn = value
+    this.publishConfig()
+    this.reset()
+  }
+
+  setTestingSpeed(value) {
+    this.millisecondsPerSecond = value
+    this.createTimers()
+  }
+
+  getState() {
+    return {
+      mobbers: this.mobbers.getAll(),
+      secondsPerTurn: this.secondsPerTurn
     }
   }
 
-  setSecondsPerTurn(state.secondsPerTurn || secondsPerTurn)
+  loadState(state) {
+    if(state.mobbers) {
+      for(var i=0;i<state.mobbers.length;i++){
+        this.addMobber(state.mobbers[i])
+      }
+    }
+
+    this.setSecondsPerTurn(state.secondsPerTurn || this.secondsPerTurn)
+  }
 }
 
-createTimers()
-
-module.exports = {
-  setCallback(cb) {
-    callback = cb
-  },
-  reset,
-  start,
-  pause,
-  rotate,
-  initialize,
-  publishConfig,
-  addMobber,
-  removeMobber,
-  setSecondsPerTurn,
-  setTestingSpeed,
-  getState,
-  loadState
-}
+module.exports = new TimerState();
