@@ -1,4 +1,5 @@
 let TimerState = require('../../src/state/timer-state')
+let TestTimer = require('./test-timer')
 let assert = require('assert')
 
 describe('timer-state', () => {
@@ -13,7 +14,7 @@ describe('timer-state', () => {
 
   beforeEach(() => {
     events = []
-    timerState = new TimerState()
+    timerState = new TimerState({ Timer: TestTimer })
     timerState.setCallback((event, data) => {
       events.push({event, data})
     })
@@ -52,6 +53,10 @@ describe('timer-state', () => {
   describe('start', () => {
     beforeEach(() => timerState.start())
 
+    it('should start the mainTimer', function () {
+      assert.equal(timerState.mainTimer.isRunning, true)
+    })
+
     it('should publish a started event', () => {
       assertEvent('started')
     })
@@ -60,33 +65,29 @@ describe('timer-state', () => {
       assertEvent('stopAlerts')
     })
 
-    it('should publish a timerChange event after 1 second', done => {
-      setTimeout(() => {
-        var event = assertEvent('timerChange')
-        assert.equal(event.data, 599)
-        done()
-      }, 12)
+    it('should publish a timerChange event when the timer calls back', () => {
+      timerState.mainTimer.callback(599)
+      var event = assertEvent('timerChange')
+      assert.equal(event.data, 599)
     })
 
-    it('should publish events when the time is up', done => {
-      timerState.setSecondsPerTurn(0)
-      setTimeout(() => {
-        timerState.setSecondsPerTurn(600)
-        assertEvent('turnEnded')
-        assertEvent('paused')
-        assertEvent('rotated')
-        done()
-      }, 12)
+    it('should publish events when the time is up', () => {
+      timerState.mainTimer.callback(-1)
+      assertEvent('turnEnded')
+      assertEvent('paused')
+      assertEvent('rotated')
     })
 
-    it('should publish alert events after the time is up', done => {
-      timerState.setSecondsPerTurn(0)
-      setTimeout(() => {
-        timerState.setSecondsPerTurn(600)
-        var event = assertEvent('alert')
-        assert.equal(event.data, 1)
-        done()
-      }, 24)
+    it('should start the alertsTimer after the timer is up', () => {
+      assert.equal(timerState.alertsTimer.isRunning, false)
+      timerState.mainTimer.callback(-1)
+      assert.equal(timerState.alertsTimer.isRunning, true)
+    })
+
+    it('should publish alert events after the time is up', () => {
+      timerState.alertsTimer.callback(1)
+      var event = assertEvent('alert')
+      assert.equal(event.data, 1)
     })
   })
 
@@ -101,16 +102,12 @@ describe('timer-state', () => {
       assertEvent('stopAlerts')
     })
 
-    it('should stop the timerChange events', done => {
+    it('should stop the mainTimer', () => {
       timerState.start();
-      setTimeout(() => {
-        timerState.pause()
-      }, 12)
-      setTimeout(() => {
-        var count = events.filter(x => x.event == 'timerChange').length
-        assert.equal(count, 1)
-        done()
-      }, 35)
+      assert.equal(timerState.mainTimer.isRunning, true)
+
+      timerState.pause();
+      assert.equal(timerState.mainTimer.isRunning, false)
     })
   })
 

@@ -2,10 +2,11 @@ const Timer = require('./timer')
 const Mobbers = require('./mobbers')
 
 class TimerState {
-  constructor() {
+  constructor(options) {
     this.millisecondsPerSecond = 1000
     this.secondsPerTurn = 600
     this.mobbers = new Mobbers();
+    this.Timer = options.Timer || Timer
 
     this.createTimers()
   }
@@ -18,7 +19,7 @@ class TimerState {
     if (this.mainTimer) {
       this.mainTimer.pause()
     }
-    this.mainTimer = new Timer({countDown: true, time: this.secondsPerTurn, rateMilliseconds: this.millisecondsPerSecond}, secondsRemaining => {
+    this.mainTimer = new this.Timer({countDown: true, time: this.secondsPerTurn, rateMilliseconds: this.millisecondsPerSecond}, secondsRemaining => {
       this.callback('timerChange', secondsRemaining)
       if (secondsRemaining < 0) {
         this.pause()
@@ -31,7 +32,7 @@ class TimerState {
     if (this.alertsTimer) {
       this.alertsTimer.pause()
     }
-    this.alertsTimer = new Timer({countDown: false, rateMilliseconds: this.millisecondsPerSecond}, alertSeconds => {
+    this.alertsTimer = new this.Timer({countDown: false, rateMilliseconds: this.millisecondsPerSecond}, alertSeconds => {
       this.callback('alert', alertSeconds)
     })
   }
