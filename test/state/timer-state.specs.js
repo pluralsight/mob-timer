@@ -1,5 +1,7 @@
-let timerState = require('../../src/state/timer-state')
+let TimerState = require('../../src/state/timer-state')
 let assert = require('assert')
+
+let timerState = new TimerState()
 
 describe('timer-state', () => {
   let events

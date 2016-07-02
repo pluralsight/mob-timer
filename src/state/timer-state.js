@@ -133,4 +133,4 @@ class TimerState {
   }
 }
 
-module.exports = new TimerState();
+module.exports = TimerState
