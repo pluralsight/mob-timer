@@ -20,8 +20,6 @@ describe('timer-state', () => {
     })
   })
 
-  afterEach(() => timerState.pause())
-
   describe('initialize', () => {
     beforeEach(() => timerState.initialize())
 
