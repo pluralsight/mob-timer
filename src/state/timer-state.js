@@ -5,17 +5,16 @@ class TimerState {
   constructor(options) {
     this.secondsPerTurn = 600
     this.mobbers = new Mobbers();
-    this.Timer = options.Timer || Timer
 
-    this.createTimers()
+    this.createTimers(options.Timer || Timer)
   }
 
   setCallback(callback) {
     this.callback = callback
   }
 
-  createTimers() {
-    this.mainTimer = new this.Timer({countDown: true, time: this.secondsPerTurn}, secondsRemaining => {
+  createTimers(TimerClass) {
+    this.mainTimer = new TimerClass({countDown: true, time: this.secondsPerTurn}, secondsRemaining => {
       this.callback('timerChange', secondsRemaining)
       if (secondsRemaining < 0) {
         this.pause()
@@ -25,7 +24,7 @@ class TimerState {
       }
     })
 
-    this.alertsTimer = new this.Timer({countDown: false}, alertSeconds => {
+    this.alertsTimer = new TimerClass({countDown: false}, alertSeconds => {
       this.callback('alert', alertSeconds)
     })
   }
