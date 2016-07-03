@@ -144,6 +144,7 @@ describe('timer-state', () => {
       var event = assertEvent('configUpdated')
       assert.deepEqual(event.data.mobbers, [])
       assert.equal(event.data.secondsPerTurn, 600)
+      assert.equal(event.data.secondsUntilFullscreen, 30)
     })
 
     it('should contain the mobbers if there are some', () => {
@@ -250,6 +251,15 @@ describe('timer-state', () => {
     it('should publish a timerChange event', () => {
         var event = assertEvent('timerChange')
         assert.equal(event.data, 300)
+    })
+  })
+
+  describe('setSecondsUntilFullscreen', () => {
+    beforeEach(() => timerState.setSecondsUntilFullscreen(5))
+
+    it('should publish a configUpdated event', () => {
+      var event = assertEvent('configUpdated')
+      assert.equal(event.data.secondsUntilFullscreen, 5)
     })
   })
 

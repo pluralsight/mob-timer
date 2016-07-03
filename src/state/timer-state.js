@@ -7,7 +7,8 @@ class TimerState {
       options = {}
     }
     this.secondsPerTurn = 600
-    this.mobbers = new Mobbers();
+    this.mobbers = new Mobbers()
+    this.secondsUntilFullscreen = 30
 
     this.createTimers(options.Timer || Timer)
   }
@@ -73,7 +74,8 @@ class TimerState {
   publishConfig() {
     this.callback('configUpdated', {
       mobbers: this.mobbers.getAll(),
-      secondsPerTurn: this.secondsPerTurn
+      secondsPerTurn: this.secondsPerTurn,
+      secondsUntilFullscreen: this.secondsUntilFullscreen
     })
     this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
@@ -104,6 +106,11 @@ class TimerState {
     this.secondsPerTurn = value
     this.publishConfig()
     this.reset()
+  }
+
+  setSecondsUntilFullscreen(value) {
+    this.secondsUntilFullscreen = value
+    this.publishConfig()
   }
 
   getState() {
