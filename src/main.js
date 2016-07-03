@@ -16,7 +16,7 @@ app.on('ready', () => {
 
 function onTimerEvent(event, data) {
   windows.dispatchEvent(event, data)
-  if (event === 'alert' && data === 30) {
+  if (event === 'alert' && data == timerState.secondsUntilFullscreen) {
     windows.createFullscreenWindow()
   }
   if (event === 'stopAlerts') {
