@@ -123,10 +123,8 @@ class TimerState {
   }
 
   loadState(state) {
-    if(state.mobbers) {
-      for(var i=0;i<state.mobbers.length;i++){
-        this.addMobber(state.mobbers[i])
-      }
+    if (state.mobbers) {
+      state.mobbers.forEach(x => this.addMobber(x))
     }
 
     this.setSecondsPerTurn(state.secondsPerTurn || this.secondsPerTurn)
