@@ -41,6 +41,7 @@ class TimerState {
   startAlerts() {
     this.alertsTimer.reset(0)
     this.alertsTimer.start()
+    this.callback('alert', 0)
   }
 
   stopAlerts() {

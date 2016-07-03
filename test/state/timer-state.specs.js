@@ -73,6 +73,8 @@ describe('timer-state', () => {
       assertEvent('turnEnded')
       assertEvent('paused')
       assertEvent('rotated')
+      var alertEvent = assertEvent('alert')
+      assert.equal(alertEvent.data, 0)
     })
 
     it('should start the alertsTimer after the timer is up', () => {
