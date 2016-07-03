@@ -37,7 +37,6 @@ ipc.on('configUpdated', (event, data) => {
 })
 
 minutesEl.addEventListener('change', _ => {
-  console.log(minutesEl.value)
   ipc.send('setSecondsPerTurn', minutesEl.value * 60)
 })
 
