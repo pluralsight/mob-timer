@@ -271,6 +271,7 @@ describe('timer-state', () => {
       timerState.addMobber(expectedJack)
       timerState.addMobber(expectedJill)
       timerState.setSecondsPerTurn(expectedSecondsPerTurn)
+      timerState.setSecondsUntilFullscreen(expectedSecondsUntilFullscreen)
 
       result = timerState.getState()
     })
@@ -287,10 +288,15 @@ describe('timer-state', () => {
       assert.equal(result.secondsPerTurn, expectedSecondsPerTurn)
     })
 
+    it('should get the correct seconds until fullscreen', () => {
+      assert.equal(result.secondsUntilFullscreen, expectedSecondsUntilFullscreen)
+    })
+
     let result = {}
     let expectedJack = {name: 'jack'}
     let expectedJill = {name: 'jill'}
     let expectedSecondsPerTurn = 599
+    let expectedSecondsUntilFullscreen = 3
   })
 
   describe('when getting state and there are no mobbers', () => {
@@ -333,7 +339,8 @@ describe('timer-state', () => {
     before(() => {
       state = {
         mobbers: [jack, jill],
-        secondsPerTurn: secondsPerTurn
+        secondsPerTurn: secondsPerTurn,
+        secondsUntilFullscreen: secondsUntilFullscreen
       }
 
       timerState.loadState(state)
@@ -343,12 +350,14 @@ describe('timer-state', () => {
 
     it('should load mobbers', () => assert.deepEqual(state.mobbers, result.mobbers))
     it('should load secondsPerTurn', () => assert.equal(state.secondsPerTurn, result.secondsPerTurn))
+    it('should load secondsUntilFullscreen', () => assert.equal(state.secondsUntilFullscreen, result.secondsUntilFullscreen))
 
     let result = {}
     let state = {}
     let jack = {name: 'jack'}
     let jill = {name: 'jill'}
     let secondsPerTurn = 400
+    let secondsUntilFullscreen = 0
   })
 
   describe('when loading state with NO mobbers', () => {
@@ -390,6 +399,19 @@ describe('timer-state', () => {
     })
 
     it('should have a default that is greater than zero', () => assert(result.secondsPerTurn > 0))
+
+    let result = {}
+    let state = {}
+  })
+
+  describe('when loading state with no secondsUntilFullscreen', () => {
+    before(() => {
+      timerState.loadState(state)
+
+      result = timerState.getState()
+    })
+
+    it('should have a default that is greater than zero', () => assert(result.secondsUntilFullscreen > 0))
 
     let result = {}
     let state = {}

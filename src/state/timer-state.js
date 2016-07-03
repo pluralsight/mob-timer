@@ -117,7 +117,8 @@ class TimerState {
   getState() {
     return {
       mobbers: this.mobbers.getAll(),
-      secondsPerTurn: this.secondsPerTurn
+      secondsPerTurn: this.secondsPerTurn,
+      secondsUntilFullscreen: this.secondsUntilFullscreen
     }
   }
 
@@ -129,6 +130,9 @@ class TimerState {
     }
 
     this.setSecondsPerTurn(state.secondsPerTurn || this.secondsPerTurn)
+    if (typeof state.secondsUntilFullscreen === 'number') {
+      this.setSecondsUntilFullscreen(state.secondsUntilFullscreen)
+    }
   }
 }
 
