@@ -16,7 +16,7 @@ app.on('ready', () => {
 
 function onTimerEvent(event, data) {
   windows.dispatchEvent(event, data)
-  if (event === 'alert' && data === 30) {
+  if (event === 'alert' && data == timerState.secondsUntilFullscreen) {
     windows.createFullscreenWindow()
   }
   if (event === 'stopAlerts') {
@@ -42,6 +42,7 @@ ipc.on('configure', _ => {
 ipc.on('addMobber', (event, mobber) => timerState.addMobber(mobber))
 ipc.on('removeMobber', (event, mobber) => timerState.removeMobber(mobber))
 ipc.on('setSecondsPerTurn', (event, secondsPerTurn) => timerState.setSecondsPerTurn(secondsPerTurn))
+ipc.on('setSecondsUntilFullscreen', (event, secondsUntilFullscreen) => timerState.setSecondsUntilFullscreen(secondsUntilFullscreen))
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {

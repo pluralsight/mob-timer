@@ -4,6 +4,7 @@ const mobbersEl = document.getElementById('mobbers')
 const minutesEl = document.getElementById('minutes')
 const addEl = document.getElementById('add')
 const addMobberForm = document.getElementById('addMobberForm')
+const fullscreenSecondsEl = document.getElementById('fullscreen-seconds')
 
 function createMobberEl(mobber) {
   const el = document.createElement('div')
@@ -32,10 +33,10 @@ ipc.on('configUpdated', (event, data) => {
     frag.appendChild(createMobberEl(mobber))
   })
   mobbersEl.appendChild(frag)
+  fullscreenSecondsEl.value = data.secondsUntilFullscreen
 })
 
 minutesEl.addEventListener('change', _ => {
-  console.log(minutesEl.value)
   ipc.send('setSecondsPerTurn', minutesEl.value * 60)
 })
 
@@ -47,6 +48,10 @@ addMobberForm.addEventListener('submit', event => {
   }
   ipc.send('addMobber', { name: value })
   addEl.value = ''
+})
+
+fullscreenSecondsEl.addEventListener('change', _ => {
+  ipc.send('setSecondsUntilFullscreen', fullscreenSecondsEl.value * 1)
 })
 
 ipc.send('configWindowReady')

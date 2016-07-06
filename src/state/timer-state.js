@@ -7,7 +7,8 @@ class TimerState {
       options = {}
     }
     this.secondsPerTurn = 600
-    this.mobbers = new Mobbers();
+    this.mobbers = new Mobbers()
+    this.secondsUntilFullscreen = 30
 
     this.createTimers(options.Timer || Timer)
   }
@@ -40,6 +41,7 @@ class TimerState {
   startAlerts() {
     this.alertsTimer.reset(0)
     this.alertsTimer.start()
+    this.callback('alert', 0)
   }
 
   stopAlerts() {
@@ -73,7 +75,8 @@ class TimerState {
   publishConfig() {
     this.callback('configUpdated', {
       mobbers: this.mobbers.getAll(),
-      secondsPerTurn: this.secondsPerTurn
+      secondsPerTurn: this.secondsPerTurn,
+      secondsUntilFullscreen: this.secondsUntilFullscreen
     })
     this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
@@ -106,21 +109,28 @@ class TimerState {
     this.reset()
   }
 
+  setSecondsUntilFullscreen(value) {
+    this.secondsUntilFullscreen = value
+    this.publishConfig()
+  }
+
   getState() {
     return {
       mobbers: this.mobbers.getAll(),
-      secondsPerTurn: this.secondsPerTurn
+      secondsPerTurn: this.secondsPerTurn,
+      secondsUntilFullscreen: this.secondsUntilFullscreen
     }
   }
 
   loadState(state) {
-    if(state.mobbers) {
-      for(var i=0;i<state.mobbers.length;i++){
-        this.addMobber(state.mobbers[i])
-      }
+    if (state.mobbers) {
+      state.mobbers.forEach(x => this.addMobber(x))
     }
 
     this.setSecondsPerTurn(state.secondsPerTurn || this.secondsPerTurn)
+    if (typeof state.secondsUntilFullscreen === 'number') {
+      this.setSecondsUntilFullscreen(state.secondsUntilFullscreen)
+    }
   }
 }
 

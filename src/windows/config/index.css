@@ -17,15 +17,6 @@ input {
   width: 40px;
 }
 
-.mobbers {
-  margin-top: 30px;
-}
-
-.mobbersLabel {
-  font-weight: bold;
-  font-size: 18px;
-}
-
 .mobber {
   display: flex;
   padding: 4px;
@@ -46,6 +37,7 @@ input {
   align-items: center;
   padding-top: 10px;
 }
+
 .btn {
   background-color: #f15b2a;
   border: 0;
@@ -54,4 +46,14 @@ input {
   color: #fff;
   margin-left: 5px;
   cursor: pointer;
+}
+
+h1 {
+  font-size: 18px;
+  border-bottom: 1px solid black;
+  margin-top: 20px;
+}
+
+.fullscreen-seconds {
+  width: 40px;
 }
