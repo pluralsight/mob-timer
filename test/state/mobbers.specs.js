@@ -22,6 +22,18 @@ describe('Mobbers', () => {
       assert.equal(result[0].name, 'Test')
     })
 
+    it('should add an id to the mobber if missing', () => {
+      mobbers.addMobber({name: 'Test'})
+      let result = mobbers.getAll()
+      assert.notEqual(result[0].id, undefined)
+    })
+
+    it('should NOT add an id to the mobber if it already has one', () => {
+      mobbers.addMobber({id: 'test-id', name: 'Test'})
+      let result = mobbers.getAll()
+      assert.equal(result[0].id, 'test-id')
+    })
+
     it('should always add to the end of the list', () => {
       mobbers.addMobber({name: 'Test 1'})
       mobbers.addMobber({name: 'Test 2'})

@@ -1,3 +1,5 @@
+const newGuid = require('node-uuid').v4
+
 class Mobbers {
   constructor() {
     this.mobbers = []
@@ -9,6 +11,9 @@ class Mobbers {
   }
 
   addMobber(mobber) {
+    if (!mobber.id) {
+      mobber.id = newGuid()
+    }
     this.mobbers.push(mobber)
   }
 

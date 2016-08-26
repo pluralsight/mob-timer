@@ -23,5 +23,8 @@
     "electron-packager": "^7.0.2",
     "electron-prebuilt": "^1.1.0",
     "mocha": "^2.4.5"
+  },
+  "dependencies": {
+    "node-uuid": "^1.4.7"
   }
 }
