@@ -186,11 +186,11 @@ describe('timer-state', () => {
 
   describe('removeMobber', () => {
     beforeEach(() => {
-      timerState.addMobber({name: 'A'})
-      timerState.addMobber({name: 'B'})
-      timerState.addMobber({name: 'C'})
+      timerState.addMobber({name: 'A', id: 'a'})
+      timerState.addMobber({name: 'B', id: 'b'})
+      timerState.addMobber({name: 'C', id: 'c'})
       events = []
-      timerState.removeMobber({name: 'B'})
+      timerState.removeMobber({name: 'B', id: 'b'})
     })
 
     it('should publish a configUpdated event', () => {
@@ -229,7 +229,7 @@ describe('timer-state', () => {
     it('should update correctly if the removed user was current', () => {
       timerState.rotate()
       events = []
-      timerState.removeMobber({name: 'C'})
+      timerState.removeMobber({name: 'C', id: 'c'})
       var event = assertEvent('rotated')
       assert.equal(event.data.current.name, 'A');
       assert.equal(event.data.next.name, 'A');

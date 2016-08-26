@@ -33,7 +33,7 @@ class Mobbers {
   }
 
   removeMobber(mobber) {
-    this.mobbers = this.mobbers.filter(m => m.name !== mobber.name)
+    this.mobbers = this.mobbers.filter(m => m.id !== mobber.id)
     if (this.currentMobber >= this.mobbers.length) {
       this.currentMobber = 0;
     }
