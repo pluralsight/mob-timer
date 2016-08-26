@@ -19,19 +19,15 @@ describe('Mobbers', () => {
     it('should add a mobber', () => {
       mobbers.addMobber({name: 'Test'})
       let result = mobbers.getAll()
-      assert.deepEqual(result, [
-        {name: 'Test'}
-      ])
+      assert.equal(result[0].name, 'Test')
     })
 
     it('should always add to the end of the list', () => {
       mobbers.addMobber({name: 'Test 1'})
       mobbers.addMobber({name: 'Test 2'})
       let result = mobbers.getAll()
-      assert.deepEqual(result, [
-        {name: 'Test 1'},
-        {name: 'Test 2'}
-      ])
+      assert.equal(result[0].name, 'Test 1')
+      assert.equal(result[1].name, 'Test 2')
     })
   })
 
@@ -44,14 +40,16 @@ describe('Mobbers', () => {
     it('return the same mobber for current and next if there is only one mobber', () => {
       mobbers.addMobber({name: 'Test'})
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test'}, next: {name: 'Test'} })
+      assert.equal(result.current.name, 'Test')
+      assert.equal(result.next.name, 'Test')
     })
 
     it('return the current and next mobber when there are 2 mobbers', () => {
       mobbers.addMobber({name: 'Test 1'})
       mobbers.addMobber({name: 'Test 2'})
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test 1'}, next: {name: 'Test 2'} })
+      assert.equal(result.current.name, 'Test 1')
+      assert.equal(result.next.name, 'Test 2')
     })
 
     it('should return the correct mobbers after rotating', () => {
@@ -60,7 +58,8 @@ describe('Mobbers', () => {
       mobbers.addMobber({name: 'Test 3'})
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test 2'}, next: {name: 'Test 3'} })
+      assert.equal(result.current.name, 'Test 2')
+      assert.equal(result.next.name, 'Test 3')
     })
   })
 
@@ -75,7 +74,8 @@ describe('Mobbers', () => {
       mobbers.addMobber({name: 'Test'})
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test'}, next: {name: 'Test'} })
+      assert.equal(result.current.name, 'Test')
+      assert.equal(result.next.name, 'Test')
     })
 
     it('should rotate the mobbers when there are 2', () => {
@@ -83,7 +83,8 @@ describe('Mobbers', () => {
       mobbers.addMobber({name: 'Test 2'})
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test 2'}, next: {name: 'Test 1'} })
+      assert.equal(result.current.name, 'Test 2')
+      assert.equal(result.next.name, 'Test 1')
     })
 
     it('should loop back around after the end of the list', () => {
@@ -92,7 +93,8 @@ describe('Mobbers', () => {
       mobbers.rotate()
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test 1'}, next: {name: 'Test 2'} })
+      assert.equal(result.current.name, 'Test 1')
+      assert.equal(result.next.name, 'Test 2')
     })
   })
 
@@ -101,9 +103,7 @@ describe('Mobbers', () => {
       mobbers.addMobber({name: 'Test'})
       mobbers.removeMobber({name: 'Other'})
       let result = mobbers.getAll()
-      assert.deepEqual(result, [
-        {name: 'Test'}
-      ])
+      assert.equal(result[0].name, 'Test')
     })
 
     it('should remove all matches', () => {
@@ -113,10 +113,9 @@ describe('Mobbers', () => {
       mobbers.addMobber({name: 'Test 2'})
       mobbers.removeMobber({name: 'Test 1'})
       let result = mobbers.getAll()
-      assert.deepEqual(result, [
-        {name: 'Test 2'},
-        {name: 'Test 2'}
-      ])
+      assert.equal(result.length, 2)
+      assert.equal(result[0].name, 'Test 2')
+      assert.equal(result[1].name, 'Test 2')
     })
 
     it('should update correctly if the removed mobber was the current mobber', () => {
@@ -126,7 +125,8 @@ describe('Mobbers', () => {
       mobbers.rotate()
       mobbers.removeMobber({name: 'Test 2'})
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test 3'}, next: {name: 'Test 1'} })
+      assert.equal(result.current.name, 'Test 3')
+      assert.equal(result.next.name, 'Test 1')
     })
 
     it('should wrap around correctly if the removed mobber was current and at the end of the list', () => {
@@ -137,7 +137,8 @@ describe('Mobbers', () => {
       mobbers.rotate()
       mobbers.removeMobber({name: 'Test 3'})
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: {name: 'Test 1'}, next: {name: 'Test 2'} })
+      assert.equal(result.current.name, 'Test 1')
+      assert.equal(result.next.name, 'Test 2')
     })
   })
 })

@@ -153,12 +153,12 @@ describe('timer-state', () => {
       timerState.addMobber({name: 'A'})
       timerState.addMobber({name: 'B'})
       events = []
+
       timerState.publishConfig()
       var event = assertEvent('configUpdated')
-      assert.deepEqual(event.data.mobbers, [
-        {name: 'A'},
-        {name: 'B'}
-      ])
+      assert.equal(event.data.mobbers[0].name, 'A')
+      assert.equal(event.data.mobbers[1].name, 'B')
+
       timerState.removeMobber({name: 'A'})
       timerState.removeMobber({name: 'B'})
     })
@@ -173,16 +173,14 @@ describe('timer-state', () => {
 
     it('should publish a configUpdated event', () => {
       var event = assertEvent('configUpdated')
-      assert.deepEqual(event.data.mobbers, [{name: 'A'}])
+      assert.equal(event.data.mobbers[0].name, 'A')
       assert.equal(event.data.secondsPerTurn, 600)
     })
 
     it('should publish a rotated event', () => {
       var event = assertEvent('rotated')
-      assert.deepEqual(event.data, {
-        current: {name: 'A'},
-        next: {name: 'A'}
-      })
+      assert.equal(event.data.current.name, 'A')
+      assert.equal(event.data.next.name, 'A')
     })
   })
 
@@ -197,19 +195,15 @@ describe('timer-state', () => {
 
     it('should publish a configUpdated event', () => {
       var event = assertEvent('configUpdated')
-      assert.deepEqual(event.data.mobbers, [
-        {name: 'A'},
-        {name: 'C'}
-      ])
+      assert.equal(event.data.mobbers[0].name, 'A')
+      assert.equal(event.data.mobbers[1].name, 'C')
       assert.equal(event.data.secondsPerTurn, 600)
     })
 
     it('should publish a rotated event', () => {
       var event = assertEvent('rotated')
-      assert.deepEqual(event.data, {
-        current: {name: 'A'},
-        next: {name: 'C'}
-      })
+      assert.equal(event.data.current.name, 'A')
+      assert.equal(event.data.next.name, 'C')
     })
 
     it('should NOT publish a turnEnded event if the removed user was NOT current', () => {
