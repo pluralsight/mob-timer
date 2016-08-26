@@ -154,4 +154,29 @@ describe('Mobbers', () => {
       assert.equal(result.next.name, 'Test 2')
     })
   })
+
+  describe('updateMobber', () => {
+    it('should replace the mobber by matching id', () => {
+      mobbers.addMobber({name: 'Test 1', id: 't1'})
+      mobbers.addMobber({name: 'Test 2', id: 't2'})
+      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.updateMobber({name: 'Test 2-updated', id: 't2', image: 'image-path'})
+      let result = mobbers.getAll()
+      assert.equal(result.length, 3)
+      assert.equal(result[0].name, 'Test 1')
+      assert.equal(result[1].name, 'Test 2-updated')
+      assert.equal(result[2].name, 'Test 3')
+      assert.equal(result[1].image, 'image-path')
+    })
+
+    it('should not replace anything if the id does not match', () => {
+      mobbers.addMobber({name: 'Test', id: 'test-id'})
+      mobbers.updateMobber({name: 'Tester', id: 'other-id', image: 'image-path'})
+      let result = mobbers.getAll()
+      assert.equal(result.length, 1)
+      assert.equal(result[0].name, 'Test')
+      assert.equal(result[0].id, 'test-id')
+      assert.equal(result[0].image, undefined)
+    })
+  })
 })

@@ -236,6 +236,20 @@ describe('timer-state', () => {
     })
   })
 
+  describe('updateMobber', () => {
+    beforeEach(() => {
+      timerState.addMobber({id: 'a', name: 'A1'})
+      events = []
+      timerState.updateMobber({id: 'a', name: 'A2'})
+    })
+
+    it('should publish a configUpdated event', () => {
+      var event = assertEvent('configUpdated')
+      assert.equal(event.data.mobbers[0].name, 'A2')
+      assert.equal(event.data.secondsPerTurn, 600)
+    })
+  })
+
   describe('setSecondsPerTurn', () => {
     beforeEach(() => timerState.setSecondsPerTurn(300))
 

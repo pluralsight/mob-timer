@@ -38,6 +38,13 @@ class Mobbers {
       this.currentMobber = 0;
     }
   }
+
+  updateMobber(mobber) {
+    let index = this.mobbers.findIndex(m => m.id === mobber.id)
+    if (index >= 0) {
+      this.mobbers[index] = mobber
+    }
+  }
 }
 
 module.exports = Mobbers

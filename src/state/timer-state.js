@@ -103,6 +103,11 @@ class TimerState {
     this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
 
+  updateMobber(mobber) {
+    this.mobbers.updateMobber(mobber)
+    this.publishConfig()
+  }
+
   setSecondsPerTurn(value) {
     this.secondsPerTurn = value
     this.publishConfig()
