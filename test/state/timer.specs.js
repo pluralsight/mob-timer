@@ -12,7 +12,7 @@ describe('Timer', () => {
 
   beforeEach(() => {
     callbacks = []
-    timerOptions = { rateMilliseconds: 10, time: 50, countDown: true }
+    timerOptions = { rateMilliseconds: 20, time: 50, countDown: true }
     createTimer()
   })
 
@@ -61,7 +61,7 @@ describe('Timer', () => {
       setTimeout(() => {
         assert.equal(callbacks.join(','), '49,48')
         done()
-      }, 25)
+      }, 50)
     })
 
     it('should generate callbacks when counting up', (done) => {
@@ -72,18 +72,18 @@ describe('Timer', () => {
       setTimeout(() => {
         assert.equal(callbacks.join(','), '51,52')
         done()
-      }, 25)
+      }, 50)
     })
   })
 
   describe('pause', () => {
     it('should stop further callbacks from occuring', (done) => {
       timer.start()
-      setTimeout(() => timer.pause(), 25)
+      setTimeout(() => timer.pause(), 50)
       setTimeout(() => {
         assert.equal(callbacks.join(','), '49,48')
         done()
-      }, 50)
+      }, 60)
     })
   })
 
@@ -95,11 +95,11 @@ describe('Timer', () => {
 
     it('should set a new time value when the timer is running', (done) => {
       timer.start()
-      setTimeout(() => timer.reset(20), 25)
+      setTimeout(() => timer.reset(20), 50)
       setTimeout(() => {
         assert.equal(callbacks.join(','), '49,48,19,18')
         done()
-      }, 49)
+      }, 90)
     })
   })
 })
