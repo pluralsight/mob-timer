@@ -25,7 +25,10 @@ describe('timer-state', () => {
 
     it('should publish a timerChange event', () => {
       var event = assertEvent('timerChange')
-      assert.equal(event.data, 600)
+      assert.deepEqual(event.data, {
+        secondsRemaining: 600,
+        secondsPerTurn: 600
+      })
     })
 
     it('should publish a rotated event', () => {
@@ -43,7 +46,10 @@ describe('timer-state', () => {
 
     it('should publish a timerChange event', () => {
       var event = assertEvent('timerChange')
-      assert.equal(event.data, 600)
+      assert.deepEqual(event.data, {
+        secondsRemaining: 600,
+        secondsPerTurn: 600
+      })
     })
   })
 
@@ -65,7 +71,10 @@ describe('timer-state', () => {
     it('should publish a timerChange event when the timer calls back', () => {
       timerState.mainTimer.callback(599)
       var event = assertEvent('timerChange')
-      assert.equal(event.data, 599)
+      assert.deepEqual(event.data, {
+        secondsRemaining: 599,
+        secondsPerTurn: 600
+      })
     })
 
     it('should publish events when the time is up', () => {
@@ -127,7 +136,10 @@ describe('timer-state', () => {
 
     it('should publish a timerChange event', () => {
       var event = assertEvent('timerChange')
-      assert.equal(event.data, 600)
+      assert.deepEqual(event.data, {
+        secondsRemaining: 600,
+        secondsPerTurn: 600
+      })
     })
 
     it('should wrap around at the end of the list', () => {
@@ -260,7 +272,10 @@ describe('timer-state', () => {
 
     it('should publish a timerChange event', () => {
         var event = assertEvent('timerChange')
-        assert.equal(event.data, 300)
+        assert.deepEqual(event.data, {
+          secondsRemaining: 300,
+          secondsPerTurn: 300
+        })
     })
   })
 

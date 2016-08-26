@@ -22,8 +22,8 @@ function formatTime(totalSeconds) {
   return `${minutes}:${lpad(seconds)}`
 }
 
-ipc.on('timerChange', (event, seconds) => {
-  countEl.innerHTML = formatTime(seconds)
+ipc.on('timerChange', (event, data) => {
+  countEl.innerHTML = formatTime(data.secondsRemaining)
 })
 
 ipc.on('rotated', (event, data) => {
