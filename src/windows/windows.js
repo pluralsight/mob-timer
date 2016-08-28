@@ -5,10 +5,10 @@ let timerWindow, configWindow, fullscreenWindow
 exports.createTimerWindow = () => {
   let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   timerWindow = new electron.BrowserWindow({
-    x: width - 200,
-    y: height - 100,
-    width: 200,
-    height: 100,
+    x: width - 220,
+    y: height - 90,
+    width: 220,
+    height: 90,
     resizable: false,
     alwaysOnTop: true,
     frame: false

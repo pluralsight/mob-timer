@@ -5,50 +5,125 @@ body {
   -webkit-app-region: drag;
   user-select: none;
 }
+
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   height: 100vh;
 }
-.current {
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 90%;
-  text-align: center;
-}
-.count {
-  font-size: 18px;
-  font-weight: bold;
-}
-.controls {
-  display: flex;
-  margin-bottom: 5px;
-}
-.btn {
-  background: #f15b2a;
-  border-radius: 3px;
-  border: 0;
-  color: #fff;
-  padding: 3px 7px;
-  margin: 0 2px;
-  -webkit-app-region: no-drag;
+
+.button {
   cursor: pointer;
-  font-size: 12px;
+  -webkit-app-region: no-drag;
 }
-.next {
-  font-size: 14px;
+
+.pic {
+  border-radius: 50%;
+}
+
+.timerContainer {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.currentPic {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 76px;
+  height: 76px;
+}
+
+.timerCanvas {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+}
+
+.toggle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.overlay {
+  opacity: 0;
+}
+
+.overlay:hover {
+  opacity: .5;
+}
+
+.play {
+  background-image: url(../img/play.png);
+  background-size: 80px 80px;
+}
+
+.pause {
+  background-image: url(../img/pause.png);
+  background-size: 80px 80px;
+}
+
+.current {
+  position: absolute;
+  top: 25px;
+  left: 90px;
+  display: inline-block;
+  font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 90%;
-  text-align: center;
+  width: 120px;
 }
-.hidden {
-  display: none;
+
+.nextContainer {
+  position: absolute;
+  top: 50px;
+  left: 90px;
+  width: 100px;
+}
+
+.next {
+  position: absolute;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  border: 2px solid #EEEEEE;
+}
+
+.overlay.next {
+  background-image: url(../img/skip.png);
+  background-size: 25px 25px;
+}
+
+.nextContainer span {
+  position: absolute;
+  top: 10px;
+  left: 35px;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 90px;
+}
+
+.configure {
+  position: absolute;
+  display: block;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  background-image: url(../img/configure.png);
+  background-size: 20px 20px;
+  border: 0;
+  opacity: .5;
+}
+
+.configure:hover {
+  opacity: .7;
 }
 
 @keyframes pulse {
@@ -69,17 +144,8 @@ body {
   animation-iteration-count: infinite;
   color: #fff;
 }
-.isTurnEnded .btn {
-  background: #fff;
-  color: #333;
-}
 
 .isPaused {
   color: #999;
   background: #333;
-}
-
-.isPaused .btn {
-  color: #222;
-  background: #666;
 }

@@ -1,64 +1,97 @@
 const ipc = require('electron').ipcRenderer
 
 const containerEl = document.getElementById('container')
-const pauseBtn = document.getElementById('pause')
-const unpauseBtn = document.getElementById('unpause')
-const skipBtn = document.getElementById('skip')
-const startTurnBtn = document.getElementById('startTurn')
-const configureBtn = document.getElementById('configure')
+const toggleBtn = document.getElementById('toggleButton')
+const configureBtn = document.getElementById('configureButton')
 const currentEl = document.getElementById('current')
 const nextEl = document.getElementById('next')
-const countEl = document.getElementById('count')
+const currentPicEl = document.getElementById('currentPic')
+const nextPicEl = document.getElementById('nextPic')
+const nextBtn = document.getElementById('nextButton')
+const timerCanvas = document.getElementById('timerCanvas')
 
-function lpad(val) {
-  return val < 10
-    ? '0' + val
-    : '' + val
-}
+const context = timerCanvas.getContext('2d')
 
-function formatTime(totalSeconds) {
-  const seconds = totalSeconds % 60
-  const minutes = Math.floor(totalSeconds / 60)
-  return `${minutes}:${lpad(seconds)}`
-}
+let paused = true
 
 ipc.on('timerChange', (event, data) => {
-  countEl.innerHTML = formatTime(data.secondsRemaining)
+  clearCanvas()
+  drawTimerCircle()
+  drawTimerArc(data.secondsRemaining, data.secondsPerTurn)
 })
 
+function clearCanvas() {
+  context.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
+}
+
+function drawTimerCircle() {
+  const begin = 0
+  const end = 2 * Math.PI
+  drawArc(begin, end, "#EEEEEE")
+}
+
+function drawArc(begin, end, color) {
+  const circleCenterX = timerCanvas.width / 2
+  const circleCenterY = circleCenterX
+  const circleRadius = circleCenterX - 6
+  context.beginPath();
+  context.arc(circleCenterX, circleCenterY, circleRadius, begin, end);
+  context.strokeStyle = color;
+  context.lineWidth = 10;
+  context.stroke();
+}
+
+function drawTimerArc(seconds, maxSeconds) {
+  let percent = 1 - (seconds / maxSeconds);
+  if (percent == 0) {
+    return;
+  }
+  let begin = -(.5 * Math.PI);
+  let end = begin + (2 * Math.PI * percent);
+  drawArc(begin, end, "#f15b2a")
+}
+
 ipc.on('rotated', (event, data) => {
-  currentEl.innerHTML = data.current ? data.current.name : "Add a mobber"
+  if (!data.current) {
+    data.current = { name: "Add a mobber" }
+  }
+  currentPicEl.src = data.current.image || "../img/sad-cyclops.png"
+  currentEl.innerHTML = data.current.name
+
   if (!data.next) {
     data.next = data.current
   }
-  nextEl.innerHTML = data.next ? data.next.name : "Add a mobber"
+  nextPicEl.src = data.next.image || "../img/sad-cyclops.png"
+  nextEl.innerHTML = data.next.name
 })
 
 ipc.on('paused', _ => {
+  paused = true
   container.classList.add('isPaused')
-  pauseBtn.classList.add('hidden')
-  unpauseBtn.classList.remove('hidden')
+  toggleBtn.classList.add('play')
+  toggleBtn.classList.remove('pause')
 })
 
 ipc.on('started', _ => {
+  paused = false
   container.classList.remove('isPaused')
   containerEl.classList.remove('isTurnEnded')
-  pauseBtn.classList.remove('hidden')
-  unpauseBtn.classList.add('hidden')
-  startTurnBtn.classList.add('hidden')
+  toggleBtn.classList.remove('play')
+  toggleBtn.classList.add('pause')
 })
 
 ipc.on('turnEnded', (event, data) => {
+  paused = true
   container.classList.remove('isPaused')
   containerEl.classList.add('isTurnEnded')
-  unpauseBtn.classList.add('hidden')
-  startTurnBtn.classList.remove('hidden')
+  toggleBtn.classList.add('play')
+  toggleBtn.classList.remove('pause')
 })
 
-pauseBtn.addEventListener('click', _ => ipc.send('pause'))
-unpauseBtn.addEventListener('click', _ => ipc.send('unpause'))
-skipBtn.addEventListener('click', _ => ipc.send('skip'))
-startTurnBtn.addEventListener('click', _ => ipc.send('startTurn'))
+toggleBtn.addEventListener('click', _ => {
+  paused ? ipc.send('unpause') : ipc.send('pause')
+})
+nextBtn.addEventListener('click', _ => ipc.send('skip'))
 configureBtn.addEventListener('click', _ => ipc.send('configure'))
 
 ipc.send('timerWindowReady')
