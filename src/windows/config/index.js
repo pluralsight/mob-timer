@@ -1,4 +1,5 @@
 const ipc = require('electron').ipcRenderer
+const {dialog} = require('electron').remote
 
 const mobbersEl = document.getElementById('mobbers')
 const minutesEl = document.getElementById('minutes')
@@ -9,9 +10,14 @@ const fullscreenSecondsEl = document.getElementById('fullscreen-seconds')
 function createMobberEl(mobber) {
   const el = document.createElement('div')
   el.classList.add('mobber')
-  el.innerHTML = mobber.name
+
+  const imgEl = document.createElement('img')
+  imgEl.src = mobber.image || '../img/sad-cyclops.png'
+  imgEl.classList.add('image')
+  el.appendChild(imgEl)
 
   const nameEl = document.createElement('div')
+  nameEl.innerHTML = mobber.name
   nameEl.classList.add('name')
   el.appendChild(nameEl)
 
@@ -20,9 +26,25 @@ function createMobberEl(mobber) {
   rmBtn.innerHTML = 'Remove'
   el.appendChild(rmBtn)
 
+  imgEl.addEventListener('click', _ => selectImage(mobber))
   rmBtn.addEventListener('click', _ => ipc.send('removeMobber', mobber))
 
   return el
+}
+
+function selectImage(mobber) {
+  var image = dialog.showOpenDialog({
+    title: 'Select image',
+    filters: [
+      {name: 'Images', extensions: ['jpg', 'png', 'gif']}
+    ],
+    properties: ['openFile']
+  })
+
+  if (image) {
+    mobber.image = image[0]
+    ipc.send('updateMobber', mobber)
+  }
 }
 
 ipc.on('configUpdated', (event, data) => {

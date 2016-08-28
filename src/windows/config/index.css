@@ -23,6 +23,19 @@ input {
   align-items: center;
 }
 
+.mobber .image {
+  margin-right: 5px;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  border: 2px solid #EEEEEE;
+  cursor: pointer;
+}
+
+.mobber .image:hover {
+  border: 2px solid #f15b2a;
+}
+
 .mobber:nth-child(odd) {
   background-color: #dcdcdc;
 }
