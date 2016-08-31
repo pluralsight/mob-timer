@@ -44,6 +44,7 @@ ipc.on('removeMobber', (event, mobber) => timerState.removeMobber(mobber))
 ipc.on('updateMobber', (event, mobber) => timerState.updateMobber(mobber))
 ipc.on('setSecondsPerTurn', (event, secondsPerTurn) => timerState.setSecondsPerTurn(secondsPerTurn))
 ipc.on('setSecondsUntilFullscreen', (event, secondsUntilFullscreen) => timerState.setSecondsUntilFullscreen(secondsUntilFullscreen))
+ipc.on('setSnapThreshold', (event, threshold) => timerState.setSnapThreshold(threshold))
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {

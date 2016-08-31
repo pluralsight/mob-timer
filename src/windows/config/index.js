@@ -6,6 +6,7 @@ const minutesEl = document.getElementById('minutes')
 const addEl = document.getElementById('add')
 const addMobberForm = document.getElementById('addMobberForm')
 const fullscreenSecondsEl = document.getElementById('fullscreen-seconds')
+const snapToEdgesCheckbox = document.getElementById('snap-to-edges')
 
 function createMobberEl(mobber) {
   const el = document.createElement('div')
@@ -56,6 +57,7 @@ ipc.on('configUpdated', (event, data) => {
   })
   mobbersEl.appendChild(frag)
   fullscreenSecondsEl.value = data.secondsUntilFullscreen
+  snapToEdgesCheckbox.checked = data.snapThreshold > 0
 })
 
 minutesEl.addEventListener('change', _ => {
@@ -77,3 +79,7 @@ fullscreenSecondsEl.addEventListener('change', _ => {
 })
 
 ipc.send('configWindowReady')
+
+snapToEdgesCheckbox.addEventListener('change', _ => {
+  ipc.send('setSnapThreshold', snapToEdgesCheckbox.checked ? 25 : 0);
+})

@@ -1,6 +1,8 @@
 const electron = require('electron')
+const windowSnapper = require('./window-snapper')
 
 let timerWindow, configWindow, fullscreenWindow
+let snapThreshold
 
 exports.createTimerWindow = () => {
   let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -16,6 +18,34 @@ exports.createTimerWindow = () => {
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
   timerWindow.on('closed', _ => timerWindow = null)
+
+  let getCenter = bounds => {
+    return {
+      x: bounds.x + (bounds.width / 2),
+      y: bounds.y + (bounds.height / 2)
+    }
+  }
+
+  timerWindow.on('move', e => {
+    if (snapThreshold <= 0) {
+      return
+    }
+
+    let getCenter = bounds => {
+      return {
+        x: bounds.x + (bounds.width / 2),
+        y: bounds.y + (bounds.height / 2)
+      }
+    }
+
+    let windowBounds = timerWindow.getBounds()
+    let screenBounds = electron.screen.getDisplayNearestPoint(getCenter(windowBounds)).workArea
+
+    let snapTo = windowSnapper(windowBounds, screenBounds, snapThreshold)
+    if (snapTo.x != windowBounds.x || snapTo.y != windowBounds.y) {
+      timerWindow.setPosition(snapTo.x, snapTo.y)
+    }
+  })
 }
 
 exports.showConfigWindow = () => {
@@ -58,6 +88,10 @@ exports.closeFullscreenWindow = () => {
 }
 
 exports.dispatchEvent = (event, data) => {
+  if (event === 'configUpdated') {
+    snapThreshold = data.snapThreshold
+  }
+
   if (timerWindow) {
     timerWindow.webContents.send(event, data)
   }

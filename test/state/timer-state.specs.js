@@ -159,6 +159,7 @@ describe('timer-state', () => {
       assert.deepEqual(event.data.mobbers, [])
       assert.equal(event.data.secondsPerTurn, 600)
       assert.equal(event.data.secondsUntilFullscreen, 30)
+      assert.equal(event.data.snapThreshold, 25)
     })
 
     it('should contain the mobbers if there are some', () => {
@@ -288,6 +289,15 @@ describe('timer-state', () => {
     })
   })
 
+  describe('when setting snap threshold', () => {
+    beforeEach(() => timerState.setSnapThreshold(100))
+
+    it('should publish configUpdated event', () => {
+      var event = assertEvent('configUpdated')
+      assert.equal(event.data.snapThreshold, 100)
+    })
+  })
+
   describe('when getting state', () => {
     before(() => {
 
@@ -295,6 +305,7 @@ describe('timer-state', () => {
       timerState.addMobber(expectedJill)
       timerState.setSecondsPerTurn(expectedSecondsPerTurn)
       timerState.setSecondsUntilFullscreen(expectedSecondsUntilFullscreen)
+      timerState.setSnapThreshold(expectedSnapThreshold)
 
       result = timerState.getState()
     })
@@ -315,11 +326,16 @@ describe('timer-state', () => {
       assert.equal(result.secondsUntilFullscreen, expectedSecondsUntilFullscreen)
     })
 
+    it('should get the correct seconds until fullscreen', () => {
+      assert.equal(result.snapThreshold, expectedSnapThreshold)
+    })
+
     let result = {}
     let expectedJack = {name: 'jack'}
     let expectedJill = {name: 'jill'}
     let expectedSecondsPerTurn = 599
     let expectedSecondsUntilFullscreen = 3
+    let expectedSnapThreshold = 42
   })
 
   describe('when getting state and there are no mobbers', () => {
@@ -358,12 +374,23 @@ describe('timer-state', () => {
     let result = {}
   })
 
+  describe('when getting state and snapThreshold has not been set by user', () => {
+    before(() => {
+      result = timerState.getState()
+    })
+
+    it('should have a default that is greater than zero', () => assert(result.snapThreshold > 0))
+
+    let result = {}
+  })
+
   describe('when loading state', () => {
     before(() => {
       state = {
         mobbers: [jack, jill],
         secondsPerTurn: secondsPerTurn,
-        secondsUntilFullscreen: secondsUntilFullscreen
+        secondsUntilFullscreen: secondsUntilFullscreen,
+        snapThreshold: snapThreshold
       }
 
       timerState.loadState(state)
@@ -374,6 +401,7 @@ describe('timer-state', () => {
     it('should load mobbers', () => assert.deepEqual(state.mobbers, result.mobbers))
     it('should load secondsPerTurn', () => assert.equal(state.secondsPerTurn, result.secondsPerTurn))
     it('should load secondsUntilFullscreen', () => assert.equal(state.secondsUntilFullscreen, result.secondsUntilFullscreen))
+    it('should load snapThreshold', () => assert.equal(state.snapThreshold, result.snapThreshold))
 
     let result = {}
     let state = {}
@@ -381,6 +409,7 @@ describe('timer-state', () => {
     let jill = {name: 'jill'}
     let secondsPerTurn = 400
     let secondsUntilFullscreen = 0
+    let snapThreshold = 22
   })
 
   describe('when loading state with NO mobbers', () => {
@@ -435,6 +464,19 @@ describe('timer-state', () => {
     })
 
     it('should have a default that is greater than zero', () => assert(result.secondsUntilFullscreen > 0))
+
+    let result = {}
+    let state = {}
+  })
+
+  describe('when loading state with no snapThreshold', () => {
+    before(() => {
+      timerState.loadState(state)
+
+      result = timerState.getState()
+    })
+
+    it('should have a default that is greater than zero', () => assert(result.snapThreshold > 0))
 
     let result = {}
     let state = {}
