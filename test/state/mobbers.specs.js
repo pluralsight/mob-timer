@@ -73,6 +73,15 @@ describe('Mobbers', () => {
       assert.equal(result.current.name, 'Test 2')
       assert.equal(result.next.name, 'Test 3')
     })
+
+    it('should not include disabled mobbers', () => {
+      mobbers.addMobber({name: 'Test 1'})
+      mobbers.addMobber({name: 'Test 2', disabled: true})
+      mobbers.addMobber({name: 'Test 3'})
+      let result = mobbers.getCurrentAndNextMobbers()
+      assert.equal(result.current.name, 'Test 1')
+      assert.equal(result.next.name, 'Test 3')
+    })
   })
 
   describe('rotate', () => {
@@ -107,6 +116,19 @@ describe('Mobbers', () => {
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 2')
+    })
+
+    it('should skip disabled mobbers', () => {
+      mobbers.addMobber({name: 'Test 1', disabled: true})
+      mobbers.addMobber({name: 'Test 2'})
+      mobbers.addMobber({name: 'Test 3', disabled: true})
+      mobbers.addMobber({name: 'Test 4', disabled: true})
+      mobbers.addMobber({name: 'Test 5', disabled: false})
+      mobbers.rotate()
+      mobbers.rotate()
+      let result = mobbers.getCurrentAndNextMobbers()
+      assert.equal(result.current.name, 'Test 2')
+      assert.equal(result.next.name, 'Test 5')
     })
   })
 

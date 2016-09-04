@@ -17,19 +17,25 @@ class Mobbers {
     this.mobbers.push(mobber)
   }
 
+  getActiveMobbers() {
+    return this.mobbers.filter(m => !m.disabled)
+  }
+
   getCurrentAndNextMobbers() {
-    if (!this.mobbers.length) {
+    let active = this.getActiveMobbers()
+    if (!active.length) {
       return { current: null, next: null }
     }
 
     return {
-      current: this.mobbers[this.currentMobber],
-      next: this.mobbers[(this.currentMobber + 1) % this.mobbers.length]
+      current: active[this.currentMobber],
+      next: active[(this.currentMobber + 1) % active.length]
     }
   }
 
   rotate() {
-    this.currentMobber = this.mobbers.length ? (this.currentMobber + 1) % this.mobbers.length : 0
+    let active = this.getActiveMobbers()
+    this.currentMobber = active.length ? (this.currentMobber + 1) % active.length : 0
   }
 
   removeMobber(mobber) {

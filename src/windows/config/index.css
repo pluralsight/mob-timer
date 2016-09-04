@@ -40,9 +40,19 @@ input {
   background-color: #dcdcdc;
 }
 
-.mobber .rmBtn {
+.mobber .btn:first-of-type {
   display: block;
   margin-left: auto;
+}
+
+.mobber.disabled .image {
+  opacity: .3;
+}
+
+.mobber.disabled .name {
+  font-style: italic;
+  color: #999999;
+  text-decoration: line-through;
 }
 
 .addLabel {

@@ -11,6 +11,9 @@ const snapToEdgesCheckbox = document.getElementById('snap-to-edges')
 function createMobberEl(mobber) {
   const el = document.createElement('div')
   el.classList.add('mobber')
+  if (mobber.disabled) {
+    el.classList.add('disabled')
+  }
 
   const imgEl = document.createElement('img')
   imgEl.src = mobber.image || '../img/sad-cyclops.png'
@@ -22,12 +25,18 @@ function createMobberEl(mobber) {
   nameEl.classList.add('name')
   el.appendChild(nameEl)
 
+  const disableBtn = document.createElement('button')
+  disableBtn.classList.add('btn')
+  disableBtn.innerHTML = mobber.disabled ? 'Enable' : 'Disable'
+  el.appendChild(disableBtn)
+
   const rmBtn = document.createElement('button')
-  rmBtn.classList.add('btn', 'rmBtn')
+  rmBtn.classList.add('btn')
   rmBtn.innerHTML = 'Remove'
   el.appendChild(rmBtn)
 
   imgEl.addEventListener('click', _ => selectImage(mobber))
+  disableBtn.addEventListener('click', _ => toggleMobberDisabled(mobber))
   rmBtn.addEventListener('click', _ => ipc.send('removeMobber', mobber))
 
   return el
@@ -46,6 +55,11 @@ function selectImage(mobber) {
     mobber.image = image[0]
     ipc.send('updateMobber', mobber)
   }
+}
+
+function toggleMobberDisabled(mobber) {
+  mobber.disabled = !mobber.disabled
+  ipc.send('updateMobber', mobber)
 }
 
 ipc.on('configUpdated', (event, data) => {
