@@ -7,23 +7,6 @@ const currentEl = document.getElementById('current')
 const currentPicEl = document.getElementById('currentPic')
 const nextEl = document.getElementById('next')
 const nextPicEl = document.getElementById('nextPic')
-const countEl = document.getElementById('count')
-
-function lpad(val) {
-  return val < 10
-    ? '0' + val
-    : '' + val
-}
-
-function formatTime(totalSeconds) {
-  const seconds = totalSeconds % 60
-  const minutes = Math.floor(totalSeconds / 60)
-  return `${minutes}:${lpad(seconds)}`
-}
-
-ipc.on('timerChange', (event, data) => {
-  countEl.innerHTML = formatTime(data.secondsRemaining)
-})
 
 ipc.on('rotated', (event, data) => {
   if (!data.current) {
