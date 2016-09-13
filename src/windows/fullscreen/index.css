@@ -47,3 +47,17 @@ body {
   width: 90%;
   text-align: center;
 }
+.pic {
+  border-radius: 50%;
+  border: 2px solid #EEEEEE;
+}
+.current .pic {
+  width: 150px;
+  height: 150px;
+  border-width: 5px;
+}
+.next .pic {
+  width: 30px;
+  height: 30px;
+  vertical-align: bottom;
+}

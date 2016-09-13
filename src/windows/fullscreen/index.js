@@ -4,7 +4,9 @@ const skipBtn = document.getElementById('skip')
 const startTurnBtn = document.getElementById('startTurn')
 const configureBtn = document.getElementById('configure')
 const currentEl = document.getElementById('current')
+const currentPicEl = document.getElementById('currentPic')
 const nextEl = document.getElementById('next')
+const nextPicEl = document.getElementById('nextPic')
 const countEl = document.getElementById('count')
 
 function lpad(val) {
@@ -24,11 +26,17 @@ ipc.on('timerChange', (event, data) => {
 })
 
 ipc.on('rotated', (event, data) => {
-  currentEl.innerHTML = data.current ? data.current.name : "Add a mobber"
+  if (!data.current) {
+    data.current = {name: "Add a mobber"}
+  }
+  currentEl.innerHTML = data.current.name
+  currentPicEl.src = data.current.image || "../img/sad-cyclops.png"
+
   if (!data.next) {
     data.next = data.current
   }
-  nextEl.innerHTML = data.next ? data.next.name : "Add a mobber"
+  nextEl.innerHTML = data.next.name
+  nextPicEl.src = data.next.image || "../img/sad-cyclops.png"
 })
 
 ipc.on('configUpdated', (event, data) => {
