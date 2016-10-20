@@ -77,6 +77,27 @@ h1 {
   margin-top: 20px;
 }
 
+input[type="checkbox" i] {
+  position: relative;
+  vertical-align: middle;
+}
+
+.settings > div {
+  margin-bottom: 10px;
+}
+
 .fullscreen-seconds {
   width: 40px;
+}
+
+.replay-audio-seconds {
+  width: 40px;
+}
+
+#replayAudioContainer.disabled {
+  color: #999999;
+}
+
+.custom-sound {
+  width: 145px;
 }

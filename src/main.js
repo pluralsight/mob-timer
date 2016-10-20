@@ -45,6 +45,8 @@ ipc.on('updateMobber', (event, mobber) => timerState.updateMobber(mobber))
 ipc.on('setSecondsPerTurn', (event, secondsPerTurn) => timerState.setSecondsPerTurn(secondsPerTurn))
 ipc.on('setSecondsUntilFullscreen', (event, secondsUntilFullscreen) => timerState.setSecondsUntilFullscreen(secondsUntilFullscreen))
 ipc.on('setSnapThreshold', (event, threshold) => timerState.setSnapThreshold(threshold))
+ipc.on('setAlertSoundTimes', (event, alertSoundTimes) => timerState.setAlertSoundTimes(alertSoundTimes))
+ipc.on('setAlertSound', (event, alertSound) => timerState.setAlertSound(alertSound))
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {
