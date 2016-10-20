@@ -10,6 +10,7 @@ class TimerState {
     this.mobbers = new Mobbers()
     this.secondsUntilFullscreen = 30
     this.snapThreshold = 25
+    this.alertSound = null
 
     this.createTimers(options.Timer || Timer)
   }
@@ -81,12 +82,7 @@ class TimerState {
   }
 
   publishConfig() {
-    this.callback('configUpdated', {
-      mobbers: this.mobbers.getAll(),
-      secondsPerTurn: this.secondsPerTurn,
-      secondsUntilFullscreen: this.secondsUntilFullscreen,
-      snapThreshold: this.snapThreshold
-    })
+    this.callback('configUpdated', this.getState())
     this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
 
@@ -133,12 +129,18 @@ class TimerState {
     this.publishConfig()
   }
 
+  setAlertSound(soundFile) {
+    this.alertSound = soundFile
+    this.publishConfig()
+  }
+
   getState() {
     return {
       mobbers: this.mobbers.getAll(),
       secondsPerTurn: this.secondsPerTurn,
       secondsUntilFullscreen: this.secondsUntilFullscreen,
-      snapThreshold: this.snapThreshold
+      snapThreshold: this.snapThreshold,
+      alertSound: this.alertSound
     }
   }
 
@@ -154,6 +156,7 @@ class TimerState {
     if (typeof state.snapThreshold === 'number') {
       this.setSnapThreshold(state.snapThreshold)
     }
+    this.alertSound = state.alertSound || null
   }
 }
 
