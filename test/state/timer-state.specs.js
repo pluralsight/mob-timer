@@ -161,6 +161,7 @@ describe('timer-state', () => {
       assert.equal(event.data.secondsUntilFullscreen, 30)
       assert.equal(event.data.snapThreshold, 25)
       assert.equal(event.data.alertSound, null)
+      assert.deepEqual(event.data.alertSoundTimes, [])
     })
 
     it('should contain the mobbers if there are some', () => {
@@ -308,6 +309,15 @@ describe('timer-state', () => {
     })
   })
 
+  describe('when setting the alert sound times', () => {
+    beforeEach(() => timerState.setAlertSoundTimes([1, 2, 3]))
+
+    it('should publish a configUpdated event', () => {
+      var event = assertEvent('configUpdated')
+      assert.deepEqual(event.data.alertSoundTimes, [1, 2, 3])
+    })
+  })
+
   describe('getState', () => {
     describe('when getting non-default state', () => {
       before(() => {
@@ -318,6 +328,7 @@ describe('timer-state', () => {
         timerState.setSecondsUntilFullscreen(expectedSecondsUntilFullscreen)
         timerState.setSnapThreshold(expectedSnapThreshold)
         timerState.setAlertSound(expectedAlertSound)
+        timerState.setAlertSoundTimes(expectedAlertSoundTimes)
 
         result = timerState.getState()
       })
@@ -346,6 +357,10 @@ describe('timer-state', () => {
         assert.equal(result.alertSound, expectedAlertSound)
       })
 
+      it('should get the correct alert sound times', () => {
+        assert.equal(result.alertSoundTimes, expectedAlertSoundTimes)
+      })
+
       let result = {}
       let expectedJack = {name: 'jack'}
       let expectedJill = {name: 'jill'}
@@ -353,6 +368,7 @@ describe('timer-state', () => {
       let expectedSecondsUntilFullscreen = 3
       let expectedSnapThreshold = 42
       let expectedAlertSound = 'alert.mp3'
+      let expectedAlertSoundTimes = [0, 15]
     })
 
     describe('when getting default state', () => {
@@ -362,6 +378,7 @@ describe('timer-state', () => {
       it('should have a default secondsPerTurn greater than zero', () => assert(result.secondsPerTurn > 0))
       it('should have a default snapThreshold greater than zero', () => assert(result.snapThreshold > 0))
       it('should have a null alert sound', () => assert(result.alertSound === null))
+      it('should have an empty array of alert sound times', () => assert.deepEqual(result.alertSoundTimes, []))
 
       let result = {}
     })
@@ -393,7 +410,8 @@ describe('timer-state', () => {
           secondsPerTurn: 400,
           secondsUntilFullscreen: 0,
           snapThreshold: 22,
-          alertSound: 'bell.mp3'
+          alertSound: 'bell.mp3',
+          alertSoundTimes: [2, 3, 5, 8]
         }
 
         timerState.loadState(state)
@@ -406,6 +424,7 @@ describe('timer-state', () => {
       it('should load secondsUntilFullscreen', () => assert.equal(result.secondsUntilFullscreen, state.secondsUntilFullscreen))
       it('should load snapThreshold', () => assert.equal(result.snapThreshold, state.snapThreshold))
       it('should load alertSound', () => assert.equal(result.alertSound, state.alertSound))
+      it('should load alertSoundTimes', () => assert.deepEqual(result.alertSoundTimes, [2, 3, 5, 8]))
 
       let result = {}
       let state = {}
@@ -423,6 +442,7 @@ describe('timer-state', () => {
       it('should have a default secondsUntilFullscreen greater than zero', () => assert(result.secondsUntilFullscreen > 0))
       it('should have a default snapThreshold greater than zero', () => assert(result.snapThreshold > 0))
       it('should have a null alertSound', () => assert.strictEqual(result.alertSound, null))
+      it('should have an empty array of alertSoundTimes', () => assert.deepEqual(result.alertSoundTimes, []))
 
       let result = {}
     })
