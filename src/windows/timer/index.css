@@ -149,3 +149,7 @@ body {
   color: #999;
   background: #333;
 }
+
+audio {
+  display: none;
+}

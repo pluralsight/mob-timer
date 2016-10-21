@@ -9,10 +9,12 @@ const currentPicEl = document.getElementById('currentPic')
 const nextPicEl = document.getElementById('nextPic')
 const nextBtn = document.getElementById('nextButton')
 const timerCanvas = document.getElementById('timerCanvas')
+const alertAudio = document.getElementById('alertAudio')
 
 const context = timerCanvas.getContext('2d')
 
 let paused = true
+let alertSoundTimes = []
 
 ipc.on('timerChange', (event, data) => {
   clearCanvas()
@@ -86,6 +88,22 @@ ipc.on('turnEnded', (event, data) => {
   containerEl.classList.add('isTurnEnded')
   toggleBtn.classList.add('play')
   toggleBtn.classList.remove('pause')
+})
+
+ipc.on('configUpdated', (event, data) => {
+  alertSoundTimes = data.alertSoundTimes
+  alertAudio.src = data.alertSound || './default.mp3'
+})
+
+ipc.on('alert', (event, data) => {
+  if (alertSoundTimes.some(item => item === data)) {
+    alertAudio.currentTime = 0
+    alertAudio.play()
+  }
+})
+
+ipc.on('stopAlerts', _ => {
+  alertAudio.pause()
 })
 
 toggleBtn.addEventListener('click', _ => {
