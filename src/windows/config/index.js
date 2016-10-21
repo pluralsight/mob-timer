@@ -147,7 +147,7 @@ function updateAlertControls() {
 }
 
 useCustomSoundCheckbox.addEventListener('change', _ => {
-  let mp3 = ''
+  let mp3 = null
 
   if (useCustomSoundCheckbox.checked) {
     selectedMp3 = dialog.showOpenDialog({
