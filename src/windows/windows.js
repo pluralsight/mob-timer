@@ -2,7 +2,7 @@ const electron = require('electron')
 const windowSnapper = require('./window-snapper')
 
 let timerWindow, configWindow, fullscreenWindow
-let snapThreshold
+let snapThreshold, secondsUntilFullscreen
 
 exports.createTimerWindow = () => {
   let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
@@ -89,7 +89,13 @@ exports.closeFullscreenWindow = () => {
 
 exports.dispatchEvent = (event, data) => {
   if (event === 'configUpdated') {
-    snapThreshold = data.snapThreshold
+    exports.setConfigState(data)
+  }
+  if (event === 'alert' && data == secondsUntilFullscreen) {
+    exports.createFullscreenWindow()
+  }
+  if (event === 'stopAlerts') {
+    exports.closeFullscreenWindow()
   }
 
   if (timerWindow) {
@@ -101,4 +107,9 @@ exports.dispatchEvent = (event, data) => {
   if (fullscreenWindow) {
     fullscreenWindow.webContents.send(event, data)
   }
+}
+
+exports.setConfigState = data => {
+  snapThreshold = data.snapThreshold
+  secondsUntilFullscreen = data.secondsUntilFullscreen
 }

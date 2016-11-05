@@ -9,20 +9,15 @@ let readState = require('./state/read-state')
 let timerState = new TimerState()
 
 app.on('ready', () => {
-  windows.createTimerWindow()
   timerState.setCallback(onTimerEvent)
   timerState.loadState(readState.read())
+  windows.setConfigState(timerState.getState())
+  windows.createTimerWindow()
 })
 
 function onTimerEvent(event, data) {
   windows.dispatchEvent(event, data)
-  if (event === 'alert' && data == timerState.secondsUntilFullscreen) {
-    windows.createFullscreenWindow()
-  }
-  if (event === 'stopAlerts') {
-    windows.closeFullscreenWindow()
-  }
-  if(event === 'configUpdated') {
+  if (event === 'configUpdated') {
     writeState.write(timerState.getState())
   }
 }
