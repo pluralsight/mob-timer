@@ -50,7 +50,5 @@ app.on('window-all-closed', function () {
 })
 
 app.on('activate', function () {
-  if (timerWindow === null) {
-    windows.createTimerWindow()
-  }
+  windows.createTimerWindow()
 })
