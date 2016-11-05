@@ -5,6 +5,10 @@ let timerWindow, configWindow, fullscreenWindow
 let snapThreshold, secondsUntilFullscreen
 
 exports.createTimerWindow = () => {
+  if (timerWindow) {
+    return
+  }
+
   let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   timerWindow = new electron.BrowserWindow({
     x: width - 220,
@@ -57,6 +61,10 @@ exports.showConfigWindow = () => {
 }
 
 exports.createConfigWindow = () => {
+  if (configWindow) {
+    return
+  }
+
   configWindow = new electron.BrowserWindow({
     width: 400,
     height: 500,
@@ -68,6 +76,10 @@ exports.createConfigWindow = () => {
 }
 
 exports.createFullscreenWindow = () => {
+  if (fullscreenWindow) {
+    return
+  }
+
   let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
   fullscreenWindow = new electron.BrowserWindow({
     width,
