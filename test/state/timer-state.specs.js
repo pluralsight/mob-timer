@@ -39,6 +39,10 @@ describe('timer-state', () => {
     it('should publish a turnEnded event', () => {
       assertEvent('turnEnded')
     })
+
+    it('should publish a configUpdated event', () => {
+      assertEvent('configUpdated')
+    })
   })
 
   describe('reset', () => {
