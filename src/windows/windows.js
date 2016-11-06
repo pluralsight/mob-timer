@@ -66,7 +66,7 @@ exports.createConfigWindow = () => {
   }
 
   configWindow = new electron.BrowserWindow({
-    width: 400,
+    width: 420,
     height: 500,
     autoHideMenuBar: true
   });
