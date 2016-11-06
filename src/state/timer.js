@@ -9,7 +9,7 @@ class Timer {
   start() {
     if (!this.interval) {
       this.interval = setInterval(() => {
-        this.time += this.change;
+        this.time += this.change
         this.callback(this.time)
       }, this.rateMilliseconds)
     }

@@ -23,7 +23,7 @@ ipc.on('timerChange', (event, data) => {
 })
 
 function clearCanvas() {
-  context.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
+  context.clearRect(0, 0, timerCanvas.width, timerCanvas.height)
 }
 
 function drawTimerCircle() {
@@ -36,20 +36,20 @@ function drawArc(begin, end, color) {
   const circleCenterX = timerCanvas.width / 2
   const circleCenterY = circleCenterX
   const circleRadius = circleCenterX - 6
-  context.beginPath();
-  context.arc(circleCenterX, circleCenterY, circleRadius, begin, end);
-  context.strokeStyle = color;
-  context.lineWidth = 10;
-  context.stroke();
+  context.beginPath()
+  context.arc(circleCenterX, circleCenterY, circleRadius, begin, end)
+  context.strokeStyle = color
+  context.lineWidth = 10
+  context.stroke()
 }
 
 function drawTimerArc(seconds, maxSeconds) {
-  let percent = 1 - (seconds / maxSeconds);
+  let percent = 1 - (seconds / maxSeconds)
   if (percent == 0) {
-    return;
+    return
   }
-  let begin = -(.5 * Math.PI);
-  let end = begin + (2 * Math.PI * percent);
+  let begin = -(.5 * Math.PI)
+  let end = begin + (2 * Math.PI * percent)
   drawArc(begin, end, "#f15b2a")
 }
 

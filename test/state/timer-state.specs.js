@@ -7,7 +7,7 @@ describe('timer-state', () => {
   let events
 
   let assertEvent = (eventName) => {
-    var event = events.find(x => x.event == eventName);
+    var event = events.find(x => x.event == eventName)
     assert(event, eventName + ' event not found')
     return event
   }
@@ -115,10 +115,10 @@ describe('timer-state', () => {
     })
 
     it('should stop the mainTimer', () => {
-      timerState.start();
+      timerState.start()
       assert.equal(timerState.mainTimer.isRunning, true)
 
-      timerState.pause();
+      timerState.pause()
       assert.equal(timerState.mainTimer.isRunning, false)
     })
   })
@@ -226,7 +226,7 @@ describe('timer-state', () => {
     })
 
     it('should NOT publish a turnEnded event if the removed user was NOT current', () => {
-      var event = events.find(x => x.event == 'turnEnded');
+      var event = events.find(x => x.event == 'turnEnded')
       assert.equal(event, null)
     })
 
@@ -250,8 +250,8 @@ describe('timer-state', () => {
       events = []
       timerState.removeMobber({name: 'C', id: 'c'})
       var event = assertEvent('rotated')
-      assert.equal(event.data.current.name, 'A');
-      assert.equal(event.data.next.name, 'A');
+      assert.equal(event.data.current.name, 'A')
+      assert.equal(event.data.next.name, 'A')
     })
   })
 

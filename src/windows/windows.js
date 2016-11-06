@@ -9,7 +9,7 @@ exports.createTimerWindow = () => {
     return
   }
 
-  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
   timerWindow = new electron.BrowserWindow({
     x: width - 220,
     y: height - 90,
@@ -18,7 +18,7 @@ exports.createTimerWindow = () => {
     resizable: false,
     alwaysOnTop: true,
     frame: false
-  });
+  })
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
   timerWindow.on('closed', _ => timerWindow = null)
@@ -54,10 +54,10 @@ exports.createTimerWindow = () => {
 
 exports.showConfigWindow = () => {
   if (configWindow) {
-    configWindow.show();
-    return;
+    configWindow.show()
+    return
   }
-  exports.createConfigWindow();
+  exports.createConfigWindow()
 }
 
 exports.createConfigWindow = () => {
@@ -69,7 +69,7 @@ exports.createConfigWindow = () => {
     width: 420,
     height: 500,
     autoHideMenuBar: true
-  });
+  })
 
   configWindow.loadURL(`file://${__dirname}/config/index.html`)
   configWindow.on('closed', _ => configWindow = null)
@@ -80,14 +80,14 @@ exports.createFullscreenWindow = () => {
     return
   }
 
-  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
+  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
   fullscreenWindow = new electron.BrowserWindow({
     width,
     height,
     resizable: false,
     alwaysOnTop: true,
     frame: false
-  });
+  })
 
   fullscreenWindow.loadURL(`file://${__dirname}/fullscreen/index.html`)
   fullscreenWindow.on('closed', _ => fullscreenWindow = null)

@@ -110,7 +110,7 @@ fullscreenSecondsEl.addEventListener('change', _ => {
 ipc.send('configWindowReady')
 
 snapToEdgesCheckbox.addEventListener('change', _ => {
-  ipc.send('setSnapThreshold', snapToEdgesCheckbox.checked ? 25 : 0);
+  ipc.send('setSnapThreshold', snapToEdgesCheckbox.checked ? 25 : 0)
 })
 
 alertAudioCheckbox.addEventListener('change', _ => updateAlertTimes())

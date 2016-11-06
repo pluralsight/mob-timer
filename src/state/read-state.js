@@ -17,8 +17,8 @@ function fileExists(filePath) {
     try {
         fs.accessSync(filePath, fs.R_OK)    
     } catch (error) {
-        return false;
+        return false
     }
     
-    return true;
+    return true
 }
