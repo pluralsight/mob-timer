@@ -46,9 +46,15 @@ class Mobbers {
   }
 
   updateMobber(mobber) {
+    let currentMobber = this.getActiveMobbers()[this.currentMobber]
     let index = this.mobbers.findIndex(m => m.id === mobber.id)
     if (index >= 0) {
       this.mobbers[index] = mobber
+      let active = this.getActiveMobbers()
+      if (currentMobber && currentMobber.id != mobber.id) {
+        this.currentMobber = active.findIndex(m => m.id == currentMobber.id)
+      }
+      this.currentMobber = active.length ? this.currentMobber % active.length : 0
     }
   }
 }
