@@ -8,9 +8,9 @@ Run `npm install` to get the dependencies, then `npm start` to run the timer.
 Run `npm test` to start the unit tests, or `npm run integration_test` to run integration tests.
 
 # Build
-Run `npm run build` to create the app.
+Run `npm run build-win` or `npm run build-mac` to create the app for Windows or Mac OS X respectively.
 Platform specific packages will be placed in the `dist` directory.
-If you need a platform other than Mac or Windows, modify the build script in the `package.json` file.
+If you need a platform other than Mac or Windows, you will need to modify the build script in the `package.json` file.
 
 # Motivation
 Pluralsight has a development team that does mob programming full-time,

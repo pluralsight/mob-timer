@@ -5,7 +5,8 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . --platform=win32,darwin --arch=x64 --out=dist --icon=icon --overwrite",
+    "build-win": "electron-packager . --platform=win32 --arch=x64 --out=dist --icon=icon --overwrite",
+    "build-mac": "electron-packager . --platform=darwin --arch=x64 --out=dist --icon=icon --overwrite",
     "test": "mocha -w --use_strict --recursive",
     "integration_test": "mocha --use_strict --recursive ./integration_test"
   },
