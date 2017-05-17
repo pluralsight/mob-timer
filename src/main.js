@@ -42,6 +42,7 @@ ipc.on('setSecondsUntilFullscreen', (event, secondsUntilFullscreen) => timerStat
 ipc.on('setSnapThreshold', (event, threshold) => timerState.setSnapThreshold(threshold))
 ipc.on('setAlertSoundTimes', (event, alertSoundTimes) => timerState.setAlertSoundTimes(alertSoundTimes))
 ipc.on('setAlertSound', (event, alertSound) => timerState.setAlertSound(alertSound))
+ipc.on('setTimerAlwaysOnTop', (event, value) => timerState.setTimerAlwaysOnTop(value))
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') {

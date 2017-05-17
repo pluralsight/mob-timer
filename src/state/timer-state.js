@@ -12,6 +12,7 @@ class TimerState {
     this.snapThreshold = 25
     this.alertSound = null
     this.alertSoundTimes = []
+    this.timerAlwaysOnTop = true
 
     this.createTimers(options.Timer || Timer)
   }
@@ -141,6 +142,11 @@ class TimerState {
     this.publishConfig()
   }
 
+  setTimerAlwaysOnTop(value) {
+    this.timerAlwaysOnTop = value
+    this.publishConfig()
+  }
+
   getState() {
     return {
       mobbers: this.mobbers.getAll(),
@@ -148,7 +154,8 @@ class TimerState {
       secondsUntilFullscreen: this.secondsUntilFullscreen,
       snapThreshold: this.snapThreshold,
       alertSound: this.alertSound,
-      alertSoundTimes: this.alertSoundTimes
+      alertSoundTimes: this.alertSoundTimes,
+      timerAlwaysOnTop: this.timerAlwaysOnTop
     }
   }
 
@@ -166,6 +173,9 @@ class TimerState {
     }
     this.alertSound = state.alertSound || null
     this.alertSoundTimes = state.alertSoundTimes || []
+    if (typeof state.timerAlwaysOnTop === 'boolean') {
+      this.timerAlwaysOnTop = state.timerAlwaysOnTop
+    }
   }
 }
 

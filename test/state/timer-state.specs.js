@@ -322,6 +322,15 @@ describe('timer-state', () => {
     })
   })
 
+  describe('when setting the timer always on top', () => {
+    beforeEach(() => timerState.setTimerAlwaysOnTop(false))
+
+    it('should publish a configUpdated event', () => {
+      var event = assertEvent('configUpdated')
+      assert.deepEqual(event.data.timerAlwaysOnTop, false)
+    })
+  })
+
   describe('getState', () => {
     describe('when getting non-default state', () => {
       before(() => {
@@ -333,6 +342,7 @@ describe('timer-state', () => {
         timerState.setSnapThreshold(expectedSnapThreshold)
         timerState.setAlertSound(expectedAlertSound)
         timerState.setAlertSoundTimes(expectedAlertSoundTimes)
+        timerState.setTimerAlwaysOnTop(expectedTimerAlwaysOnTop)
 
         result = timerState.getState()
       })
@@ -365,6 +375,10 @@ describe('timer-state', () => {
         assert.equal(result.alertSoundTimes, expectedAlertSoundTimes)
       })
 
+      it('should get the correct timer always on top', () => {
+        assert.equal(result.timerAlwaysOnTop, expectedTimerAlwaysOnTop)
+      })
+
       let result = {}
       let expectedJack = {name: 'jack'}
       let expectedJill = {name: 'jill'}
@@ -373,6 +387,7 @@ describe('timer-state', () => {
       let expectedSnapThreshold = 42
       let expectedAlertSound = 'alert.mp3'
       let expectedAlertSoundTimes = [0, 15]
+      let expectedTimerAlwaysOnTop = false
     })
 
     describe('when getting default state', () => {
@@ -383,6 +398,7 @@ describe('timer-state', () => {
       it('should have a default snapThreshold greater than zero', () => assert(result.snapThreshold > 0))
       it('should have a null alert sound', () => assert(result.alertSound === null))
       it('should have an empty array of alert sound times', () => assert.deepEqual(result.alertSoundTimes, []))
+      it('should have a default timerAlwaysOnTop', () => assert.deepEqual(result.timerAlwaysOnTop, true))
 
       let result = {}
     })
@@ -415,7 +431,8 @@ describe('timer-state', () => {
           secondsUntilFullscreen: 0,
           snapThreshold: 22,
           alertSound: 'bell.mp3',
-          alertSoundTimes: [2, 3, 5, 8]
+          alertSoundTimes: [2, 3, 5, 8],
+          timerAlwaysOnTop: false
         }
 
         timerState.loadState(state)
@@ -429,6 +446,7 @@ describe('timer-state', () => {
       it('should load snapThreshold', () => assert.equal(result.snapThreshold, state.snapThreshold))
       it('should load alertSound', () => assert.equal(result.alertSound, state.alertSound))
       it('should load alertSoundTimes', () => assert.deepEqual(result.alertSoundTimes, [2, 3, 5, 8]))
+      it('should load timerAlwaysOnTop', () => assert.equal(result.timerAlwaysOnTop, state.timerAlwaysOnTop))
 
       let result = {}
       let state = {}
@@ -447,6 +465,7 @@ describe('timer-state', () => {
       it('should have a default snapThreshold greater than zero', () => assert(result.snapThreshold > 0))
       it('should have a null alertSound', () => assert.strictEqual(result.alertSound, null))
       it('should have an empty array of alertSoundTimes', () => assert.deepEqual(result.alertSoundTimes, []))
+      it('should have a default timerAlwaysOnTop', () => assert.equal(result.timerAlwaysOnTop, true))
 
       let result = {}
     })

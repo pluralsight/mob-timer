@@ -2,7 +2,7 @@ const electron = require('electron')
 const windowSnapper = require('./window-snapper')
 
 let timerWindow, configWindow, fullscreenWindow
-let snapThreshold, secondsUntilFullscreen
+let snapThreshold, secondsUntilFullscreen, timerAlwaysOnTop
 
 exports.createTimerWindow = () => {
   if (timerWindow) {
@@ -16,7 +16,7 @@ exports.createTimerWindow = () => {
     width: 220,
     height: 90,
     resizable: false,
-    alwaysOnTop: true,
+    alwaysOnTop: timerAlwaysOnTop,
     frame: false
   })
 
@@ -122,6 +122,14 @@ exports.dispatchEvent = (event, data) => {
 }
 
 exports.setConfigState = data => {
+  var needToRecreateTimerWindow = timerAlwaysOnTop != data.timerAlwaysOnTop
+
   snapThreshold = data.snapThreshold
   secondsUntilFullscreen = data.secondsUntilFullscreen
+  timerAlwaysOnTop = data.timerAlwaysOnTop
+
+  if (needToRecreateTimerWindow && timerWindow) {
+    timerWindow.close()
+    exports.createTimerWindow()
+  }
 }

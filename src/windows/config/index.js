@@ -13,6 +13,7 @@ const replayAlertAudioCheckbox = document.getElementById('replayAlertAudio')
 const replayAudioAfterSeconds = document.getElementById('replayAudioAfterSeconds')
 const useCustomSoundCheckbox = document.getElementById('useCustomSound')
 const customSoundEl = document.getElementById('customSound')
+const timerAlwaysOnTopCheckbox = document.getElementById('timerAlwaysOnTop')
 
 
 function createMobberEl(mobber) {
@@ -87,6 +88,8 @@ ipc.on('configUpdated', (event, data) => {
 
   useCustomSoundCheckbox.checked = !!data.alertSound
   customSoundEl.value = data.alertSound
+
+  timerAlwaysOnTopCheckbox.checked = data.timerAlwaysOnTop
 })
 
 minutesEl.addEventListener('change', _ => {
@@ -166,4 +169,8 @@ useCustomSoundCheckbox.addEventListener('change', _ => {
   }
 
   ipc.send('setAlertSound', mp3)
+})
+
+timerAlwaysOnTopCheckbox.addEventListener('change', _ => {
+  ipc.send('setTimerAlwaysOnTop', timerAlwaysOnTopCheckbox.checked)
 })
