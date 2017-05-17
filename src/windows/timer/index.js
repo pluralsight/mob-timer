@@ -1,3 +1,5 @@
+const theme = require('../theme.js')
+
 const ipc = require('electron').ipcRenderer
 
 const containerEl = document.getElementById('container')
@@ -50,7 +52,7 @@ function drawTimerArc(seconds, maxSeconds) {
   }
   let begin = -(.5 * Math.PI)
   let end = begin + (2 * Math.PI * percent)
-  drawArc(begin, end, "#f15b2a")
+  drawArc(begin, end, theme.mobberBorderHighlightColor)
 }
 
 ipc.on('rotated', (event, data) => {

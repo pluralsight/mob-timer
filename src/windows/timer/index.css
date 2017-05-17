@@ -1,9 +1,13 @@
+@import url('../theme.css');
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   -webkit-app-region: drag;
   user-select: none;
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
 }
 
 .container {
@@ -88,7 +92,7 @@ body {
   border-radius: 50%;
   width: 25px;
   height: 25px;
-  border: 2px solid #EEEEEE;
+  border: 2px solid var(--mobber-border-color);
 }
 
 .overlay.next {
@@ -128,13 +132,13 @@ body {
 
 @keyframes pulse {
   0% {
-    background: #f15b2a;
+    background: var(--timer-pulse-color-1);
   }
   50% {
-    background: #ec008c;
+    background: var(--timer-pulse-color-2);
   }
   100% {
-    background: #f15b2a;
+    background: var(--timer-pulse-color-1);
   }
 }
 
@@ -142,12 +146,12 @@ body {
   animation-duration: 1s;
   animation-name: pulse;
   animation-iteration-count: infinite;
-  color: #fff;
+  color: var(--timer-pulse-text-color);
 }
 
 .isPaused {
-  color: #999;
-  background: #333;
+  color: var(--timer-paused-text-color);
+  background: var(--timer-paused-background-color);
 }
 
 audio {

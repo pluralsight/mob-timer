@@ -1,8 +1,12 @@
+@import url('../theme.css');
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   user-select: none;
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
 }
 .container {
   display: flex;
@@ -25,10 +29,10 @@ body {
   margin-bottom: 15px;
 }
 .btn {
-  background: #f15b2a;
+  background: var(--button-background-color);
   border-radius: 3px;
   border: 0;
-  color: #fff;
+  color: var(--button-text-color);
   padding: 10px 20px;
   margin: 0 5px;
   cursor: pointer;
@@ -44,7 +48,7 @@ body {
 }
 .pic {
   border-radius: 50%;
-  border: 2px solid #EEEEEE;
+  border: 2px solid var(--mobber-border-color);
 }
 .current .pic {
   width: 150px;

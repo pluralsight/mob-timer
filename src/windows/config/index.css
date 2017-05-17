@@ -1,8 +1,11 @@
+@import url('../theme.css');
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
 }
 
 input {
@@ -28,16 +31,16 @@ input {
   height: 24px;
   width: 24px;
   border-radius: 50%;
-  border: 2px solid #EEEEEE;
+  border: 2px solid var(--mobber-border-color);
   cursor: pointer;
 }
 
 .mobber .image:hover {
-  border: 2px solid #f15b2a;
+  border: 2px solid var(--mobber-border-highlight-color);
 }
 
 .mobber:nth-child(odd) {
-  background-color: #dcdcdc;
+  background-color: var(--table-stripe-color);
 }
 
 .mobber .btn:first-of-type {
@@ -51,7 +54,7 @@ input {
 
 .mobber.disabled .name {
   font-style: italic;
-  color: #999999;
+  color: var(--disabled-text-color);
   text-decoration: line-through;
 }
 
@@ -62,18 +65,18 @@ input {
 }
 
 .btn {
-  background-color: #f15b2a;
+  background-color: var(--button-background-color);
   border: 0;
   border-radius: 3px;
   padding: 7px 10px;
-  color: #fff;
+  color: var(--button-text-color);
   margin-left: 5px;
   cursor: pointer;
 }
 
 h1 {
   font-size: 18px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--main-text-color);
   margin-top: 20px;
 }
 
@@ -95,7 +98,7 @@ input[type="checkbox" i] {
 }
 
 #replayAudioContainer.disabled {
-  color: #999999;
+  color: var(--disabled-text-color);
 }
 
 .custom-sound {
