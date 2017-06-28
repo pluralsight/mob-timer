@@ -17,7 +17,8 @@ exports.createTimerWindow = () => {
     height: 90,
     resizable: false,
     alwaysOnTop: timerAlwaysOnTop,
-    frame: false
+    frame: false,
+    icon: __dirname + '/../../src/windows/img/icon.png'
   })
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
