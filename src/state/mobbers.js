@@ -1,4 +1,4 @@
-const newGuid = require('node-uuid').v4
+const newGuid = require('uuid/v4')
 
 class Mobbers {
   constructor() {
