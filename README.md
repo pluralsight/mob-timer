@@ -2,19 +2,27 @@
 A cross-platform timer built on [Electron](http://electron.atom.io/)
 for doing [Mob Programming](http://mobprogramming.org/)
 
+![Example Timer Image](timer-example.png)
 
-# Development
-Run `npm install` to get the dependencies, then `npm start` to run the timer.
-Run `npm test` to start the unit tests, or `npm run integration_test` to run integration tests.
+Click the gear icon in the top right to configure the timer.
+Then click the large circle to start/stop the timer,
+or the smaller circle to skip to the next mobber.
 
-# Build
-Run these commands to create the app for your respective system:
+
+# Build the timer
+Run `npm install` and then one of the following commands for your respective operating system:
 - Windows: `npm run build-win`
 - Mac OS X: `npm run build-mac`
 - Linux: `npm run build-linux` (You may need to install `libcanberra-gtk-module`)
 
 Platform specific packages will be placed in the `dist` directory.
 If you need a platform other than these, you will need to modify the build script in the `package.json` file.
+
+
+# Development
+Run `npm install` to get the dependencies, then `npm start` to run the timer.
+Run `npm test` to start the unit tests, or `npm run integration_test` to run integration tests.
+
 
 # Motivation
 Pluralsight has a development team that does mob programming full-time,
