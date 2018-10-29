@@ -6,7 +6,7 @@ describe('timer-state', () => {
   let timerState
   let events
 
-  let assertEvent = (eventName) => {
+  let assertEvent = eventName => {
     var event = events.find(x => x.event == eventName)
     assert(event, eventName + ' event not found')
     return event
@@ -14,7 +14,7 @@ describe('timer-state', () => {
 
   beforeEach(() => {
     events = []
-    timerState = new TimerState({ Timer: TestTimer })
+    timerState = new TimerState({Timer: TestTimer})
     timerState.setCallback((event, data) => {
       events.push({event, data})
     })
@@ -33,7 +33,7 @@ describe('timer-state', () => {
 
     it('should publish a rotated event', () => {
       var event = assertEvent('rotated')
-      assert.deepEqual(event.data, { current: null, next: null })
+      assert.deepEqual(event.data, {current: null, next: null})
     })
 
     it('should publish a turnEnded event', () => {
@@ -60,7 +60,7 @@ describe('timer-state', () => {
   describe('start', () => {
     beforeEach(() => timerState.start())
 
-    it('should start the mainTimer', function () {
+    it('should start the mainTimer', function() {
       assert.equal(timerState.mainTimer.isRunning, true)
     })
 
@@ -278,11 +278,11 @@ describe('timer-state', () => {
     })
 
     it('should publish a timerChange event', () => {
-        var event = assertEvent('timerChange')
-        assert.deepEqual(event.data, {
-          secondsRemaining: 300,
-          secondsPerTurn: 300
-        })
+      var event = assertEvent('timerChange')
+      assert.deepEqual(event.data, {
+        secondsRemaining: 300,
+        secondsPerTurn: 300
+      })
     })
   })
 
@@ -334,7 +334,6 @@ describe('timer-state', () => {
   describe('getState', () => {
     describe('when getting non-default state', () => {
       before(() => {
-
         timerState.addMobber(expectedJack)
         timerState.addMobber(expectedJill)
         timerState.setSecondsPerTurn(expectedSecondsPerTurn)
@@ -360,7 +359,10 @@ describe('timer-state', () => {
       })
 
       it('should get the correct seconds until fullscreen', () => {
-        assert.equal(result.secondsUntilFullscreen, expectedSecondsUntilFullscreen)
+        assert.equal(
+          result.secondsUntilFullscreen,
+          expectedSecondsUntilFullscreen
+        )
       })
 
       it('should get the correct seconds until fullscreen', () => {
@@ -391,14 +393,19 @@ describe('timer-state', () => {
     })
 
     describe('when getting default state', () => {
-      before(() => result = timerState.getState())
+      before(() => (result = timerState.getState()))
 
       it('should get no mobbers', () => assert(result.mobbers.length === 0))
-      it('should have a default secondsPerTurn greater than zero', () => assert(result.secondsPerTurn > 0))
-      it('should have a default snapThreshold greater than zero', () => assert(result.snapThreshold > 0))
-      it('should have a null alert sound', () => assert(result.alertSound === null))
-      it('should have an empty array of alert sound times', () => assert.deepEqual(result.alertSoundTimes, []))
-      it('should have a default timerAlwaysOnTop', () => assert.deepEqual(result.timerAlwaysOnTop, true))
+      it('should have a default secondsPerTurn greater than zero', () =>
+        assert(result.secondsPerTurn > 0))
+      it('should have a default snapThreshold greater than zero', () =>
+        assert(result.snapThreshold > 0))
+      it('should have a null alert sound', () =>
+        assert(result.alertSound === null))
+      it('should have an empty array of alert sound times', () =>
+        assert.deepEqual(result.alertSoundTimes, []))
+      it('should have a default timerAlwaysOnTop', () =>
+        assert.deepEqual(result.timerAlwaysOnTop, true))
 
       let result = {}
     })
@@ -440,13 +447,23 @@ describe('timer-state', () => {
         result = timerState.getState()
       })
 
-      it('should load mobbers', () => assert.deepEqual(result.mobbers, state.mobbers))
-      it('should load secondsPerTurn', () => assert.equal(result.secondsPerTurn, state.secondsPerTurn))
-      it('should load secondsUntilFullscreen', () => assert.equal(result.secondsUntilFullscreen, state.secondsUntilFullscreen))
-      it('should load snapThreshold', () => assert.equal(result.snapThreshold, state.snapThreshold))
-      it('should load alertSound', () => assert.equal(result.alertSound, state.alertSound))
-      it('should load alertSoundTimes', () => assert.deepEqual(result.alertSoundTimes, [2, 3, 5, 8]))
-      it('should load timerAlwaysOnTop', () => assert.equal(result.timerAlwaysOnTop, state.timerAlwaysOnTop))
+      it('should load mobbers', () =>
+        assert.deepEqual(result.mobbers, state.mobbers))
+      it('should load secondsPerTurn', () =>
+        assert.equal(result.secondsPerTurn, state.secondsPerTurn))
+      it('should load secondsUntilFullscreen', () =>
+        assert.equal(
+          result.secondsUntilFullscreen,
+          state.secondsUntilFullscreen
+        ))
+      it('should load snapThreshold', () =>
+        assert.equal(result.snapThreshold, state.snapThreshold))
+      it('should load alertSound', () =>
+        assert.equal(result.alertSound, state.alertSound))
+      it('should load alertSoundTimes', () =>
+        assert.deepEqual(result.alertSoundTimes, [2, 3, 5, 8]))
+      it('should load timerAlwaysOnTop', () =>
+        assert.equal(result.timerAlwaysOnTop, state.timerAlwaysOnTop))
 
       let result = {}
       let state = {}
@@ -459,13 +476,20 @@ describe('timer-state', () => {
         result = timerState.getState()
       })
 
-      it('should NOT load any mobbers', () => assert.equal(result.mobbers.length, 0))
-      it('should have a default secondsPerTurn greater than zero', () => assert(result.secondsPerTurn > 0))
-      it('should have a default secondsUntilFullscreen greater than zero', () => assert(result.secondsUntilFullscreen > 0))
-      it('should have a default snapThreshold greater than zero', () => assert(result.snapThreshold > 0))
-      it('should have a null alertSound', () => assert.strictEqual(result.alertSound, null))
-      it('should have an empty array of alertSoundTimes', () => assert.deepEqual(result.alertSoundTimes, []))
-      it('should have a default timerAlwaysOnTop', () => assert.equal(result.timerAlwaysOnTop, true))
+      it('should NOT load any mobbers', () =>
+        assert.equal(result.mobbers.length, 0))
+      it('should have a default secondsPerTurn greater than zero', () =>
+        assert(result.secondsPerTurn > 0))
+      it('should have a default secondsUntilFullscreen greater than zero', () =>
+        assert(result.secondsUntilFullscreen > 0))
+      it('should have a default snapThreshold greater than zero', () =>
+        assert(result.snapThreshold > 0))
+      it('should have a null alertSound', () =>
+        assert.strictEqual(result.alertSound, null))
+      it('should have an empty array of alertSoundTimes', () =>
+        assert.deepEqual(result.alertSoundTimes, []))
+      it('should have a default timerAlwaysOnTop', () =>
+        assert.equal(result.timerAlwaysOnTop, true))
 
       let result = {}
     })
@@ -473,7 +497,7 @@ describe('timer-state', () => {
     describe('when loading state with one mobber', () => {
       before(() => {
         state = {
-          mobbers: [{name: 'jack'}],
+          mobbers: [{name: 'jack'}]
         }
 
         timerState.loadState(state)
@@ -481,7 +505,8 @@ describe('timer-state', () => {
         result = timerState.getState()
       })
 
-      it('should load one mobber', () => assert.deepEqual(state.mobbers, result.mobbers))
+      it('should load one mobber', () =>
+        assert.deepEqual(state.mobbers, result.mobbers))
 
       let result = {}
       let state = {}

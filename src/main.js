@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { app, ipcMain: ipc } = electron
+const {app, ipcMain: ipc} = electron
 
 let windows = require('./windows/windows')
 let TimerState = require('./state/timer-state')
@@ -37,19 +37,31 @@ ipc.on('configure', _ => {
 ipc.on('addMobber', (event, mobber) => timerState.addMobber(mobber))
 ipc.on('removeMobber', (event, mobber) => timerState.removeMobber(mobber))
 ipc.on('updateMobber', (event, mobber) => timerState.updateMobber(mobber))
-ipc.on('setSecondsPerTurn', (event, secondsPerTurn) => timerState.setSecondsPerTurn(secondsPerTurn))
-ipc.on('setSecondsUntilFullscreen', (event, secondsUntilFullscreen) => timerState.setSecondsUntilFullscreen(secondsUntilFullscreen))
-ipc.on('setSnapThreshold', (event, threshold) => timerState.setSnapThreshold(threshold))
-ipc.on('setAlertSoundTimes', (event, alertSoundTimes) => timerState.setAlertSoundTimes(alertSoundTimes))
-ipc.on('setAlertSound', (event, alertSound) => timerState.setAlertSound(alertSound))
-ipc.on('setTimerAlwaysOnTop', (event, value) => timerState.setTimerAlwaysOnTop(value))
+ipc.on('setSecondsPerTurn', (event, secondsPerTurn) =>
+  timerState.setSecondsPerTurn(secondsPerTurn)
+)
+ipc.on('setSecondsUntilFullscreen', (event, secondsUntilFullscreen) =>
+  timerState.setSecondsUntilFullscreen(secondsUntilFullscreen)
+)
+ipc.on('setSnapThreshold', (event, threshold) =>
+  timerState.setSnapThreshold(threshold)
+)
+ipc.on('setAlertSoundTimes', (event, alertSoundTimes) =>
+  timerState.setAlertSoundTimes(alertSoundTimes)
+)
+ipc.on('setAlertSound', (event, alertSound) =>
+  timerState.setAlertSound(alertSound)
+)
+ipc.on('setTimerAlwaysOnTop', (event, value) =>
+  timerState.setTimerAlwaysOnTop(value)
+)
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
-app.on('activate', function () {
+app.on('activate', function() {
   windows.createTimerWindow()
 })

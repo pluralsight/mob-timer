@@ -16,7 +16,7 @@
   --timer-pulse-text-color: #fff;
   --timer-pulse-color-1: var(--theme-primary-color);
   --timer-pulse-color-2: var(--theme-secondary-color);
-  
+
   --timer-paused-text-color: #999;
   --timer-paused-background-color: #333;
 }

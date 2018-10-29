@@ -46,7 +46,7 @@ describe('Mobbers', () => {
   describe('getCurrentAndNextMobbers', () => {
     it('return null values if there are no mobbers', () => {
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: null, next: null })
+      assert.deepEqual(result, {current: null, next: null})
     })
 
     it('return the same mobber for current and next if there is only one mobber', () => {
@@ -88,7 +88,7 @@ describe('Mobbers', () => {
     it('should do nothing when there are no mobbers', () => {
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
-      assert.deepEqual(result, { current: null, next: null })
+      assert.deepEqual(result, {current: null, next: null})
     })
 
     it('should do nothing when there is only one mobber', () => {
@@ -182,7 +182,11 @@ describe('Mobbers', () => {
       mobbers.addMobber({name: 'Test 1', id: 't1'})
       mobbers.addMobber({name: 'Test 2', id: 't2'})
       mobbers.addMobber({name: 'Test 3', id: 't3'})
-      mobbers.updateMobber({name: 'Test 2-updated', id: 't2', image: 'image-path'})
+      mobbers.updateMobber({
+        name: 'Test 2-updated',
+        id: 't2',
+        image: 'image-path'
+      })
       let result = mobbers.getAll()
       assert.equal(result.length, 3)
       assert.equal(result[0].name, 'Test 1')
@@ -193,7 +197,11 @@ describe('Mobbers', () => {
 
     it('should not replace anything if the id does not match', () => {
       mobbers.addMobber({name: 'Test', id: 'test-id'})
-      mobbers.updateMobber({name: 'Tester', id: 'other-id', image: 'image-path'})
+      mobbers.updateMobber({
+        name: 'Tester',
+        id: 'other-id',
+        image: 'image-path'
+      })
       let result = mobbers.getAll()
       assert.equal(result.length, 1)
       assert.equal(result[0].name, 'Test')

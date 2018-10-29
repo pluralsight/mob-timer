@@ -31,7 +31,7 @@ function clearCanvas() {
 function drawTimerCircle() {
   const begin = 0
   const end = 2 * Math.PI
-  drawArc(begin, end, "#EEEEEE")
+  drawArc(begin, end, '#EEEEEE')
 }
 
 function drawArc(begin, end, color) {
@@ -46,26 +46,26 @@ function drawArc(begin, end, color) {
 }
 
 function drawTimerArc(seconds, maxSeconds) {
-  let percent = 1 - (seconds / maxSeconds)
+  let percent = 1 - seconds / maxSeconds
   if (percent == 0) {
     return
   }
-  let begin = -(.5 * Math.PI)
-  let end = begin + (2 * Math.PI * percent)
+  let begin = -(0.5 * Math.PI)
+  let end = begin + 2 * Math.PI * percent
   drawArc(begin, end, theme.mobberBorderHighlightColor)
 }
 
 ipc.on('rotated', (event, data) => {
   if (!data.current) {
-    data.current = { name: "Add a mobber" }
+    data.current = {name: 'Add a mobber'}
   }
-  currentPicEl.src = data.current.image || "../img/sad-cyclops.png"
+  currentPicEl.src = data.current.image || '../img/sad-cyclops.png'
   currentEl.innerHTML = data.current.name
 
   if (!data.next) {
     data.next = data.current
   }
-  nextPicEl.src = data.next.image || "../img/sad-cyclops.png"
+  nextPicEl.src = data.next.image || '../img/sad-cyclops.png'
   nextEl.innerHTML = data.next.name
 })
 

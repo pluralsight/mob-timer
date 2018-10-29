@@ -10,11 +10,12 @@ const snapToEdgesCheckbox = document.getElementById('snap-to-edges')
 const alertAudioCheckbox = document.getElementById('alertAudio')
 const replayAudioContainer = document.getElementById('replayAudioContainer')
 const replayAlertAudioCheckbox = document.getElementById('replayAlertAudio')
-const replayAudioAfterSeconds = document.getElementById('replayAudioAfterSeconds')
+const replayAudioAfterSeconds = document.getElementById(
+  'replayAudioAfterSeconds'
+)
 const useCustomSoundCheckbox = document.getElementById('useCustomSound')
 const customSoundEl = document.getElementById('customSound')
 const timerAlwaysOnTopCheckbox = document.getElementById('timerAlwaysOnTop')
-
 
 function createMobberEl(mobber) {
   const el = document.createElement('div')
@@ -53,9 +54,7 @@ function createMobberEl(mobber) {
 function selectImage(mobber) {
   var image = dialog.showOpenDialog({
     title: 'Select image',
-    filters: [
-      {name: 'Images', extensions: ['jpg', 'png', 'gif']}
-    ],
+    filters: [{name: 'Images', extensions: ['jpg', 'png', 'gif']}],
     properties: ['openFile']
   })
 
@@ -83,7 +82,8 @@ ipc.on('configUpdated', (event, data) => {
 
   alertAudioCheckbox.checked = data.alertSoundTimes.length > 0
   replayAlertAudioCheckbox.checked = data.alertSoundTimes.length > 1
-  replayAudioAfterSeconds.value = data.alertSoundTimes.length > 1 ? data.alertSoundTimes[1] : 30
+  replayAudioAfterSeconds.value =
+    data.alertSoundTimes.length > 1 ? data.alertSoundTimes[1] : 30
   updateAlertControls()
 
   useCustomSoundCheckbox.checked = !!data.alertSound
@@ -102,7 +102,7 @@ addMobberForm.addEventListener('submit', event => {
   if (!value) {
     return
   }
-  ipc.send('addMobber', { name: value })
+  ipc.send('addMobber', {name: value})
   addEl.value = ''
 })
 
@@ -155,9 +155,7 @@ useCustomSoundCheckbox.addEventListener('change', _ => {
   if (useCustomSoundCheckbox.checked) {
     selectedMp3 = dialog.showOpenDialog({
       title: 'Select alert sound',
-      filters: [
-        {name: 'MP3', extensions: ['mp3']}
-      ],
+      filters: [{name: 'MP3', extensions: ['mp3']}],
       properties: ['openFile']
     })
 

@@ -24,7 +24,7 @@ class Mobbers {
   getCurrentAndNextMobbers() {
     let active = this.getActiveMobbers()
     if (!active.length) {
-      return { current: null, next: null }
+      return {current: null, next: null}
     }
 
     return {
@@ -35,7 +35,9 @@ class Mobbers {
 
   rotate() {
     let active = this.getActiveMobbers()
-    this.currentMobber = active.length ? (this.currentMobber + 1) % active.length : 0
+    this.currentMobber = active.length
+      ? (this.currentMobber + 1) % active.length
+      : 0
   }
 
   removeMobber(mobber) {
@@ -54,7 +56,9 @@ class Mobbers {
       if (currentMobber && currentMobber.id != mobber.id) {
         this.currentMobber = active.findIndex(m => m.id == currentMobber.id)
       }
-      this.currentMobber = active.length ? this.currentMobber % active.length : 0
+      this.currentMobber = active.length
+        ? this.currentMobber % active.length
+        : 0
     }
   }
 }

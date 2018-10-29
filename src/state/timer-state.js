@@ -22,15 +22,18 @@ class TimerState {
   }
 
   createTimers(TimerClass) {
-    this.mainTimer = new TimerClass({countDown: true, time: this.secondsPerTurn}, secondsRemaining => {
-      this.dispatchTimerChange(secondsRemaining)
-      if (secondsRemaining < 0) {
-        this.pause()
-        this.rotate()
-        this.callback('turnEnded')
-        this.startAlerts()
+    this.mainTimer = new TimerClass(
+      {countDown: true, time: this.secondsPerTurn},
+      secondsRemaining => {
+        this.dispatchTimerChange(secondsRemaining)
+        if (secondsRemaining < 0) {
+          this.pause()
+          this.rotate()
+          this.callback('turnEnded')
+          this.startAlerts()
+        }
       }
-    })
+    )
 
     this.alertsTimer = new TimerClass({countDown: false}, alertSeconds => {
       this.callback('alert', alertSeconds)
@@ -97,7 +100,9 @@ class TimerState {
 
   removeMobber(mobber) {
     let currentMobber = this.mobbers.getCurrentAndNextMobbers().current
-    let isRemovingCurrentMobber = currentMobber ? currentMobber.name == mobber.name : false
+    let isRemovingCurrentMobber = currentMobber
+      ? currentMobber.name == mobber.name
+      : false
 
     this.mobbers.removeMobber(mobber)
 

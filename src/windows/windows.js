@@ -22,12 +22,12 @@ exports.createTimerWindow = () => {
   })
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
-  timerWindow.on('closed', _ => timerWindow = null)
+  timerWindow.on('closed', _ => (timerWindow = null))
 
   let getCenter = bounds => {
     return {
-      x: bounds.x + (bounds.width / 2),
-      y: bounds.y + (bounds.height / 2)
+      x: bounds.x + bounds.width / 2,
+      y: bounds.y + bounds.height / 2
     }
   }
 
@@ -38,13 +38,15 @@ exports.createTimerWindow = () => {
 
     let getCenter = bounds => {
       return {
-        x: bounds.x + (bounds.width / 2),
-        y: bounds.y + (bounds.height / 2)
+        x: bounds.x + bounds.width / 2,
+        y: bounds.y + bounds.height / 2
       }
     }
 
     let windowBounds = timerWindow.getBounds()
-    let screenBounds = electron.screen.getDisplayNearestPoint(getCenter(windowBounds)).workArea
+    let screenBounds = electron.screen.getDisplayNearestPoint(
+      getCenter(windowBounds)
+    ).workArea
 
     let snapTo = windowSnapper(windowBounds, screenBounds, snapThreshold)
     if (snapTo.x != windowBounds.x || snapTo.y != windowBounds.y) {
@@ -73,7 +75,7 @@ exports.createConfigWindow = () => {
   })
 
   configWindow.loadURL(`file://${__dirname}/config/index.html`)
-  configWindow.on('closed', _ => configWindow = null)
+  configWindow.on('closed', _ => (configWindow = null))
 }
 
 exports.createFullscreenWindow = () => {
@@ -91,7 +93,7 @@ exports.createFullscreenWindow = () => {
   })
 
   fullscreenWindow.loadURL(`file://${__dirname}/fullscreen/index.html`)
-  fullscreenWindow.on('closed', _ => fullscreenWindow = null)
+  fullscreenWindow.on('closed', _ => (fullscreenWindow = null))
 }
 
 exports.closeFullscreenWindow = () => {
