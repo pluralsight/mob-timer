@@ -1,0 +1,4 @@
+--use_strict
+
+./test/integration-setup.js
+./src/**/__specs__/**/*.integration-spec.js

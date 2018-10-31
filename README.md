@@ -11,9 +11,9 @@ or the smaller circle to skip to the next mobber.
 
 # Build the timer
 Run `npm install` and then one of the following commands for your respective operating system:
-- Windows: `npm run build-win`
-- Mac OS X: `npm run build-mac`
-- Linux: `npm run build-linux` (You may need to install `libcanberra-gtk-module`)
+- Windows: `npm run build:win`
+- Mac OS X: `npm run build:mac`
+- Linux: `npm run build:linux` (You may need to install `libcanberra-gtk-module`)
 
 Platform specific packages will be placed in the `dist` directory.
 If you need a platform other than these, you will need to modify the build script in the `package.json` file.
@@ -21,11 +21,11 @@ If you need a platform other than these, you will need to modify the build scrip
 
 # Development
 Run `npm install` to get the dependencies, then `npm start` to run the timer.
-Run `npm test` to start the unit tests, or `npm run integration_test` to run integration tests.
+Run `npm test` to start the unit tests, or `npm run test:integration` to run integration tests.
 
 
 # Motivation
-Pluralsight has a development team that does mob programming full-time,
+Pluralsight has several development teams that do mob programming full-time,
 and a few other teams dabble in mobbing as well.
 We have tried and enjoyed a number of other mob timers, but we had various
 (mostly minor) gripes with them.

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mob Timer</title>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+
+    <div id="container" class="container">
+      <div class="timerContainer">
+        <img id="currentPic" class="pic currentPic" />
+        <canvas id="timerCanvas" class="timerCanvas" width="160" height="160"></canvas>
+        <div id="toggleButton" class="button overlay toggle"></div>
+      </div>
+
+      <div id="current" class="current">{name}</div>
+
+      <button id="configureButton" class="button configure" title="Configure"></button>
+
+      <div class="nextContainer">
+        <img id="nextPic" class="next" />
+        <div id="nextButton" class="button overlay next"></div>
+        <span id="next">{name}</span>
+      </div>
+    </div>
+
+    <audio controls id="alertAudio">
+      <source src="./default.mp3" type="audio/mpeg">
+    </audio>
+
+    <script type="text/javascript">
+      require('./index.js')
+    </script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+--use_strict
+
+./test/setup.js
+./src/**/__specs__/**/*.spec.js
