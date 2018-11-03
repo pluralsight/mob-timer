@@ -22,10 +22,6 @@ describe('when writing state', () => {
     let classUnderTest = require('../../src/state/write-state')
 })
 
-function fileExists(filePath) {
-    return fs.accessSync(filePath, fs.R_OK)
-}
-
 function getFileData(filePath) {
     return JSON.parse(fs.readFileSync(filePath, 'utf-8'))
 }
