@@ -22,10 +22,6 @@ ipc.on('rotated', (event, data) => {
   nextPicEl.src = data.next.image || "../img/sad-cyclops.png"
 })
 
-ipc.on('configUpdated', (event, data) => {
-  countEl.innerHTML = formatTime(data.secondsPerTurn)
-})
-
 skipBtn.addEventListener('click', _ => ipc.send('skip'))
 startTurnBtn.addEventListener('click', _ => ipc.send('startTurn'))
 configureBtn.addEventListener('click', _ => ipc.send('configure'))
