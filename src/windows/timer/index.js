@@ -71,14 +71,14 @@ ipc.on('rotated', (event, data) => {
 
 ipc.on('paused', _ => {
   paused = true
-  container.classList.add('isPaused')
+  containerEl.classList.add('isPaused')
   toggleBtn.classList.add('play')
   toggleBtn.classList.remove('pause')
 })
 
 ipc.on('started', _ => {
   paused = false
-  container.classList.remove('isPaused')
+  containerEl.classList.remove('isPaused')
   containerEl.classList.remove('isTurnEnded')
   toggleBtn.classList.remove('play')
   toggleBtn.classList.add('pause')
@@ -86,7 +86,7 @@ ipc.on('started', _ => {
 
 ipc.on('turnEnded', (event, data) => {
   paused = true
-  container.classList.remove('isPaused')
+  containerEl.classList.remove('isPaused')
   containerEl.classList.add('isTurnEnded')
   toggleBtn.classList.add('play')
   toggleBtn.classList.remove('pause')
