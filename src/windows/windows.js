@@ -24,13 +24,6 @@ exports.createTimerWindow = () => {
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
   timerWindow.on('closed', () => timerWindow = null)
 
-  let getCenter = bounds => {
-    return {
-      x: bounds.x + (bounds.width / 2),
-      y: bounds.y + (bounds.height / 2)
-    }
-  }
-
   timerWindow.on('move', () => {
     if (snapThreshold <= 0) {
       return
