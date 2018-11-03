@@ -43,9 +43,9 @@ function createMobberEl(mobber) {
   rmBtn.innerHTML = 'Remove'
   el.appendChild(rmBtn)
 
-  imgEl.addEventListener('click', _ => selectImage(mobber))
-  disableBtn.addEventListener('click', _ => toggleMobberDisabled(mobber))
-  rmBtn.addEventListener('click', _ => ipc.send('removeMobber', mobber))
+  imgEl.addEventListener('click', () => selectImage(mobber))
+  disableBtn.addEventListener('click', () => toggleMobberDisabled(mobber))
+  rmBtn.addEventListener('click', () => ipc.send('removeMobber', mobber))
 
   return el
 }
@@ -92,7 +92,7 @@ ipc.on('configUpdated', (event, data) => {
   timerAlwaysOnTopCheckbox.checked = data.timerAlwaysOnTop
 })
 
-minutesEl.addEventListener('change', _ => {
+minutesEl.addEventListener('change', () => {
   ipc.send('setSecondsPerTurn', minutesEl.value * 60)
 })
 
@@ -106,19 +106,19 @@ addMobberForm.addEventListener('submit', event => {
   addEl.value = ''
 })
 
-fullscreenSecondsEl.addEventListener('change', _ => {
+fullscreenSecondsEl.addEventListener('change', () => {
   ipc.send('setSecondsUntilFullscreen', fullscreenSecondsEl.value * 1)
 })
 
 ipc.send('configWindowReady')
 
-snapToEdgesCheckbox.addEventListener('change', _ => {
+snapToEdgesCheckbox.addEventListener('change', () => {
   ipc.send('setSnapThreshold', snapToEdgesCheckbox.checked ? 25 : 0)
 })
 
-alertAudioCheckbox.addEventListener('change', _ => updateAlertTimes())
-replayAlertAudioCheckbox.addEventListener('change', _ => updateAlertTimes())
-replayAudioAfterSeconds.addEventListener('change', _ => updateAlertTimes())
+alertAudioCheckbox.addEventListener('change', () => updateAlertTimes())
+replayAlertAudioCheckbox.addEventListener('change', () => updateAlertTimes())
+replayAudioAfterSeconds.addEventListener('change', () => updateAlertTimes())
 
 function updateAlertTimes() {
   updateAlertControls()
@@ -149,7 +149,7 @@ function updateAlertControls() {
   replayAudioAfterSeconds.disabled = secondsDisabled
 }
 
-useCustomSoundCheckbox.addEventListener('change', _ => {
+useCustomSoundCheckbox.addEventListener('change', () => {
   let mp3 = null
 
   if (useCustomSoundCheckbox.checked) {
@@ -171,6 +171,6 @@ useCustomSoundCheckbox.addEventListener('change', _ => {
   ipc.send('setAlertSound', mp3)
 })
 
-timerAlwaysOnTopCheckbox.addEventListener('change', _ => {
+timerAlwaysOnTopCheckbox.addEventListener('change', () => {
   ipc.send('setTimerAlwaysOnTop', timerAlwaysOnTopCheckbox.checked)
 })

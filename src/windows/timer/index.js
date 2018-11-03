@@ -69,14 +69,14 @@ ipc.on('rotated', (event, data) => {
   nextEl.innerHTML = data.next.name
 })
 
-ipc.on('paused', _ => {
+ipc.on('paused', () => {
   paused = true
   container.classList.add('isPaused')
   toggleBtn.classList.add('play')
   toggleBtn.classList.remove('pause')
 })
 
-ipc.on('started', _ => {
+ipc.on('started', () => {
   paused = false
   container.classList.remove('isPaused')
   containerEl.classList.remove('isTurnEnded')
@@ -84,7 +84,7 @@ ipc.on('started', _ => {
   toggleBtn.classList.add('pause')
 })
 
-ipc.on('turnEnded', (event, data) => {
+ipc.on('turnEnded', () => {
   paused = true
   container.classList.remove('isPaused')
   containerEl.classList.add('isTurnEnded')
@@ -104,14 +104,14 @@ ipc.on('alert', (event, data) => {
   }
 })
 
-ipc.on('stopAlerts', _ => {
+ipc.on('stopAlerts', () => {
   alertAudio.pause()
 })
 
-toggleBtn.addEventListener('click', _ => {
+toggleBtn.addEventListener('click', () => {
   paused ? ipc.send('unpause') : ipc.send('pause')
 })
-nextBtn.addEventListener('click', _ => ipc.send('skip'))
-configureBtn.addEventListener('click', _ => ipc.send('configure'))
+nextBtn.addEventListener('click', () => ipc.send('skip'))
+configureBtn.addEventListener('click', () => ipc.send('configure'))
 
 ipc.send('timerWindowReady')

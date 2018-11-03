@@ -26,8 +26,8 @@ ipc.on('configUpdated', (event, data) => {
   countEl.innerHTML = formatTime(data.secondsPerTurn)
 })
 
-skipBtn.addEventListener('click', _ => ipc.send('skip'))
-startTurnBtn.addEventListener('click', _ => ipc.send('startTurn'))
-configureBtn.addEventListener('click', _ => ipc.send('configure'))
+skipBtn.addEventListener('click', () => ipc.send('skip'))
+startTurnBtn.addEventListener('click', () => ipc.send('startTurn'))
+configureBtn.addEventListener('click', () => ipc.send('configure'))
 
 ipc.send('fullscreenWindowReady')
