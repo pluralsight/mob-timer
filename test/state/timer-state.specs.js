@@ -232,17 +232,17 @@ describe('timer-state', () => {
 
     it('should publish a turnEnded event if the removed user was current', () => {
       timerState.removeMobber({name: 'A'})
-      var event = assertEvent('turnEnded')
+      assertEvent('turnEnded')
     })
 
     it('should publish a timerChange event if the removed user was current', () => {
       timerState.removeMobber({name: 'A'})
-      var event = assertEvent('timerChange')
+      assertEvent('timerChange')
     })
 
     it('should publish a paused event if the removed user was current', () => {
       timerState.removeMobber({name: 'A'})
-      var event = assertEvent('paused')
+      assertEvent('paused')
     })
 
     it('should update correctly if the removed user was current', () => {
@@ -418,7 +418,6 @@ describe('timer-state', () => {
 
       let result = {}
       let expectedJack = {name: 'jack'}
-      let expectedJill = {name: 'jill'}
     })
   })
 
