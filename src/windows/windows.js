@@ -1,4 +1,5 @@
 const electron = require('electron')
+const { app } = electron
 const windowSnapper = require('./window-snapper')
 
 let timerWindow, configWindow, fullscreenWindow
@@ -9,7 +10,7 @@ exports.createTimerWindow = () => {
     return
   }
 
-  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
+  let { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
   timerWindow = new electron.BrowserWindow({
     x: width - 220,
     y: height - 90,
@@ -81,12 +82,12 @@ exports.createFullscreenWindow = () => {
     return
   }
 
-  let {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
-  fullscreenWindow = new electron.BrowserWindow({
+  const primaryDisplay = electron.screen.getPrimaryDisplay()
+  const { width, height } = primaryDisplay.bounds
+  fullscreenWindow = createAlwaysOnTopFullscreenInterruptingWindow({
     width,
     height,
     resizable: false,
-    alwaysOnTop: true,
     frame: false
   })
 
@@ -133,4 +134,18 @@ exports.setConfigState = data => {
     timerWindow.close()
     exports.createTimerWindow()
   }
+}
+
+function createAlwaysOnTopFullscreenInterruptingWindow(options) {
+  if (app.dock) {
+    // Mac OS: The window will be able to float above fullscreen windows too
+    app.dock.hide()
+  }
+  const window = new electron.BrowserWindow(options)
+  window.setAlwaysOnTop(true, 'screen-saver')
+  if (app.dock) {
+    // Mac OS: Show in dock again, window has been created
+    app.dock.show()
+  }
+  return window
 }
