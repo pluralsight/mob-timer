@@ -153,7 +153,7 @@ useCustomSoundCheckbox.addEventListener('change', _ => {
   let mp3 = null
 
   if (useCustomSoundCheckbox.checked) {
-    selectedMp3 = dialog.showOpenDialog({
+    const selectedMp3 = dialog.showOpenDialog({
       title: 'Select alert sound',
       filters: [
         {name: 'MP3', extensions: ['mp3']}
