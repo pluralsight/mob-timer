@@ -1,9 +1,9 @@
 const ServiceEvents = {
   Alert: 'alert',
-  ConfigUpdated: 'configUpdated',
   Paused: 'paused',
   Rotated: 'rotated',
   Started: 'started',
+  StateUpdated: 'stateUpdated',
   StopAlerts: 'stopAlerts',
   TimerChange: 'timerChange',
   TurnEnded: 'turnEnded'

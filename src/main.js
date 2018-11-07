@@ -2,29 +2,22 @@ const { app, ipcMain: ipc } = require('electron')
 
 const client = require('./client')
 const config = require('./service/config')
-const { ClientEvents, ServiceEvents } = require('./common/constants')
+const { ClientEvents } = require('./common/constants')
 const TimerState = require('./service/timer-state')
 
 config.init()
 const timerState = new TimerState()
 
 app.on('ready', () => {
-  timerState.setEventHandler(onTimerEvent)
-  timerState.loadState(config.read())
-  client.setConfigState(config.read())
+  timerState.onEvent(client.dispatchEvent)
+  client.setState(timerState.getState())
+
   client.createTimerWindow()
 })
 
-const onTimerEvent = (event, data) => {
-  client.dispatchEvent(event, data)
-  if (event === ServiceEvents.ConfigUpdated) {
-    config.write(data)
-  }
-}
-
 ipc.on(ClientEvents.TimerWindowReady, _ => timerState.initialize())
-ipc.on(ClientEvents.ConfigWindowReady, _ => timerState.publishConfig())
-ipc.on(ClientEvents.FullscreenWindowReady, _ => timerState.publishConfig())
+ipc.on(ClientEvents.ConfigWindowReady, _ => timerState.persist())
+ipc.on(ClientEvents.FullscreenWindowReady, _ => timerState.persist())
 
 ipc.on(ClientEvents.Pause, _ => timerState.pause())
 ipc.on(ClientEvents.Unpause, _ => timerState.start())

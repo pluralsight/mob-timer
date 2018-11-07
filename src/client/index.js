@@ -95,8 +95,8 @@ exports.closeFullscreenWindow = () => {
 }
 
 exports.dispatchEvent = (event, data) => {
-  if (event === ServiceEvents.ConfigUpdated) {
-    exports.setConfigState(data)
+  if (event === ServiceEvents.StateUpdated) {
+    exports.setState(data)
   }
   if (event === ServiceEvents.Alert && data === secondsUntilFullscreen) {
     exports.createFullscreenWindow()
@@ -116,7 +116,7 @@ exports.dispatchEvent = (event, data) => {
   }
 }
 
-exports.setConfigState = data => {
+exports.setState = data => {
   const shouldRecreateTimerWindow = timerAlwaysOnTop !== data.timerAlwaysOnTop
 
   snapThreshold = data.snapThreshold

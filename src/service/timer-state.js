@@ -1,34 +1,36 @@
+const config = require('./config')
 const { ServiceEvents } = require('../common/constants')
 const Mobbers = require('./mobbers')
 const Timer = require('./timer')
 
 class TimerState {
   constructor() {
-    this.secondsPerTurn = 600
-    this.mobbers = new Mobbers()
-    this.secondsUntilFullscreen = 30
-    this.snapThreshold = 25
-    this.alertSound = null
-    this.alertSoundTimes = []
-    this.timerAlwaysOnTop = true
-
+    this.loadState()
     this.createTimers()
   }
 
-  setEventHandler(handler) {
-    this.handleEvent = handler
+  loadState() {
+    this.state = config.read()
+
+    this.mobbers = new Mobbers()
+    this.state.mobbers && this.state.mobbers.forEach(m => this.mobbers.addMobber(m))
+  }
+
+  getState() {
+    return { ...this.state, mobbers: this.mobbers.getAll() }
   }
 
   createTimers() {
     this.mainTimer = new Timer({
       countDown: true,
-      time: this.secondsPerTurn,
+      time: this.state.secondsPerTurn,
       onTick: secondsRemaining => {
-        this.dispatchTimerChange(secondsRemaining)
-        if (secondsRemaining < 0) {
+        if (secondsRemaining >= 0) {
+          this.emitTimerChange(secondsRemaining)
+        } else {
           this.pause()
           this.rotate()
-          this.handleEvent(ServiceEvents.TurnEnded)
+          this.emit(ServiceEvents.TurnEnded)
           this.startAlerts()
         }
       }
@@ -37,67 +39,71 @@ class TimerState {
     this.alertsTimer = new Timer({
       countDown: false,
       onTick: alertSeconds => {
-        this.handleEvent(ServiceEvents.Alert, alertSeconds)
+        this.emit(ServiceEvents.Alert, alertSeconds)
       }
     })
   }
 
-  dispatchTimerChange(secondsRemaining) {
-    this.handleEvent(ServiceEvents.TimerChange, {
-      secondsRemaining,
-      secondsPerTurn: this.secondsPerTurn
-    })
+  onEvent(eventEmitter) {
+    this.emit = eventEmitter
+  }
+
+  persist() {
+    const currentState = this.getState()
+    config.write(currentState)
+
+    this.emit(ServiceEvents.StateUpdated, currentState)
+    this.emit(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
+  }
+
+  initialize() {
+    this.rotate()
+    this.emit(ServiceEvents.TurnEnded)
+    this.persist()
   }
 
   reset() {
-    this.mainTimer.reset(this.secondsPerTurn)
-    this.dispatchTimerChange(this.secondsPerTurn)
+    this.mainTimer.reset(this.state.secondsPerTurn)
+    this.emitTimerChange(this.state.secondsPerTurn)
+  }
+
+  emitTimerChange(secondsRemaining) {
+    this.emit(ServiceEvents.TimerChange, { secondsRemaining, secondsPerTurn: this.state.secondsPerTurn })
   }
 
   startAlerts() {
     this.alertsTimer.reset(0)
     this.alertsTimer.start()
-    this.handleEvent(ServiceEvents.Alert, 0)
+    this.emit(ServiceEvents.Alert, 0)
   }
 
   stopAlerts() {
     this.alertsTimer.pause()
-    this.handleEvent(ServiceEvents.StopAlerts)
+    this.emit(ServiceEvents.StopAlerts)
   }
 
   start() {
     this.mainTimer.start()
-    this.handleEvent(ServiceEvents.Started)
+    this.emit(ServiceEvents.Started)
     this.stopAlerts()
   }
 
   pause() {
     this.mainTimer.pause()
-    this.handleEvent(ServiceEvents.Paused)
+    this.emit(ServiceEvents.Paused)
     this.stopAlerts()
   }
 
   rotate() {
     this.reset()
     this.mobbers.rotate()
-    this.handleEvent(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
-  }
-
-  initialize() {
-    this.rotate()
-    this.handleEvent(ServiceEvents.TurnEnded)
-    this.publishConfig()
-  }
-
-  publishConfig() {
-    this.handleEvent(ServiceEvents.ConfigUpdated, this.getState())
-    this.handleEvent(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
+    this.emit(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
   }
 
   addMobber(mobber) {
     this.mobbers.addMobber(mobber)
-    this.publishConfig()
-    this.handleEvent(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
+    this.persist()
+    this.emit(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
   }
 
   removeMobber(id) {
@@ -109,78 +115,47 @@ class TimerState {
     if (isRemovingCurrentMobber) {
       this.pause()
       this.reset()
-      this.handleEvent(ServiceEvents.TurnEnded)
+      this.emit(ServiceEvents.TurnEnded)
     }
 
-    this.publishConfig()
-    this.handleEvent(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
+    this.persist()
+    this.emit(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
   }
 
   updateMobber(mobber) {
     this.mobbers.updateMobber(mobber)
-    this.publishConfig()
+    this.persist()
   }
 
   setSecondsPerTurn(value) {
-    this.secondsPerTurn = value
-    this.publishConfig()
+    this.state.secondsPerTurn = value
+    this.persist()
     this.reset()
   }
 
   setSecondsUntilFullscreen(value) {
-    this.secondsUntilFullscreen = value
-    this.publishConfig()
+    this.state.secondsUntilFullscreen = value
+    this.persist()
   }
 
   setSnapThreshold(value) {
-    this.snapThreshold = value
-    this.publishConfig()
+    this.state.snapThreshold = value
+    this.persist()
   }
 
   setAlertSound(soundFile) {
-    this.alertSound = soundFile
-    this.publishConfig()
+    this.state.alertSound = soundFile
+    this.persist()
   }
 
   setAlertSoundTimes(secondsArray) {
-    this.alertSoundTimes = secondsArray
-    this.publishConfig()
+    this.state.alertSoundTimes = secondsArray
+    this.persist()
   }
 
   setTimerAlwaysOnTop(value) {
-    this.timerAlwaysOnTop = value
-    this.publishConfig()
-  }
-
-  getState() {
-    return {
-      alertSound: this.alertSound,
-      alertSoundTimes: this.alertSoundTimes,
-      mobbers: this.mobbers.getAll(),
-      secondsPerTurn: this.secondsPerTurn,
-      secondsUntilFullscreen: this.secondsUntilFullscreen,
-      snapThreshold: this.snapThreshold,
-      timerAlwaysOnTop: this.timerAlwaysOnTop
-    }
-  }
-
-  loadState(state) {
-    if (state.mobbers) {
-      state.mobbers.forEach(x => this.addMobber(x))
-    }
-
-    this.setSecondsPerTurn(state.secondsPerTurn || this.secondsPerTurn)
-    if (typeof state.secondsUntilFullscreen === 'number') {
-      this.setSecondsUntilFullscreen(state.secondsUntilFullscreen)
-    }
-    if (typeof state.snapThreshold === 'number') {
-      this.setSnapThreshold(state.snapThreshold)
-    }
-    this.alertSound = state.alertSound || null
-    this.alertSoundTimes = state.alertSoundTimes || []
-    if (typeof state.timerAlwaysOnTop === 'boolean') {
-      this.timerAlwaysOnTop = state.timerAlwaysOnTop
-    }
+    this.state.timerAlwaysOnTop = value
+    this.persist()
   }
 }
 

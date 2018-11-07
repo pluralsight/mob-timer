@@ -93,7 +93,7 @@ ipc.on(ServiceEvents.TurnEnded, (event, data) => {
   toggleBtn.classList.remove('pause')
 })
 
-ipc.on(ServiceEvents.ConfigUpdated, (event, data) => {
+ipc.on(ServiceEvents.StateUpdated, (event, data) => {
   alertSoundTimes = data.alertSoundTimes
   alertAudio.src = data.alertSound
 })

@@ -70,7 +70,7 @@ function toggleMobberDisabled(mobber) {
   ipc.send(ClientEvents.UpdateMobber, mobber)
 }
 
-ipc.on(ServiceEvents.ConfigUpdated, (event, data) => {
+ipc.on(ServiceEvents.StateUpdated, (event, data) => {
   minutesEl.value = Math.ceil(data.secondsPerTurn / 60)
   mobbersEl.innerHTML = ''
   const frag = document.createDocumentFragment()

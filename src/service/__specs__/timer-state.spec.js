@@ -1,24 +1,49 @@
-const { DEFAULT_CONFIG } = require('../config')
+const config = require('../config')
 const { ServiceEvents } = require('../../common/constants')
+const sandbox = require('../../../test/sandbox')
 const TimerState = require('../timer-state')
 
 describe('state/timer-state', () => {
   let subject
   let events
 
-  const getEvent = eventName => events.find(e => e.event === eventName)
+  const captureEvent = (event, data) => events.push({ event, data })
+  const getEvent = event => events.find(e => e.event === event)
 
   beforeEach(() => {
     events = []
-    subject = new TimerState()
 
-    subject.setEventHandler((event, data) => {
-      events.push({ event, data })
+    sandbox.stub(config, 'read').returns(config.DEFAULT_CONFIG)
+    sandbox.stub(config, 'write')
+
+    subject = new TimerState()
+    subject.onEvent(captureEvent)
+  })
+
+  afterEach(() => sandbox.restore())
+
+  describe('#persist', () => {
+    it('writes the config', () => {
+      subject.persist()
+      expect(config.write).to.have.been.calledWithExactly(config.DEFAULT_CONFIG)
+    })
+
+    it('emits a stateUpdated event', () => {
+      subject.persist()
+      const event = getEvent(ServiceEvents.StateUpdated)
+
+      expect(event).to.be.ok
+      expect(event.data).to.deep.equal(config.DEFAULT_CONFIG)
+    })
+
+    it('emits a rotated event', () => {
+      subject.persist()
+      expect(getEvent(ServiceEvents.Rotated)).to.be.ok
     })
   })
 
   describe('#initialize', () => {
-    it('publishes a timerChange event', () => {
+    it('emits a timerChange event', () => {
       subject.initialize()
       const event = getEvent(ServiceEvents.TimerChange)
 
@@ -26,7 +51,7 @@ describe('state/timer-state', () => {
       expect(event.data).to.deep.equal({ secondsRemaining: 600, secondsPerTurn: 600 })
     })
 
-    it('publishes a rotated event', () => {
+    it('emits a rotated event', () => {
       subject.initialize()
       const event = getEvent(ServiceEvents.Rotated)
 
@@ -34,14 +59,14 @@ describe('state/timer-state', () => {
       expect(event.data).to.deep.equal({ current: null, next: null })
     })
 
-    it('publishes a turnEnded event', () => {
+    it('emits a turnEnded event', () => {
       subject.initialize()
       expect(getEvent(ServiceEvents.TurnEnded)).to.be.ok
     })
 
-    it('publishes a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.initialize()
-      expect(getEvent(ServiceEvents.ConfigUpdated)).to.be.ok
+      expect(getEvent(ServiceEvents.StateUpdated)).to.be.ok
     })
   })
 
@@ -61,24 +86,24 @@ describe('state/timer-state', () => {
       expect(subject.mainTimer.isRunning).to.be.true
     })
 
-    it('publishes a started event', () => {
+    it('emits a started event', () => {
       subject.start()
       expect(getEvent(ServiceEvents.Started)).to.be.ok
     })
 
-    it('publishes a stopAlerts event', () => {
+    it('emits a stopAlerts event', () => {
       subject.start()
       expect(getEvent(ServiceEvents.StopAlerts)).to.be.ok
     })
   })
 
   describe('#pause', () => {
-    it('publishes a paused event', () => {
+    it('emits a paused event', () => {
       subject.pause()
       expect(getEvent(ServiceEvents.Paused)).to.be.ok
     })
 
-    it('publishes a stopAlerts event', () => {
+    it('emits a stopAlerts event', () => {
       subject.pause()
       expect(getEvent(ServiceEvents.StopAlerts)).to.be.ok
     })
@@ -93,7 +118,7 @@ describe('state/timer-state', () => {
   })
 
   describe('#mainTimer', () => {
-    it('publishes a timerChange event when the timer ticks', () => {
+    it('emits a timerChange event when the timer ticks', () => {
       subject.mainTimer.tick(599)
       const event = getEvent(ServiceEvents.TimerChange)
 
@@ -101,7 +126,7 @@ describe('state/timer-state', () => {
       expect(event.data).to.deep.equal({ secondsRemaining: 599, secondsPerTurn: 600 })
     })
 
-    it('publishes events when the time is up', () => {
+    it('emits events when the time is up', () => {
       subject.mainTimer.tick(-1)
       expect(getEvent(ServiceEvents.TimerChange)).to.be.ok
       expect(getEvent(ServiceEvents.Paused)).to.be.ok
@@ -118,7 +143,7 @@ describe('state/timer-state', () => {
       expect(subject.alertsTimer.isRunning).to.be.true
     })
 
-    it('publishes alert events after the time is up', () => {
+    it('emits alert events after the time is up', () => {
       subject.alertsTimer.tick(1)
       const event = getEvent(ServiceEvents.Alert)
 
@@ -143,7 +168,7 @@ describe('state/timer-state', () => {
       events = []
     })
 
-    it('publishes a rotated event', () => {
+    it('emits a rotated event', () => {
       subject.rotate()
       const event = getEvent(ServiceEvents.Rotated)
 
@@ -151,7 +176,7 @@ describe('state/timer-state', () => {
       expect(event.data).to.deep.equal({ current: mobber, next: nextMobber })
     })
 
-    it('publishes a timerChange event', () => {
+    it('emits a timerChange event', () => {
       subject.rotate()
       const event = getEvent(ServiceEvents.TimerChange)
 
@@ -171,33 +196,18 @@ describe('state/timer-state', () => {
     })
   })
 
-  describe('#publishConfig', () => {
-    it('publishes a configUpdated event', () => {
-      subject.publishConfig()
-      const event = getEvent(ServiceEvents.ConfigUpdated)
-
-      expect(event).to.be.ok
-      expect(event.data).to.deep.equal(DEFAULT_CONFIG)
-    })
-
-    it('publishes a rotated event', () => {
-      subject.publishConfig()
-      expect(getEvent(ServiceEvents.Rotated)).to.be.ok
-    })
-  })
-
   describe('#addMobber', () => {
     const mobber = { id: 'mobber-1', name: 'A' }
 
-    it('publishes a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.addMobber(mobber)
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, mobbers: [mobber] })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, mobbers: [mobber] })
     })
 
-    it('publishes a rotated event', () => {
+    it('emits a rotated event', () => {
       subject.addMobber(mobber)
       const event = getEvent(ServiceEvents.Rotated)
 
@@ -222,15 +232,15 @@ describe('state/timer-state', () => {
       events = []
     })
 
-    it('publishes a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.removeMobber(mobber2.id)
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, mobbers: [mobber1, mobber3] })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, mobbers: [mobber1, mobber3] })
     })
 
-    it('publishes a rotated event', () => {
+    it('emits a rotated event', () => {
       subject.removeMobber(mobber2.id)
       const event = getEvent(ServiceEvents.Rotated)
 
@@ -238,7 +248,7 @@ describe('state/timer-state', () => {
       expect(event.data).to.deep.equal({ current: mobber1, next: mobber3 })
     })
 
-    it('does not publish a turnEnded event', () => {
+    it('does not emit a turnEnded event', () => {
       subject.removeMobber(mobber2.id)
       expect(getEvent(ServiceEvents.TurnEnded)).to.not.be.ok
     })
@@ -249,22 +259,22 @@ describe('state/timer-state', () => {
         events = []
       })
 
-      it('publishes a turnEnded event', () => {
+      it('emits a turnEnded event', () => {
         subject.removeMobber(mobber1.id)
         expect(getEvent(ServiceEvents.TurnEnded)).to.be.ok
       })
 
-      it('publishes a timerChange event', () => {
+      it('emits a timerChange event', () => {
         subject.removeMobber(mobber1.id)
         expect(getEvent(ServiceEvents.TimerChange)).to.be.ok
       })
 
-      it('publishes a paused event', () => {
+      it('emits a paused event', () => {
         subject.removeMobber(mobber1.id)
         expect(getEvent(ServiceEvents.Paused)).to.be.ok
       })
 
-      it('publishes a rotated event', () => {
+      it('emits a rotated event', () => {
         subject.removeMobber(mobber1.id)
         const event = getEvent(ServiceEvents.Rotated)
 
@@ -282,25 +292,25 @@ describe('state/timer-state', () => {
       events = []
     })
 
-    it('publishes a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.updateMobber({ ...mobber, name: 'New Name' })
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, mobbers: [{ ...mobber, name: 'New Name' }] })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, mobbers: [{ ...mobber, name: 'New Name' }] })
     })
   })
 
   describe('#setSecondsPerTurn', () => {
-    it('publishes a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.setSecondsPerTurn(300)
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, secondsPerTurn: 300 })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, secondsPerTurn: 300 })
     })
 
-    it('publishes a timerChange event', () => {
+    it('emits a timerChange event', () => {
       subject.setSecondsPerTurn(300)
       const event = getEvent(ServiceEvents.TimerChange)
 
@@ -310,61 +320,61 @@ describe('state/timer-state', () => {
   })
 
   describe('#setSecondsUntilFullscreen', () => {
-    it('should publish a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.setSecondsUntilFullscreen(5)
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, secondsUntilFullscreen: 5 })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, secondsUntilFullscreen: 5 })
     })
   })
 
   describe('#setSnapThreshold', () => {
-    it('should publish configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.setSnapThreshold(100)
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, snapThreshold: 100 })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, snapThreshold: 100 })
     })
   })
 
   describe('#setAlertSound', () => {
-    it('should publish a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.setAlertSound('new-sound.mp3')
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, alertSound: 'new-sound.mp3' })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, alertSound: 'new-sound.mp3' })
     })
   })
 
   describe('#setAlertSoundTimes', () => {
     beforeEach(() => subject.setAlertSoundTimes([1, 2, 3]))
 
-    it('should publish a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.setAlertSoundTimes([1, 2, 3])
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, alertSoundTimes: [1, 2, 3] })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, alertSoundTimes: [1, 2, 3] })
     })
   })
 
   describe('#setAlwaysOnTop', () => {
-    it('should publish a configUpdated event', () => {
+    it('emits a stateUpdated event', () => {
       subject.setTimerAlwaysOnTop(false)
-      const event = getEvent(ServiceEvents.ConfigUpdated)
+      const event = getEvent(ServiceEvents.StateUpdated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ ...DEFAULT_CONFIG, timerAlwaysOnTop: false })
+      expect(event.data).to.deep.equal({ ...config.DEFAULT_CONFIG, timerAlwaysOnTop: false })
     })
   })
 
   describe('#getState', () => {
     it('returns the state', () => {
       const state = subject.getState()
-      expect(state).to.deep.equal(DEFAULT_CONFIG)
+      expect(state).to.deep.equal(config.DEFAULT_CONFIG)
     })
 
     describe('when getting non-default state', () => {
@@ -394,33 +404,6 @@ describe('state/timer-state', () => {
       it('returns the expected state', () => {
         const actual = subject.getState()
         expect(actual).to.deep.equal(expected)
-      })
-    })
-  })
-
-  describe('#loadState', () => {
-    it('loads the state', () => {
-      const expected = {
-        mobbers: [{ name: 'jack' }, { name: 'jill' }],
-        secondsPerTurn: 400,
-        secondsUntilFullscreen: 0,
-        snapThreshold: 22,
-        alertSound: 'bell.mp3',
-        alertSoundTimes: [2, 3, 5, 8],
-        timerAlwaysOnTop: false
-      }
-
-      subject.loadState(expected)
-      const actual = subject.getState()
-
-      expect(actual).to.deep.equal(expected)
-    })
-
-    describe('when empty state is provided', () => {
-      it('should load default state', () => {
-        subject.loadState({})
-        const state = subject.getState()
-        expect(state).to.deep.equal(DEFAULT_CONFIG)
       })
     })
   })

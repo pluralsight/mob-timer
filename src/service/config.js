@@ -32,7 +32,7 @@ function getConfigFile() {
 
 function read() {
   return fs.existsSync(getConfigFile())
-    ? JSON.parse(fs.readFileSync(getConfigFile(), 'utf-8'))
+    ? { ...DEFAULT_CONFIG, ...JSON.parse(fs.readFileSync(getConfigFile(), 'utf-8')) }
     : DEFAULT_CONFIG
 }
 
