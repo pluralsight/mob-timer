@@ -24,7 +24,7 @@ function createMobberEl(mobber) {
   }
 
   const imgEl = document.createElement('img')
-  imgEl.src = mobber.image || '../img/sad-cyclops.png'
+  imgEl.src = mobber.image
   imgEl.classList.add('image')
   el.appendChild(imgEl)
 

@@ -11,17 +11,11 @@ const nextEl = document.getElementById('next')
 const nextPicEl = document.getElementById('nextPic')
 
 ipc.on(ServiceEvents.Rotated, (event, data) => {
-  if (!data.current) {
-    data.current = { name: "Add a mobber" }
-  }
   currentEl.innerHTML = data.current.name
-  currentPicEl.src = data.current.image || "../img/sad-cyclops.png"
+  currentPicEl.src = data.current.image
 
-  if (!data.next) {
-    data.next = data.current
-  }
   nextEl.innerHTML = data.next.name
-  nextPicEl.src = data.next.image || "../img/sad-cyclops.png"
+  nextPicEl.src = data.next.image
 })
 
 skipBtn.addEventListener('click', _ => ipc.send(ClientEvents.Skip))

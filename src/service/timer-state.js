@@ -103,7 +103,6 @@ class TimerState {
   addMobber(mobber) {
     this.mobbers.addMobber(mobber)
     this.persist()
-    this.emit(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
   }
 
   removeMobber(id) {
@@ -119,7 +118,6 @@ class TimerState {
     }
 
     this.persist()
-    this.emit(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
   }
 
   updateMobber(mobber) {

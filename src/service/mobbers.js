@@ -1,5 +1,7 @@
 const newGuid = require('uuid/v4')
 
+const { DefaultMobber } = require('../common/constants')
+
 class Mobbers {
   constructor() {
     this.mobbers = []
@@ -17,7 +19,7 @@ class Mobbers {
   getCurrentAndNextMobbers() {
     const active = this.getActive()
     if (!active.length) {
-      return { current: null, next: null }
+      return { current: DefaultMobber, next: DefaultMobber }
     }
 
     return {
@@ -32,10 +34,8 @@ class Mobbers {
   }
 
   addMobber(mobber) {
-    if (!mobber.id) {
-      mobber.id = newGuid()
-    }
-    this.mobbers.push(mobber)
+    const id = mobber.id || newGuid()
+    this.mobbers.push({ id, ...DefaultMobber, ...mobber })
   }
 
   removeMobber(id) {

@@ -1,5 +1,5 @@
 const config = require('../config')
-const { ServiceEvents } = require('../../common/constants')
+const { DefaultMobber, ServiceEvents } = require('../../common/constants')
 const sandbox = require('../../../test/sandbox')
 const TimerState = require('../timer-state')
 
@@ -56,7 +56,7 @@ describe('state/timer-state', () => {
       const event = getEvent(ServiceEvents.Rotated)
 
       expect(event).to.be.ok
-      expect(event.data).to.deep.equal({ current: null, next: null })
+      expect(event.data).to.deep.equal({ current: DefaultMobber, next: DefaultMobber })
     })
 
     it('emits a turnEnded event', () => {
@@ -158,9 +158,9 @@ describe('state/timer-state', () => {
     let otherMobber
 
     beforeEach(() => {
-      mobber = { id: 'mobber-1', name: 'Current Mobber' }
-      nextMobber = { id: 'mobber-2', name: 'Next Mobber' }
-      otherMobber = { id: 'mobber-3', name: 'Other Mobber' }
+      mobber = { id: 'mobber-1', name: 'Current Mobber', image: '/path/to/image' }
+      nextMobber = { id: 'mobber-2', name: 'Next Mobber', image: '/path/to/next-image' }
+      otherMobber = { id: 'mobber-3', name: 'Other Mobber', image: '/path/to/other-image' }
       subject.addMobber(otherMobber)
       subject.addMobber(mobber)
       subject.addMobber(nextMobber)
@@ -197,7 +197,7 @@ describe('state/timer-state', () => {
   })
 
   describe('#addMobber', () => {
-    const mobber = { id: 'mobber-1', name: 'A' }
+    const mobber = { id: 'mobber-1', name: 'A', image: '/path/to/image' }
 
     it('emits a stateUpdated event', () => {
       subject.addMobber(mobber)
@@ -222,9 +222,9 @@ describe('state/timer-state', () => {
     let mobber3
 
     beforeEach(() => {
-      mobber1 = { id: 'mobber-1', name: 'One' }
-      mobber2 = { id: 'mobber-2', name: 'Two' }
-      mobber3 = { id: 'mobber-3', name: 'Three' }
+      mobber1 = { id: 'mobber-1', name: 'One', image: '/path/to/image-one' }
+      mobber2 = { id: 'mobber-2', name: 'Two', image: '/path/to/image-two' }
+      mobber3 = { id: 'mobber-3', name: 'Three', image: '/path/to/image-three' }
       subject.addMobber(mobber1)
       subject.addMobber(mobber2)
       subject.addMobber(mobber3)
@@ -382,7 +382,10 @@ describe('state/timer-state', () => {
 
       beforeEach(() => {
         expected = {
-          mobbers: [{ id: 'mobber-1', name: 'Jack' }, { id: 'mobber-2', name: 'Jill' }],
+          mobbers: [
+            { id: 'mobber-1', name: 'Jack', image: '/path/to/jack' },
+            { id: 'mobber-2', name: 'Jill', image: '/path/to/jill' }
+          ],
           secondsPerTurn: 599,
           secondsUntilFullscreen: 3,
           snapThreshold: 42,

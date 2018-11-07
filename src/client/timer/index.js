@@ -57,16 +57,10 @@ function drawTimerArc(seconds, maxSeconds) {
 }
 
 ipc.on(ServiceEvents.Rotated, (event, data) => {
-  if (!data.current) {
-    data.current = { name: "Add a mobber" }
-  }
-  currentPicEl.src = data.current.image || "../img/sad-cyclops.png"
+  currentPicEl.src = data.current.image
   currentEl.innerHTML = data.current.name
 
-  if (!data.next) {
-    data.next = data.current
-  }
-  nextPicEl.src = data.next.image || "../img/sad-cyclops.png"
+  nextPicEl.src = data.next.image
   nextEl.innerHTML = data.next.name
 })
 
