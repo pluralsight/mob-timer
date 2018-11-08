@@ -125,6 +125,12 @@ class TimerState {
     this.persist()
   }
 
+  shuffleMobbers() {
+    this.mobbers.shuffleMobbers();
+    this.persist();
+    this.rotate();
+  }
+
   setSecondsPerTurn(value) {
     this.state.secondsPerTurn = value
     this.persist()

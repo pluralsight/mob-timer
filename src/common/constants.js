@@ -33,7 +33,8 @@ const ClientEvents = {
   StartTurn: 'startTurn',
   TimerWindowReady: 'timerWindowReady',
   Unpause: 'unpause',
-  UpdateMobber: 'updateMobber'
+  UpdateMobber: 'updateMobber',
+  ShuffleMobbers: 'shuffleMobbers'
 }
 
 module.exports = {

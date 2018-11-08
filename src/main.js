@@ -27,6 +27,7 @@ ipc.on(ClientEvents.Configure, () => {
   client.showConfigWindow()
   client.closeFullscreenWindow()
 })
+ipc.on(ClientEvents.ShuffleMobbers, (event) => timerState.shuffleMobbers());
 ipc.on(ClientEvents.AddMobber, (event, mobber) => timerState.addMobber(mobber))
 ipc.on(ClientEvents.RemoveMobber, (event, id) => timerState.removeMobber(id))
 ipc.on(ClientEvents.UpdateMobber, (event, mobber) => timerState.updateMobber(mobber))

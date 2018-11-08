@@ -60,6 +60,13 @@ class Mobbers {
       this.currentMobber = active.length ? this.currentMobber % active.length : 0
     }
   }
+
+  shuffleMobbers() {
+    for (let i = this.mobbers.length - 1; i >= 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [this.mobbers[i], this.mobbers[j]] = [this.mobbers[j], this.mobbers[i]];
+    }
+  }
 }
 
 module.exports = Mobbers
