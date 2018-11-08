@@ -22,7 +22,7 @@ class TimerState {
   }
 
   createTimers(TimerClass) {
-    this.mainTimer = new TimerClass({countDown: true, time: this.secondsPerTurn}, secondsRemaining => {
+    this.mainTimer = new TimerClass({ countDown: true, time: this.secondsPerTurn }, secondsRemaining => {
       this.dispatchTimerChange(secondsRemaining)
       if (secondsRemaining < 0) {
         this.pause()
@@ -32,7 +32,7 @@ class TimerState {
       }
     })
 
-    this.alertsTimer = new TimerClass({countDown: false}, alertSeconds => {
+    this.alertsTimer = new TimerClass({ countDown: false }, alertSeconds => {
       this.callback('alert', alertSeconds)
     })
   }
@@ -153,6 +153,12 @@ class TimerState {
   setTimerAlwaysOnTop(value) {
     this.timerAlwaysOnTop = value
     this.publishConfig()
+  }
+
+  shuffleMobbers() {
+    this.mobbers.shuffleMobbers();
+    this.persist();
+    this.rotate();
   }
 
   getState() {

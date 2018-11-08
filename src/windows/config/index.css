@@ -74,6 +74,16 @@ input {
   cursor: pointer;
 }
 
+.btnShuffle {
+  background-color: var(--button-background-color);
+  border: 0;
+  border-radius: 3px;
+  padding: 7px 10px;
+  color: var(--button-text-color);
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
 h1 {
   font-size: 18px;
   border-bottom: 1px solid var(--main-text-color);
