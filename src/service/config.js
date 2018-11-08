@@ -11,7 +11,7 @@ const DEFAULT_CONFIG = {
   mobbers: [],
   secondsPerTurn: 600,
   secondsUntilFullscreen: 30,
-  snapThreshold: 25,
+  snapThreshold: 0,
   timerAlwaysOnTop: true
 }
 
@@ -32,7 +32,7 @@ function getConfigFile() {
 
 function read() {
   return fs.existsSync(getConfigFile())
-    ? { ...DEFAULT_CONFIG, ...JSON.parse(fs.readFileSync(getConfigFile(), 'utf-8')) }
+    ? { ...DEFAULT_CONFIG, ...JSON.parse(fs.readFileSync(getConfigFile(), 'utf-8')), snapThreshold: 0 }
     : DEFAULT_CONFIG
 }
 

@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "chai": "4.2.0",
-    "electron": "3.0.7",
+    "electron": "3.0.8",
     "electron-packager": "12.2.0",
     "mocha": "5.2.0",
     "sinon": "7.1.1",
