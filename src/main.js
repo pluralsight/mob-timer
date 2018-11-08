@@ -15,15 +15,15 @@ app.on('ready', () => {
   client.createTimerWindow()
 })
 
-ipc.on(ClientEvents.TimerWindowReady, _ => timerState.initialize())
-ipc.on(ClientEvents.ConfigWindowReady, _ => timerState.persist())
-ipc.on(ClientEvents.FullscreenWindowReady, _ => timerState.persist())
+ipc.on(ClientEvents.TimerWindowReady, () => timerState.initialize())
+ipc.on(ClientEvents.ConfigWindowReady, () => timerState.persist())
+ipc.on(ClientEvents.FullscreenWindowReady, () => timerState.persist())
 
-ipc.on(ClientEvents.Pause, _ => timerState.pause())
-ipc.on(ClientEvents.Unpause, _ => timerState.start())
-ipc.on(ClientEvents.Skip, _ => timerState.rotate())
-ipc.on(ClientEvents.StartTurn, _ => timerState.start())
-ipc.on(ClientEvents.Configure, _ => {
+ipc.on(ClientEvents.Pause, () => timerState.pause())
+ipc.on(ClientEvents.Unpause, () => timerState.start())
+ipc.on(ClientEvents.Skip, () => timerState.rotate())
+ipc.on(ClientEvents.StartTurn, () => timerState.start())
+ipc.on(ClientEvents.Configure, () => {
   client.showConfigWindow()
   client.closeFullscreenWindow()
 })

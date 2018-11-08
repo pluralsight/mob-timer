@@ -18,8 +18,8 @@ ipc.on(ServiceEvents.Rotated, (event, data) => {
   nextPicEl.src = data.next.image
 })
 
-skipBtn.addEventListener('click', _ => ipc.send(ClientEvents.Skip))
-startTurnBtn.addEventListener('click', _ => ipc.send(ClientEvents.StartTurn))
-configureBtn.addEventListener('click', _ => ipc.send(ClientEvents.Configure))
+skipBtn.addEventListener('click', () => ipc.send(ClientEvents.Skip))
+startTurnBtn.addEventListener('click', () => ipc.send(ClientEvents.StartTurn))
+configureBtn.addEventListener('click', () => ipc.send(ClientEvents.Configure))
 
 ipc.send(ClientEvents.FullscreenWindowReady)

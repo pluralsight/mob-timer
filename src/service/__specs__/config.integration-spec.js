@@ -21,6 +21,6 @@ describe('state/config', () => {
       subject.setConfigFile(null)
     })
 
-    it('writes the config to file', () => expect(subject.read()).to.deep.equal(testConfig))
+    it('writes the config to file', () => expect(subject.read()).to.deep.equal({ ...subject.DEFAULT_CONFIG, ...testConfig }))
   })
 })

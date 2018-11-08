@@ -32,7 +32,7 @@ function clearCanvas() {
 function drawTimerCircle() {
   const begin = 0
   const end = 2 * Math.PI
-  drawArc(begin, end, "#EEEEEE")
+  drawArc(begin, end, '#EEEEEE')
 }
 
 function drawArc(begin, end, color) {
@@ -51,7 +51,7 @@ function drawTimerArc(seconds, maxSeconds) {
   if (percent === 0) {
     return
   }
-  const begin = -(.5 * Math.PI)
+  const begin = -(0.5 * Math.PI)
   const end = begin + (2 * Math.PI * percent)
   drawArc(begin, end, theme.mobberBorderHighlightColor)
 }
@@ -64,14 +64,14 @@ ipc.on(ServiceEvents.Rotated, (event, data) => {
   nextEl.innerHTML = data.next.name
 })
 
-ipc.on(ServiceEvents.Paused, _ => {
+ipc.on(ServiceEvents.Paused, () => {
   paused = true
   containerEl.classList.add('isPaused')
   toggleBtn.classList.add('play')
   toggleBtn.classList.remove('pause')
 })
 
-ipc.on(ServiceEvents.Started, _ => {
+ipc.on(ServiceEvents.Started, () => {
   paused = false
   containerEl.classList.remove('isPaused')
   containerEl.classList.remove('isTurnEnded')
@@ -79,7 +79,7 @@ ipc.on(ServiceEvents.Started, _ => {
   toggleBtn.classList.add('pause')
 })
 
-ipc.on(ServiceEvents.TurnEnded, (event, data) => {
+ipc.on(ServiceEvents.TurnEnded, () => {
   paused = true
   containerEl.classList.remove('isPaused')
   containerEl.classList.add('isTurnEnded')
@@ -99,14 +99,14 @@ ipc.on(ServiceEvents.Alert, (event, data) => {
   }
 })
 
-ipc.on(ServiceEvents.StopAlerts, _ => {
+ipc.on(ServiceEvents.StopAlerts, () => {
   alertAudio.pause()
 })
 
-toggleBtn.addEventListener('click', _ => {
+toggleBtn.addEventListener('click', () => {
   paused ? ipc.send(ClientEvents.Unpause) : ipc.send(ClientEvents.Pause)
 })
-nextBtn.addEventListener('click', _ => ipc.send(ClientEvents.Skip))
-configureBtn.addEventListener('click', _ => ipc.send(ClientEvents.Configure))
+nextBtn.addEventListener('click', () => ipc.send(ClientEvents.Skip))
+configureBtn.addEventListener('click', () => ipc.send(ClientEvents.Configure))
 
 ipc.send(ClientEvents.TimerWindowReady)

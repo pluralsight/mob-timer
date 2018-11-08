@@ -2,7 +2,7 @@ const path = require('path')
 
 const DefaultMobber = {
   name: 'Add a mobber',
-  image: path.join(__dirname, '..', 'client', 'img', 'sad-cyclops.png'),
+  image: path.join(__dirname, '..', 'client', 'img', 'sad-cyclops.png')
 }
 
 const ServiceEvents = {

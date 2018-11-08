@@ -81,6 +81,10 @@ describe('state/timer-state', () => {
   })
 
   describe('#start', () => {
+    afterEach(() => {
+      subject.pause()
+    })
+
     it('starts the main timer', () => {
       subject.start()
       expect(subject.mainTimer.isRunning).to.be.true
@@ -118,6 +122,10 @@ describe('state/timer-state', () => {
   })
 
   describe('#mainTimer', () => {
+    afterEach(() => {
+      subject.pause()
+    })
+
     it('emits a timerChange event when the timer ticks', () => {
       subject.mainTimer.tick(599)
       const event = getEvent(ServiceEvents.TimerChange)
