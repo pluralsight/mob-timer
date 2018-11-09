@@ -1,6 +1,6 @@
 const Timer = require('../timer')
 
-describe('state/timer', () => {
+describe('service/timer', () => {
   let subject
   let timerOptions
   let timerTicks

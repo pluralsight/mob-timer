@@ -12,10 +12,6 @@ class Mobbers {
     return this.mobbers
   }
 
-  getActive() {
-    return this.mobbers.filter(m => !m.disabled)
-  }
-
   getCurrentAndNextMobbers() {
     const active = this.getActive()
     if (!active.length) {
@@ -24,28 +20,36 @@ class Mobbers {
 
     return {
       current: active[this.currentMobber],
-      next: active[(this.currentMobber + 1) % active.length]
+      next: active[this.getNextMobber(active)]
     }
   }
 
-  rotate() {
-    const active = this.getActive()
-    this.currentMobber = active.length ? (this.currentMobber + 1) % active.length : 0
+  getActive() {
+    return this.mobbers.filter(m => !m.disabled)
   }
 
-  addMobber(mobber) {
+  getNextMobber(active) {
+    active = active || this.getActive()
+    return (this.currentMobber + 1) % (active.length || 1)
+  }
+
+  rotate() {
+    this.currentMobber = this.getNextMobber()
+  }
+
+  add(mobber) {
     const id = mobber.id || newGuid()
     this.mobbers.push({ id, ...DefaultMobber, ...mobber })
   }
 
-  removeMobber(id) {
+  remove(id) {
     this.mobbers = this.mobbers.filter(m => m.id !== id)
-    if (this.currentMobber >= this.mobbers.length) {
+    if (this.currentMobber >= this.getActive().length) {
       this.currentMobber = 0
     }
   }
 
-  updateMobber(mobber) {
+  update(mobber) {
     const index = this.mobbers.findIndex(m => m.id === mobber.id)
     if (index >= 0) {
       const currentMobber = this.getActive()[this.currentMobber]
@@ -55,9 +59,9 @@ class Mobbers {
 
       if (currentMobber && currentMobber.id !== mobber.id) {
         this.currentMobber = active.findIndex(m => m.id === currentMobber.id)
+      } else {
+        this.currentMobber = this.currentMobber % (active.length || 1)
       }
-
-      this.currentMobber = active.length ? this.currentMobber % active.length : 0
     }
   }
 }

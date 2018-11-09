@@ -13,7 +13,7 @@ class TimerState {
     this.state = config.read()
 
     this.mobbers = new Mobbers()
-    this.state.mobbers && this.state.mobbers.forEach(m => this.mobbers.addMobber(m))
+    this.state.mobbers && this.state.mobbers.forEach(m => this.mobbers.add(m))
   }
 
   getState() {
@@ -101,7 +101,7 @@ class TimerState {
   }
 
   addMobber(mobber) {
-    this.mobbers.addMobber(mobber)
+    this.mobbers.add(mobber)
     this.persist()
   }
 
@@ -109,7 +109,7 @@ class TimerState {
     const currentMobber = this.mobbers.getCurrentAndNextMobbers().current
     const isRemovingCurrentMobber = currentMobber && currentMobber.id === id
 
-    this.mobbers.removeMobber(id)
+    this.mobbers.remove(id)
 
     if (isRemovingCurrentMobber) {
       this.pause()
@@ -121,7 +121,7 @@ class TimerState {
   }
 
   updateMobber(mobber) {
-    this.mobbers.updateMobber(mobber)
+    this.mobbers.update(mobber)
     this.persist()
   }
 

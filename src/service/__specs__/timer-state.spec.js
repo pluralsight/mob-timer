@@ -3,7 +3,7 @@ const { DefaultMobber, ServiceEvents } = require('../../common/constants')
 const sandbox = require('../../../test/sandbox')
 const TimerState = require('../timer-state')
 
-describe('state/timer-state', () => {
+describe('service/timer-state', () => {
   let subject
   let events
 

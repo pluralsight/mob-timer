@@ -36,7 +36,10 @@
       "error",
       {
         "allowModules": [
-          "electron"
+          "electron",
+          "chai",
+          "sinon",
+          "sinon-chai"
         ]
       }
     ],

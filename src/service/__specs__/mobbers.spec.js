@@ -1,7 +1,7 @@
 const { DefaultMobber } = require('../../common/constants')
 const Mobbers = require('../mobbers')
 
-describe('state/mobbers', () => {
+describe('service/mobbers', () => {
   let subject
   let mobber
 
@@ -13,33 +13,46 @@ describe('state/mobbers', () => {
   describe('#constructor', () => {
     it('defaults to empty mobbers', () => {
       expect(subject.getAll()).to.deep.equal([])
+      expect(subject.getActive()).to.deep.equal([])
     })
   })
 
-  describe('#addMobber', () => {
-    it('adds the mobber and assigns an id', () => {
-      mobber = { name: 'Testerson', image: '/path/to/image' }
-      subject.addMobber(mobber)
-
-      const result = subject.getAll()[0]
-
-      expect(result.name).to.equal(mobber.name)
-      expect(result.id).to.not.be.null
+  describe('#add', () => {
+    it('adds the mobber', () => {
+      subject.add(mobber)
+      expect(subject.getAll()).to.deep.equal([mobber])
     })
 
-    describe('when an id is provided', () => {
-      it('adds the mobber with provided id', () => {
-        mobber = { id: 'test-id', name: 'Testerson', image: '/path/to/image' }
-        subject.addMobber(mobber)
-        expect(subject.getAll()).to.deep.equal([mobber])
+    describe('when an id is not provided', () => {
+      it('adds the mobber and assigns an id', () => {
+        mobber = { name: 'Testerson', image: '/path/to/image' }
+        subject.add(mobber)
+
+        const result = subject.getAll()
+
+        expect(result.length).to.equal(1)
+        expect(result[0].name).to.equal(mobber.name)
+        expect(result[0].image).to.equal(mobber.image)
+        expect(result[0].id).to.not.be.null
+      })
+    })
+
+    describe('when an image is not provided', () => {
+      it('adds the mobber with the default image', () => {
+        mobber = { id: 'test-id', name: 'Testerson' }
+        subject.add(mobber)
+
+        const result = subject.getAll()
+
+        expect(result).to.deep.equal([{ ...mobber, image: DefaultMobber.image }])
       })
     })
 
     describe('when multiple mobbers exist', () => {
       it('adds the mobber to the end of the list', () => {
         const nextMobber = { id: 'mobber-2', name: 'Next Mobber', image: '/path/to/image' }
-        subject.addMobber(mobber)
-        subject.addMobber(nextMobber)
+        subject.add(mobber)
+        subject.add(nextMobber)
 
         const results = subject.getAll()
 
@@ -65,7 +78,7 @@ describe('state/mobbers', () => {
     describe('when there is one mobber', () => {
       it('returns the same mobber for current and next', () => {
         expected = { current: mobber, next: mobber }
-        subject.addMobber(mobber)
+        subject.add(mobber)
 
         expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
       })
@@ -80,16 +93,16 @@ describe('state/mobbers', () => {
       })
 
       it('return the current and next mobber', () => {
-        subject.addMobber(mobber)
-        subject.addMobber(nextMobber)
+        subject.add(mobber)
+        subject.add(nextMobber)
 
         expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
       })
 
       it('excludes disabled mobbers', () => {
-        subject.addMobber(mobber)
-        subject.addMobber({ name: 'Not Me', disabled: true })
-        subject.addMobber(nextMobber)
+        subject.add(mobber)
+        subject.add({ name: 'Not Me', disabled: true })
+        subject.add(nextMobber)
 
         expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
       })
@@ -113,7 +126,7 @@ describe('state/mobbers', () => {
     describe('when there is one mobber', () => {
       it('does nothing', () => {
         expected = { current: mobber, next: mobber }
-        subject.addMobber(mobber)
+        subject.add(mobber)
 
         subject.rotate()
 
@@ -130,8 +143,8 @@ describe('state/mobbers', () => {
       })
 
       it('rotates current and next mobbers', () => {
-        subject.addMobber(nextMobber)
-        subject.addMobber(mobber)
+        subject.add(nextMobber)
+        subject.add(mobber)
 
         subject.rotate()
 
@@ -139,8 +152,8 @@ describe('state/mobbers', () => {
       })
 
       it('loops through the list', () => {
-        subject.addMobber(mobber)
-        subject.addMobber(nextMobber)
+        subject.add(mobber)
+        subject.add(nextMobber)
 
         subject.rotate()
         subject.rotate()
@@ -149,11 +162,11 @@ describe('state/mobbers', () => {
       })
 
       it('excludes disabled mobbers', () => {
-        subject.addMobber({ name: 'Not Me', disabled: false })
-        subject.addMobber(mobber)
-        subject.addMobber({ name: 'Disabled One', disabled: true })
-        subject.addMobber({ name: 'Disaabled Two', disabled: true })
-        subject.addMobber(nextMobber)
+        subject.add({ name: 'Not Me', disabled: false })
+        subject.add(mobber)
+        subject.add({ name: 'Disabled One', disabled: true })
+        subject.add({ name: 'Disaabled Two', disabled: true })
+        subject.add(nextMobber)
 
         subject.rotate()
 
@@ -162,7 +175,7 @@ describe('state/mobbers', () => {
     })
   })
 
-  describe('#removeMobber', () => {
+  describe('#remove', () => {
     let otherMobber
 
     beforeEach(() => {
@@ -170,21 +183,21 @@ describe('state/mobbers', () => {
     })
 
     it('removes the mobber by id', () => {
-      subject.addMobber(mobber)
-      subject.addMobber({ name: 'Remove Me', id: 'remove-me' })
-      subject.addMobber(otherMobber)
+      subject.add(mobber)
+      subject.add({ name: 'Remove Me', id: 'remove-me' })
+      subject.add(otherMobber)
 
-      subject.removeMobber('remove-me')
+      subject.remove('remove-me')
 
       expect(subject.getAll()).to.deep.equal([mobber, otherMobber])
     })
 
     describe('when the id does not match a mobber', () => {
       it('does nothing', () => {
-        subject.addMobber(mobber)
-        subject.addMobber(otherMobber)
+        subject.add(mobber)
+        subject.add(otherMobber)
 
-        subject.removeMobber('remove-me')
+        subject.remove('remove-me')
 
         expect(subject.getAll()).to.deep.equal([mobber, otherMobber])
       })
@@ -198,25 +211,26 @@ describe('state/mobbers', () => {
       })
 
       it('updates the current and next mobbers', () => {
-        subject.addMobber(otherMobber)
-        subject.addMobber({ name: 'Remove Me', id: 'remove-me' })
-        subject.addMobber(mobber)
+        subject.add(otherMobber)
+        subject.add({ name: 'Remove Me', id: 'remove-me' })
+        subject.add(mobber)
         subject.rotate()
 
-        subject.removeMobber('remove-me')
+        subject.remove('remove-me')
 
         expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
       })
 
-      describe('when the current mobber is at the end of the list', () => {
+      describe('when the current mobber is the last active mobber in the list', () => {
         it('loops through the list', () => {
-          subject.addMobber(mobber)
-          subject.addMobber(otherMobber)
-          subject.addMobber({ name: 'Remove Me', id: 'remove-me' })
+          subject.add(mobber)
+          subject.add(otherMobber)
+          subject.add({ name: 'No one of consequence', disabled: true })
+          subject.add({ name: 'Remove Me', id: 'remove-me' })
           subject.rotate()
           subject.rotate()
 
-          subject.removeMobber('remove-me')
+          subject.remove('remove-me')
 
           expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
         })
@@ -224,7 +238,7 @@ describe('state/mobbers', () => {
     })
   })
 
-  describe('#updateMobber', () => {
+  describe('#update', () => {
     beforeEach(() => {
       mobber = { id: 'mobber-1', name: 'Testerson', image: '/path/to/image' }
     })
@@ -232,18 +246,18 @@ describe('state/mobbers', () => {
     it('replaces the mobber matching the id', () => {
       const otherMobber = { id: 'other-id', name: 'Other Mobber', image: '/other/image' }
       const updatedMobber = { id: mobber.id, name: 'Updated Mobber', image: '/updated/image' }
-      subject.addMobber(mobber)
-      subject.addMobber(otherMobber)
+      subject.add(mobber)
+      subject.add(otherMobber)
 
-      subject.updateMobber(updatedMobber)
+      subject.update(updatedMobber)
 
       expect(subject.getAll()).to.deep.equal([updatedMobber, otherMobber])
     })
 
     describe('when the id does not match a mobber', () => {
       it('does nothing', () => {
-        subject.addMobber(mobber)
-        subject.updateMobber({ id: 'other-id', name: 'Other Mobber', image: '/other/image' })
+        subject.add(mobber)
+        subject.update({ id: 'other-id', name: 'Other Mobber', image: '/other/image' })
 
         expect(subject.getAll()).to.deep.equal([mobber])
       })
@@ -254,12 +268,12 @@ describe('state/mobbers', () => {
         const nextMobber = { id: 'mobber-2', name: 'Next Mobber', image: '/path/to/image' }
         const otherMobber = { id: 'mobber-3', name: 'Other Mobber', image: '/path/to/image', disabled: true }
         const expected = { current: nextMobber, next: mobber }
-        subject.addMobber(mobber)
-        subject.addMobber(otherMobber)
-        subject.addMobber(nextMobber)
+        subject.add(mobber)
+        subject.add(otherMobber)
+        subject.add(nextMobber)
         subject.rotate()
 
-        subject.updateMobber({ id: 'mobber-3', name: 'Other Mobber', disabled: false })
+        subject.update({ id: 'mobber-3', name: 'Other Mobber', disabled: false })
 
         expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
       })
@@ -270,13 +284,13 @@ describe('state/mobbers', () => {
         const nextMobber = { id: 'mobber-2', name: 'Next Mobber', image: '/path/to/image' }
         const otherMobber = { id: 'mobber-3', name: 'Other Mobber', image: '/path/to/image' }
         const expected = { current: nextMobber, next: mobber }
-        subject.addMobber(mobber)
-        subject.addMobber(otherMobber)
-        subject.addMobber(nextMobber)
+        subject.add(mobber)
+        subject.add(otherMobber)
+        subject.add(nextMobber)
         subject.rotate()
         subject.rotate()
 
-        subject.updateMobber({ id: 'mobber-3', name: 'Other Mobber', disabled: true })
+        subject.update({ id: 'mobber-3', name: 'Other Mobber', disabled: true })
 
         expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
       })
@@ -286,11 +300,11 @@ describe('state/mobbers', () => {
           const nextMobber = { id: 'mobber-2', name: 'Next Mobber', image: '/path/to/image' }
           const otherMobber = { id: 'mobber-3', name: 'Other Mobber', image: '/path/to/image' }
           const expected = { current: mobber, next: nextMobber }
-          subject.addMobber(otherMobber)
-          subject.addMobber(mobber)
-          subject.addMobber(nextMobber)
+          subject.add(otherMobber)
+          subject.add(mobber)
+          subject.add(nextMobber)
 
-          subject.updateMobber({ id: 'mobber-3', name: 'Other Mobber', disabled: true })
+          subject.update({ id: 'mobber-3', name: 'Other Mobber', disabled: true })
 
           expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
         })
@@ -300,13 +314,13 @@ describe('state/mobbers', () => {
             const nextMobber = { id: 'mobber-2', name: 'Next Mobber', image: '/path/to/image' }
             const otherMobber = { id: 'mobber-3', name: 'Other Mobber', image: '/path/to/image' }
             const expected = { current: mobber, next: nextMobber }
-            subject.addMobber(mobber)
-            subject.addMobber(nextMobber)
-            subject.addMobber(otherMobber)
+            subject.add(mobber)
+            subject.add(nextMobber)
+            subject.add(otherMobber)
             subject.rotate()
             subject.rotate()
 
-            subject.updateMobber({ id: 'mobber-3', name: 'Other Mobber', disabled: true })
+            subject.update({ id: 'mobber-3', name: 'Other Mobber', disabled: true })
 
             expect(subject.getCurrentAndNextMobbers()).to.deep.equal(expected)
           })

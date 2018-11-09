@@ -3,7 +3,7 @@ const path = require('path')
 
 const subject = require('../config')
 
-describe('state/config', () => {
+describe('service/config', () => {
   describe('when persisting config', () => {
     let overrideFile
     let testConfig

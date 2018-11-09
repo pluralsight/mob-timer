@@ -3,7 +3,7 @@ const fs = require('fs')
 const subject = require('../config')
 const sandbox = require('../../../test/sandbox')
 
-describe('state/config', () => {
+describe('service/config', () => {
   let configDirExists
   let configFileExists
 
