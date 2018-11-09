@@ -5,6 +5,27 @@ const DefaultMobber = {
   image: path.join(__dirname, '..', 'client', 'img', 'sad-cyclops.png')
 }
 
+const ConfigWindowConfig = {
+  width: 420,
+  height: 500,
+  icon: path.join(__dirname, '..', 'client', 'img', 'icon.png'),
+  autoHideMenuBar: true
+}
+
+const FullscreenWindowConfig = {
+  alwaysOnTop: true,
+  frame: false,
+  resizable: false
+}
+
+const TimerWindowConfig = {
+  frame: false,
+  height: 90,
+  icon: path.join(__dirname, '..', 'client', 'img', 'icon.png'),
+  resizable: false,
+  width: 220
+}
+
 const ServiceEvents = {
   Alert: 'alert',
   Paused: 'paused',
@@ -38,6 +59,9 @@ const ClientEvents = {
 
 module.exports = {
   ClientEvents,
+  ConfigWindowConfig,
+  FullscreenWindowConfig,
   DefaultMobber,
-  ServiceEvents
+  ServiceEvents,
+  TimerWindowConfig
 }

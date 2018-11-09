@@ -1,10 +1,9 @@
 const config = require('../config')
 const { DefaultMobber, ServiceEvents } = require('../../common/constants')
 const sandbox = require('../../../test/sandbox')
-const TimerState = require('../timer-state')
+const subject = require('../timer-state')
 
 describe('service/timer-state', () => {
-  let subject
   let events
 
   const captureEvent = (event, data) => events.push({ event, data })
@@ -16,7 +15,7 @@ describe('service/timer-state', () => {
     sandbox.stub(config, 'read').returns(config.DEFAULT_CONFIG)
     sandbox.stub(config, 'write')
 
-    subject = new TimerState()
+    subject.loadState()
     subject.onEvent(captureEvent)
   })
 
@@ -42,9 +41,24 @@ describe('service/timer-state', () => {
     })
   })
 
-  describe('#initialize', () => {
+  describe('#publish', () => {
+    it('emits a rotated event', () => {
+      subject.publish()
+      const event = getEvent(ServiceEvents.Rotated)
+
+      expect(event).to.be.ok
+      expect(event.data).to.deep.equal({ current: DefaultMobber, next: DefaultMobber })
+    })
+
+    it('emits a stateUpdated event', () => {
+      subject.publish()
+      expect(getEvent(ServiceEvents.StateUpdated)).to.be.ok
+    })
+  })
+
+  describe('#publishInitial', () => {
     it('emits a timerChange event', () => {
-      subject.initialize()
+      subject.publishInitial()
       const event = getEvent(ServiceEvents.TimerChange)
 
       expect(event).to.be.ok
@@ -52,7 +66,7 @@ describe('service/timer-state', () => {
     })
 
     it('emits a rotated event', () => {
-      subject.initialize()
+      subject.publishInitial()
       const event = getEvent(ServiceEvents.Rotated)
 
       expect(event).to.be.ok
@@ -60,12 +74,12 @@ describe('service/timer-state', () => {
     })
 
     it('emits a turnEnded event', () => {
-      subject.initialize()
+      subject.publishInitial()
       expect(getEvent(ServiceEvents.TurnEnded)).to.be.ok
     })
 
     it('emits a stateUpdated event', () => {
-      subject.initialize()
+      subject.publishInitial()
       expect(getEvent(ServiceEvents.StateUpdated)).to.be.ok
     })
   })

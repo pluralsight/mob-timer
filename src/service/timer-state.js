@@ -49,17 +49,19 @@ class TimerState {
   }
 
   persist() {
-    const currentState = this.getState()
-    config.write(currentState)
+    config.write(this.getState())
+    this.publish()
+  }
 
-    this.emit(ServiceEvents.StateUpdated, currentState)
+  publish() {
+    this.emit(ServiceEvents.StateUpdated, this.getState())
     this.emit(ServiceEvents.Rotated, this.mobbers.getCurrentAndNextMobbers())
   }
 
-  initialize() {
-    this.rotate()
+  publishInitial() {
+    this.reset()
     this.emit(ServiceEvents.TurnEnded)
-    this.persist()
+    this.publish()
   }
 
   reset() {
@@ -157,4 +159,4 @@ class TimerState {
   }
 }
 
-module.exports = TimerState
+module.exports = new TimerState()

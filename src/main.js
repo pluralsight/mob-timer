@@ -1,48 +1,41 @@
 const { app, ipcMain: ipc } = require('electron')
 
-const client = require('./client')
+const windows = require('./windows')
 const config = require('./service/config')
 const { ClientEvents } = require('./common/constants')
-const TimerState = require('./service/timer-state')
+const state = require('./service/timer-state')
 
 config.init()
-const timerState = new TimerState()
 
-app.on('ready', () => {
-  timerState.onEvent(client.dispatchEvent)
-  client.setState(timerState.getState())
+const handleReady = () => {
+  state.onEvent(windows.dispatchEvent)
+  windows.showTimerWindow()
+}
 
-  client.createTimerWindow()
-})
-
-ipc.on(ClientEvents.TimerWindowReady, () => timerState.initialize())
-ipc.on(ClientEvents.ConfigWindowReady, () => timerState.persist())
-ipc.on(ClientEvents.FullscreenWindowReady, () => timerState.persist())
-
-ipc.on(ClientEvents.Pause, () => timerState.pause())
-ipc.on(ClientEvents.Unpause, () => timerState.start())
-ipc.on(ClientEvents.Skip, () => timerState.rotate())
-ipc.on(ClientEvents.StartTurn, () => timerState.start())
-ipc.on(ClientEvents.Configure, () => {
-  client.showConfigWindow()
-  client.closeFullscreenWindow()
-})
-ipc.on(ClientEvents.AddMobber, (event, mobber) => timerState.addMobber(mobber))
-ipc.on(ClientEvents.RemoveMobber, (event, id) => timerState.removeMobber(id))
-ipc.on(ClientEvents.UpdateMobber, (event, mobber) => timerState.updateMobber(mobber))
-ipc.on(ClientEvents.SetSecondsPerTurn, (event, secondsPerTurn) => timerState.setSecondsPerTurn(secondsPerTurn))
-ipc.on(ClientEvents.SetSecondsUntilFullscreen, (event, secondsUntilFullscreen) => timerState.setSecondsUntilFullscreen(secondsUntilFullscreen))
-ipc.on(ClientEvents.SetSnapThreshold, (event, threshold) => timerState.setSnapThreshold(threshold))
-ipc.on(ClientEvents.SetAlertSoundTimes, (event, alertSoundTimes) => timerState.setAlertSoundTimes(alertSoundTimes))
-ipc.on(ClientEvents.SetAlertSound, (event, alertSound) => timerState.setAlertSound(alertSound))
-ipc.on(ClientEvents.SetTimerAlwaysOnTop, (event, value) => timerState.setTimerAlwaysOnTop(value))
-
+app.on('ready', handleReady)
+app.on('activate', handleReady)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
-app.on('activate', () => {
-  client.createTimerWindow()
-})
+ipc.on(ClientEvents.TimerWindowReady, () => state.publishInitial())
+ipc.on(ClientEvents.ConfigWindowReady, () => state.publish())
+ipc.on(ClientEvents.FullscreenWindowReady, () => state.publish())
+
+ipc.on(ClientEvents.Pause, () => state.pause())
+ipc.on(ClientEvents.Unpause, () => state.start())
+ipc.on(ClientEvents.Skip, () => state.rotate())
+ipc.on(ClientEvents.StartTurn, () => state.start())
+
+ipc.on(ClientEvents.Configure, () => windows.showConfigWindow())
+ipc.on(ClientEvents.AddMobber, (event, mobber) => state.addMobber(mobber))
+ipc.on(ClientEvents.RemoveMobber, (event, id) => state.removeMobber(id))
+ipc.on(ClientEvents.UpdateMobber, (event, mobber) => state.updateMobber(mobber))
+ipc.on(ClientEvents.SetSecondsPerTurn, (event, secondsPerTurn) => state.setSecondsPerTurn(secondsPerTurn))
+ipc.on(ClientEvents.SetSecondsUntilFullscreen, (event, secondsUntilFullscreen) => state.setSecondsUntilFullscreen(secondsUntilFullscreen))
+ipc.on(ClientEvents.SetSnapThreshold, (event, threshold) => state.setSnapThreshold(threshold))
+ipc.on(ClientEvents.SetAlertSoundTimes, (event, alertSoundTimes) => state.setAlertSoundTimes(alertSoundTimes))
+ipc.on(ClientEvents.SetAlertSound, (event, alertSound) => state.setAlertSound(alertSound))
+ipc.on(ClientEvents.SetTimerAlwaysOnTop, (event, value) => state.setTimerAlwaysOnTop(value))
