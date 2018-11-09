@@ -108,7 +108,7 @@ addMobberForm.addEventListener('submit', event => {
 
 shuffle.addEventListener("click", event => {
   event.preventDefault();
-  ipc.send('shuffleMobbers');
+  ipc.send(ClientEvents.ShuffleMobbers);
 });
 
 fullscreenSecondsEl.addEventListener('change', () => {

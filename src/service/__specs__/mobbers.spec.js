@@ -16,6 +16,27 @@ describe('state/mobbers', () => {
     })
   })
 
+  describe('#shuffleMobbers', () => {
+    it('shuffles the mobbers so there is a different order', () => {
+      subject.addMobber(mobber);
+      subject.addMobber( {name: 'TestersonFace', id: 'mobber-2'});
+      subject.addMobber( {name: 'TestersonHead', id: 'mobber-3'});
+      subject.addMobber( {name: 'TestersonNose', id: 'mobber-4'});
+      let mobberCopy = subject.getAll().slice();
+      subject.shuffleMobbers();
+      let areSameArray = true;
+      for(let i = 0; i < mobberCopy.length; i++)
+      {
+        if(mobberCopy[i] !== subject.getAll()[i])
+        {
+          areSameArray = false;
+          break;
+        }
+      }
+      expect(areSameArray).equal(false);
+    })
+  });
+
   describe('#addMobber', () => {
     it('adds the mobber and assigns an id', () => {
       mobber = { name: 'Testerson', image: '/path/to/image' }
