@@ -137,15 +137,22 @@ exports.setConfigState = data => {
 }
 
 function createAlwaysOnTopFullscreenInterruptingWindow(options) {
+  return whileAppDockHidden(() => {
+    const window = new electron.BrowserWindow(options)
+    window.setAlwaysOnTop(true, 'screen-saver')
+    return window
+  })
+}
+
+function whileAppDockHidden(work) {
   if (app.dock) {
     // Mac OS: The window will be able to float above fullscreen windows too
     app.dock.hide()
   }
-  const window = new electron.BrowserWindow(options)
-  window.setAlwaysOnTop(true, 'screen-saver')
+  const result = work()
   if (app.dock) {
     // Mac OS: Show in dock again, window has been created
     app.dock.show()
   }
-  return window
+  return result
 }
