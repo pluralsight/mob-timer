@@ -1,7 +1,10 @@
 language: node_js
 cache: npm
+node_js:
+  - "6"
 os:
   - linux
   - osx
+  - windows
 script:
   - npm run test
