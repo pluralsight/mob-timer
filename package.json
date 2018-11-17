@@ -8,7 +8,8 @@
     "build-win": "electron-packager . --platform=win32 --arch=x64 --out=dist --icon=icon --overwrite",
     "build-mac": "electron-packager . --platform=darwin --arch=x64 --out=dist --icon=icon --overwrite",
     "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
-    "test": "mocha -w --use_strict --recursive",
+    "test": "mocha --use_strict --recursive",
+    "tdd": "mocha --use_strict --recursive -w",
     "integration_test": "mocha --use_strict --recursive ./integration_test"
   },
   "repository": {
