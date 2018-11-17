@@ -82,8 +82,7 @@ exports.createFullscreenWindow = () => {
     return
   }
 
-  const primaryDisplay = electron.screen.getPrimaryDisplay()
-  const { width, height } = primaryDisplay.bounds
+  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
   fullscreenWindow = createAlwaysOnTopFullscreenInterruptingWindow({
     width,
     height,
