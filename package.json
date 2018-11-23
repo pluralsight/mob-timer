@@ -10,6 +10,7 @@
     "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
     "test": "mocha --use_strict --recursive",
     "tdd": "mocha --use_strict --recursive -w",
+    "watch": "mocha --use_strict --recursive -w",
     "integration_test": "mocha --use_strict --recursive ./integration_test"
   },
   "repository": {
