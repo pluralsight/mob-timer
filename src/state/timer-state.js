@@ -112,7 +112,17 @@ class TimerState {
   }
 
   updateMobber(mobber) {
+    const currentMobber = this.mobbers.getCurrentAndNextMobbers().current
+    const disablingCurrentMobber = (currentMobber.id == mobber.id && mobber.disabled)
+
     this.mobbers.updateMobber(mobber)
+
+    if (disablingCurrentMobber) {
+      this.pause()
+      this.reset()
+      this.callback('turnEnded')
+    }
+
     this.publishConfig()
   }
 
