@@ -267,6 +267,27 @@ describe('timer-state', () => {
       assert.equal(event.data.mobbers[0].name, 'A2')
       assert.equal(event.data.secondsPerTurn, 600)
     })
+
+    it('should update correctly if the update disabled the current mobber', () => {
+      timerState.addMobber({id: 'b', name: 'B'})
+      timerState.addMobber({id: 'c', name: 'C'})
+      timerState.rotate()
+      events = []
+
+      timerState.updateMobber({id: 'b', name: 'B', disabled: true})
+      
+      assertEvent('paused')
+      assertEvent('turnEnded')
+      assertEvent('configUpdated')
+      var rotatedEvent = assertEvent('rotated')
+      assert.equal(rotatedEvent.data.current.name, 'C')
+      assert.equal(rotatedEvent.data.next.name, 'A2')
+      var timerChangeEvent = assertEvent('timerChange')
+      assert.deepEqual(timerChangeEvent.data, {
+        secondsRemaining: 600,
+        secondsPerTurn: 600
+      })
+    })
   })
 
   describe('setSecondsPerTurn', () => {
