@@ -92,7 +92,6 @@ class TimerState {
   addMobber(mobber) {
     this.mobbers.addMobber(mobber)
     this.publishConfig()
-    this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
 
   removeMobber(mobber) {
@@ -108,7 +107,6 @@ class TimerState {
     }
 
     this.publishConfig()
-    this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
 
   updateMobber(mobber) {
