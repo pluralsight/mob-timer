@@ -175,6 +175,17 @@ describe('Mobbers', () => {
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 2')
     })
+
+    it('should wrap around correctly even if some mobbers are disabled', () => {
+      mobbers.addMobber({name: 'Test 1', id: 't1'})
+      mobbers.addMobber({name: 'Test 2', id: 't2', disabled: true})
+      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.rotate()
+      mobbers.removeMobber({id: 't3'})
+      let result = mobbers.getCurrentAndNextMobbers()
+      assert.equal(result.current.name, 'Test 1')
+      assert.equal(result.next.name, 'Test 1')
+    })
   })
 
   describe('updateMobber', () => {
