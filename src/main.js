@@ -3,14 +3,13 @@ const { app, ipcMain: ipc } = electron
 
 let windows = require('./windows/windows')
 let TimerState = require('./state/timer-state')
-let writeState = require('./state/write-state')
-let readState = require('./state/read-state')
+let statePersister = require('./state/state-persister')
 
 let timerState = new TimerState()
 
 app.on('ready', () => {
   timerState.setCallback(onTimerEvent)
-  timerState.loadState(readState.read())
+  timerState.loadState(statePersister.read())
   windows.setConfigState(timerState.getState())
   windows.createTimerWindow()
 })
@@ -18,7 +17,7 @@ app.on('ready', () => {
 function onTimerEvent(event, data) {
   windows.dispatchEvent(event, data)
   if (event === 'configUpdated') {
-    writeState.write(timerState.getState())
+    statePersister.write(timerState.getState())
   }
 }
 
