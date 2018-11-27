@@ -2,6 +2,7 @@ const ipc = require('electron').ipcRenderer
 const {dialog} = require('electron').remote
 
 const mobbersEl = document.getElementById('mobbers')
+const shuffleEl = document.getElementById('shuffle')
 const minutesEl = document.getElementById('minutes')
 const addEl = document.getElementById('add')
 const addMobberForm = document.getElementById('addMobberForm')
@@ -106,7 +107,7 @@ addMobberForm.addEventListener('submit', event => {
   addEl.value = ''
 })
 
-shuffle.addEventListener("click", event => {
+shuffleEl.addEventListener("click", event => {
   event.preventDefault();
   ipc.send('shuffleMobbers');
 });
