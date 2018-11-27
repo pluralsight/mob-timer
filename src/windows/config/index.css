@@ -20,6 +20,13 @@ input {
   width: 40px;
 }
 
+.mobberActions {
+  padding: 4px;
+  display: flex;
+  justify-content: flex-end;
+  background-color: var(--table-stripe-color);
+}
+
 .mobber {
   display: flex;
   padding: 4px;
@@ -39,7 +46,7 @@ input {
   border: 2px solid var(--mobber-border-highlight-color);
 }
 
-.mobber:nth-child(odd) {
+.mobber:nth-child(even) {
   background-color: var(--table-stripe-color);
 }
 
