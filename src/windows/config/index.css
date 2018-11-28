@@ -20,11 +20,6 @@ input {
   width: 40px;
 }
 
-.mobberActions {
-  margin: 4px 0 4px -5px;
-  display: flex;
-}
-
 .mobber {
   display: flex;
   padding: 4px;
@@ -70,6 +65,11 @@ input {
 .addLabel {
   display: flex;
   align-items: center;
+}
+
+.mobberActions {
+  margin: 4px 0 4px -5px;
+  display: flex;
 }
 
 .btn {
