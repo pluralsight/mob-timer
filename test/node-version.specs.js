@@ -9,7 +9,7 @@ describe('Node version', () => {
     const matches = travisYml.indexOf(`  - "${nvmrc}"`) !== -1;
     const message = [
       'Could not find node version from .nvmrc in .travis.yml!\n',
-      '.nvmrc', nvmrc, '.travis.yml', travisYml ]
+      '.nvmrc', nvmrc, '.travis.yml', travisYml]
     assert.ok(matches, message.join('\n'));
   })
 })
