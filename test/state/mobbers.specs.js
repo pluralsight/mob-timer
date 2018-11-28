@@ -29,27 +29,27 @@ describe('Mobbers', () => {
 
     it('shuffles the mobbers so there is a different order', () => {
       Math.random = sinon.stub()
-      Math.random.onCall(0).returns(0.3);
-      Math.random.onCall(1).returns(0.5);
-      Math.random.onCall(2).returns(0.7);
-      Math.random.onCall(3).returns(0.9);
+      Math.random.onCall(0).returns(0.3)
+      Math.random.onCall(1).returns(0.5)
+      Math.random.onCall(2).returns(0.7)
+      Math.random.onCall(3).returns(0.9)
       Math.random.throws(new Error("No more random should be needed!"))
-      mobbers.addMobber({ name: 'Testerson', id: 'mobber-1' });
-      mobbers.addMobber({ name: 'TestersonFace', id: 'mobber-2' });
-      mobbers.addMobber({ name: 'TestersonHead', id: 'mobber-3' });
-      mobbers.addMobber({ name: 'TestersonNose', id: 'mobber-4' });
+      mobbers.addMobber({ name: 'Testerson', id: 'mobber-1' })
+      mobbers.addMobber({ name: 'TestersonFace', id: 'mobber-2' })
+      mobbers.addMobber({ name: 'TestersonHead', id: 'mobber-3' })
+      mobbers.addMobber({ name: 'TestersonNose', id: 'mobber-4' })
 
-      mobbers.shuffleMobbers();
+      mobbers.shuffleMobbers()
       
-      const mobberIds = mobbers.getAll().map(mobber => mobber.id);
+      const mobberIds = mobbers.getAll().map(mobber => mobber.id)
       assert.deepEqual(mobberIds, [
         'mobber-1',
         'mobber-3',
         'mobber-4',
         'mobber-2',
-      ]);
+      ])
     })
-  });
+  })
 
   describe('addMobber', () => {
     it('should add a mobber', () => {
