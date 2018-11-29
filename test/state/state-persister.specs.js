@@ -61,7 +61,7 @@ describe('state-persister', () => {
       persister.write(stateToWrite)
 
       sinon.assert.notCalled(fs.mkdirSync)
-      sinon.assert.calledWith(fs.writeFileSync, persister.stateFile, JSON.stringify(stateToWrite));
+      sinon.assert.calledWith(fs.writeFileSync, persister.stateFile, JSON.stringify(stateToWrite))
     })
 
     it('should create the directory if needed', () => {
@@ -71,7 +71,7 @@ describe('state-persister', () => {
       persister.write(stateToWrite)
 
       sinon.assert.calledWith(fs.mkdirSync, persister.mobTimerDir)
-      sinon.assert.calledWith(fs.writeFileSync, persister.stateFile, JSON.stringify(stateToWrite));
+      sinon.assert.calledWith(fs.writeFileSync, persister.stateFile, JSON.stringify(stateToWrite))
     })
   })
 })

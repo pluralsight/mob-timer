@@ -6,10 +6,10 @@ describe('Node version', () => {
     const nvmrc = fs.readFileSync('./.nvmrc', 'utf-8')
     const travisYml = fs.readFileSync('./.travis.yml', 'utf-8')
 
-    const matches = travisYml.indexOf(`  - "${nvmrc}"`) !== -1;
+    const matches = travisYml.indexOf(`  - "${nvmrc}"`) !== -1
     const message = [
       'Could not find node version from .nvmrc in .travis.yml!\n',
       '.nvmrc', nvmrc, '.travis.yml', travisYml]
-    assert.ok(matches, message.join('\n'));
+    assert.ok(matches, message.join('\n'))
   })
 })
