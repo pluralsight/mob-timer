@@ -27,15 +27,15 @@ describe('Timer', () => {
   describe('on construction', () => {
     describe('with specified options', () => {
       it('should have the specified rateMilliseconds value', () => {
-        assert.equal(timer.rateMilliseconds, timerOptions.rateMilliseconds)
+        assert.strictEqual(timer.rateMilliseconds, timerOptions.rateMilliseconds)
       })
 
       it('should have the specified value', () => {
-        assert.equal(timer.time, timerOptions.time)
+        assert.strictEqual(timer.time, timerOptions.time)
       })
 
       it('should have a change value based on the specified countDown', () => {
-        assert.equal(timer.change, -1)
+        assert.strictEqual(timer.change, -1)
       })
     })
 
@@ -46,15 +46,15 @@ describe('Timer', () => {
       })
 
       it('should have the default rateMilliseconds value', () => {
-        assert.equal(timer.rateMilliseconds, 1000)
+        assert.strictEqual(timer.rateMilliseconds, 1000)
       })
 
       it('should have the default time value', () => {
-        assert.equal(timer.time, 0)
+        assert.strictEqual(timer.time, 0)
       })
 
       it('should have the default change value', () => {
-        assert.equal(timer.change, 1)
+        assert.strictEqual(timer.change, 1)
       })
     })
   })
@@ -63,7 +63,7 @@ describe('Timer', () => {
     it('should generate callbacks when counting down', () => {
       timer.start()
       clock.tick(50)
-      assert.equal(callbacks.join(','), '49,48')
+      assert.strictEqual(callbacks.join(','), '49,48')
     })
 
     it('should generate callbacks when counting up', () => {
@@ -71,7 +71,7 @@ describe('Timer', () => {
       createTimer()
       timer.start()
       clock.tick(50)
-      assert.equal(callbacks.join(','), '51,52')
+      assert.strictEqual(callbacks.join(','), '51,52')
     })
   })
 
@@ -81,14 +81,14 @@ describe('Timer', () => {
       clock.tick(50)
       timer.pause()
       clock.tick(100)
-      assert.equal(callbacks.join(','), '49,48')
+      assert.strictEqual(callbacks.join(','), '49,48')
     })
   })
 
   describe('reset', () => {
     it('should set a new time value when the timer is not running', () => {
       timer.reset(42)
-      assert.equal(timer.time, 42)
+      assert.strictEqual(timer.time, 42)
     })
 
     it('should set a new time value when the timer is running', () => {
@@ -96,7 +96,7 @@ describe('Timer', () => {
       clock.tick(50)
       timer.reset(20)
       clock.tick(40)
-      assert.equal(callbacks.join(','), '49,48,19,18')
+      assert.strictEqual(callbacks.join(','), '49,48,19,18')
     })
   })
 })

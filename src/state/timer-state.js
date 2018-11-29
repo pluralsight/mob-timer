@@ -22,7 +22,7 @@ class TimerState {
   }
 
   createTimers(TimerClass) {
-    this.mainTimer = new TimerClass({countDown: true, time: this.secondsPerTurn}, secondsRemaining => {
+    this.mainTimer = new TimerClass({ countDown: true, time: this.secondsPerTurn }, secondsRemaining => {
       this.dispatchTimerChange(secondsRemaining)
       if (secondsRemaining < 0) {
         this.pause()
@@ -32,7 +32,7 @@ class TimerState {
       }
     })
 
-    this.alertsTimer = new TimerClass({countDown: false}, alertSeconds => {
+    this.alertsTimer = new TimerClass({ countDown: false }, alertSeconds => {
       this.callback('alert', alertSeconds)
     })
   }
@@ -96,7 +96,7 @@ class TimerState {
 
   removeMobber(mobber) {
     let currentMobber = this.mobbers.getCurrentAndNextMobbers().current
-    let isRemovingCurrentMobber = currentMobber ? currentMobber.name == mobber.name : false
+    let isRemovingCurrentMobber = currentMobber ? currentMobber.name === mobber.name : false
 
     this.mobbers.removeMobber(mobber)
 
@@ -111,7 +111,7 @@ class TimerState {
 
   updateMobber(mobber) {
     const currentMobber = this.mobbers.getCurrentAndNextMobbers().current
-    const disablingCurrentMobber = (currentMobber.id == mobber.id && mobber.disabled)
+    const disablingCurrentMobber = (currentMobber.id === mobber.id && mobber.disabled)
 
     this.mobbers.updateMobber(mobber)
 
@@ -156,8 +156,8 @@ class TimerState {
   }
 
   shuffleMobbers() {
-    this.mobbers.shuffleMobbers();
-    this.publishConfig();
+    this.mobbers.shuffleMobbers()
+    this.publishConfig()
   }
 
   getState() {

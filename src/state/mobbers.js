@@ -51,8 +51,8 @@ class Mobbers {
     if (index >= 0) {
       this.mobbers[index] = mobber
       let active = this.getActiveMobbers()
-      if (currentMobber && currentMobber.id != mobber.id) {
-        this.currentMobber = active.findIndex(m => m.id == currentMobber.id)
+      if (currentMobber && currentMobber.id !== mobber.id) {
+        this.currentMobber = active.findIndex(m => m.id === currentMobber.id)
       }
       this.currentMobber = active.length ? this.currentMobber % active.length : 0
     }
@@ -61,7 +61,7 @@ class Mobbers {
   shuffleMobbers() {
     for (let i = this.mobbers.length - 1; i >= 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this.mobbers[i], this.mobbers[j]] = [this.mobbers[j], this.mobbers[i]];
+      [this.mobbers[i], this.mobbers[j]] = [this.mobbers[j], this.mobbers[i]]
     }
   }
 }
