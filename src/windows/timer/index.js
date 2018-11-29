@@ -47,7 +47,7 @@ function drawArc(begin, end, color) {
 
 function drawTimerArc(seconds, maxSeconds) {
   let percent = 1 - (seconds / maxSeconds)
-  if (percent == 0) {
+  if (percent === 0) {
     return
   }
   let begin = -(0.5 * Math.PI)

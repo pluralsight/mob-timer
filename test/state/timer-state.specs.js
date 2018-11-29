@@ -7,7 +7,7 @@ describe('timer-state', () => {
   let events
 
   let assertEvent = eventName => {
-    var event = events.find(x => x.event == eventName)
+    var event = events.find(x => x.event === eventName)
     assert(event, eventName + ' event not found')
     return event
   }
@@ -226,7 +226,7 @@ describe('timer-state', () => {
     })
 
     it('should NOT publish a turnEnded event if the removed user was NOT current', () => {
-      var event = events.find(x => x.event == 'turnEnded')
+      var event = events.find(x => x.event === 'turnEnded')
       assert.strictEqual(event, undefined)
     })
 

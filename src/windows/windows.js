@@ -42,7 +42,7 @@ exports.createTimerWindow = () => {
     let screenBounds = electron.screen.getDisplayNearestPoint(getCenter(windowBounds)).workArea
 
     let snapTo = windowSnapper(windowBounds, screenBounds, snapThreshold)
-    if (snapTo.x != windowBounds.x || snapTo.y != windowBounds.y) {
+    if (snapTo.x !== windowBounds.x || snapTo.y !== windowBounds.y) {
       timerWindow.setPosition(snapTo.x, snapTo.y)
     }
   })
@@ -98,7 +98,7 @@ exports.dispatchEvent = (event, data) => {
   if (event === 'configUpdated') {
     exports.setConfigState(data)
   }
-  if (event === 'alert' && data == secondsUntilFullscreen) {
+  if (event === 'alert' && data === secondsUntilFullscreen) {
     exports.createFullscreenWindow()
   }
   if (event === 'stopAlerts') {
@@ -117,7 +117,7 @@ exports.dispatchEvent = (event, data) => {
 }
 
 exports.setConfigState = data => {
-  var needToRecreateTimerWindow = timerAlwaysOnTop != data.timerAlwaysOnTop
+  var needToRecreateTimerWindow = timerAlwaysOnTop !== data.timerAlwaysOnTop
 
   snapThreshold = data.snapThreshold
   secondsUntilFullscreen = data.secondsUntilFullscreen

@@ -96,7 +96,7 @@ class TimerState {
 
   removeMobber(mobber) {
     let currentMobber = this.mobbers.getCurrentAndNextMobbers().current
-    let isRemovingCurrentMobber = currentMobber ? currentMobber.name == mobber.name : false
+    let isRemovingCurrentMobber = currentMobber ? currentMobber.name === mobber.name : false
 
     this.mobbers.removeMobber(mobber)
 
@@ -111,7 +111,7 @@ class TimerState {
 
   updateMobber(mobber) {
     const currentMobber = this.mobbers.getCurrentAndNextMobbers().current
-    const disablingCurrentMobber = (currentMobber.id == mobber.id && mobber.disabled)
+    const disablingCurrentMobber = (currentMobber.id === mobber.id && mobber.disabled)
 
     this.mobbers.updateMobber(mobber)
 
