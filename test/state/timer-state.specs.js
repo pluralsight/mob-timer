@@ -290,6 +290,24 @@ describe('timer-state', () => {
     })
   })
 
+  describe('shuffleMobbers', () => {
+    beforeEach(() => {
+      const letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+      letters.forEach(x => timerState.addMobber({ id: x }))
+      events = []
+      timerState.shuffleMobbers()
+    })
+
+    it('should publish a configUpdated event', () => assertEvent('configUpdated'))
+
+    it('should publish a rotated event', () => assertEvent('rotated'))
+
+    it('should shuffle the mobbers', () => {
+      const mobbers = timerState.getState().mobbers.map(x => x.id).join('')
+      assert.notEqual(mobbers, 'abcdefghij')
+    })
+  })
+
   describe('setSecondsPerTurn', () => {
     beforeEach(() => timerState.setSecondsPerTurn(300))
 
