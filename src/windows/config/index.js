@@ -1,5 +1,5 @@
 const ipc = require('electron').ipcRenderer
-const {dialog} = require('electron').remote
+const { dialog } = require('electron').remote
 
 const mobbersEl = document.getElementById('mobbers')
 const shuffleEl = document.getElementById('shuffle')
@@ -15,7 +15,6 @@ const replayAudioAfterSeconds = document.getElementById('replayAudioAfterSeconds
 const useCustomSoundCheckbox = document.getElementById('useCustomSound')
 const customSoundEl = document.getElementById('customSound')
 const timerAlwaysOnTopCheckbox = document.getElementById('timerAlwaysOnTop')
-
 
 function createMobberEl(mobber) {
   const el = document.createElement('div')
@@ -44,9 +43,9 @@ function createMobberEl(mobber) {
   rmBtn.innerHTML = 'Remove'
   el.appendChild(rmBtn)
 
-  imgEl.addEventListener('click', _ => selectImage(mobber))
-  disableBtn.addEventListener('click', _ => toggleMobberDisabled(mobber))
-  rmBtn.addEventListener('click', _ => ipc.send('removeMobber', mobber))
+  imgEl.addEventListener('click', () => selectImage(mobber))
+  disableBtn.addEventListener('click', () => toggleMobberDisabled(mobber))
+  rmBtn.addEventListener('click', () => ipc.send('removeMobber', mobber))
 
   return el
 }
@@ -55,7 +54,7 @@ function selectImage(mobber) {
   var image = dialog.showOpenDialog({
     title: 'Select image',
     filters: [
-      {name: 'Images', extensions: ['jpg', 'png', 'gif']}
+      { name: 'Images', extensions: ['jpg', 'png', 'gif'] }
     ],
     properties: ['openFile']
   })
@@ -93,7 +92,7 @@ ipc.on('configUpdated', (event, data) => {
   timerAlwaysOnTopCheckbox.checked = data.timerAlwaysOnTop
 })
 
-minutesEl.addEventListener('change', _ => {
+minutesEl.addEventListener('change', () => {
   ipc.send('setSecondsPerTurn', minutesEl.value * 60)
 })
 
@@ -107,24 +106,24 @@ addMobberForm.addEventListener('submit', event => {
   addEl.value = ''
 })
 
-shuffleEl.addEventListener("click", event => {
-  event.preventDefault();
-  ipc.send('shuffleMobbers');
-});
+shuffleEl.addEventListener('click', event => {
+  event.preventDefault()
+  ipc.send('shuffleMobbers')
+})
 
-fullscreenSecondsEl.addEventListener('change', _ => {
+fullscreenSecondsEl.addEventListener('change', () => {
   ipc.send('setSecondsUntilFullscreen', fullscreenSecondsEl.value * 1)
 })
 
 ipc.send('configWindowReady')
 
-snapToEdgesCheckbox.addEventListener('change', _ => {
+snapToEdgesCheckbox.addEventListener('change', () => {
   ipc.send('setSnapThreshold', snapToEdgesCheckbox.checked ? 25 : 0)
 })
 
-alertAudioCheckbox.addEventListener('change', _ => updateAlertTimes())
-replayAlertAudioCheckbox.addEventListener('change', _ => updateAlertTimes())
-replayAudioAfterSeconds.addEventListener('change', _ => updateAlertTimes())
+alertAudioCheckbox.addEventListener('change', () => updateAlertTimes())
+replayAlertAudioCheckbox.addEventListener('change', () => updateAlertTimes())
+replayAudioAfterSeconds.addEventListener('change', () => updateAlertTimes())
 
 function updateAlertTimes() {
   updateAlertControls()
@@ -155,14 +154,14 @@ function updateAlertControls() {
   replayAudioAfterSeconds.disabled = secondsDisabled
 }
 
-useCustomSoundCheckbox.addEventListener('change', _ => {
+useCustomSoundCheckbox.addEventListener('change', () => {
   let mp3 = null
 
   if (useCustomSoundCheckbox.checked) {
     const selectedMp3 = dialog.showOpenDialog({
       title: 'Select alert sound',
       filters: [
-        {name: 'MP3', extensions: ['mp3']}
+        { name: 'MP3', extensions: ['mp3'] }
       ],
       properties: ['openFile']
     })
@@ -177,6 +176,6 @@ useCustomSoundCheckbox.addEventListener('change', _ => {
   ipc.send('setAlertSound', mp3)
 })
 
-timerAlwaysOnTopCheckbox.addEventListener('change', _ => {
+timerAlwaysOnTopCheckbox.addEventListener('change', () => {
   ipc.send('setTimerAlwaysOnTop', timerAlwaysOnTopCheckbox.checked)
 })
