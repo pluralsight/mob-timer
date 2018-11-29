@@ -275,7 +275,7 @@ describe('timer-state', () => {
       events = []
 
       timerState.updateMobber({ id: 'b', name: 'B', disabled: true })
-      
+
       assertEvent('paused')
       assertEvent('turnEnded')
       assertEvent('configUpdated')

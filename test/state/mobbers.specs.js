@@ -40,7 +40,7 @@ describe('Mobbers', () => {
       mobbers.addMobber({ name: 'TestersonNose', id: 'mobber-4' })
 
       mobbers.shuffleMobbers()
-      
+
       const mobberIds = mobbers.getAll().map(mobber => mobber.id)
       assert.deepEqual(mobberIds, [
         'mobber-1',

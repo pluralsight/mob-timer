@@ -21,7 +21,7 @@ describe('state-persister', () => {
     it('should return the contents of the state.json file', () => {
       sandbox.stub(fs, 'existsSync')
         .withArgs(persister.stateFile).callsFake(() => true)
-            
+
       const result = persister.read()
       assert.deepEqual(result, stateData)
     })
@@ -30,7 +30,7 @@ describe('state-persister', () => {
       sandbox.stub(fs, 'existsSync')
         .withArgs(persister.stateFile).callsFake(() => false)
         .withArgs(persister.oldStateFile).callsFake(() => true)
-            
+
       const result = persister.read()
       assert.deepEqual(result, oldStateData)
     })
@@ -52,7 +52,7 @@ describe('state-persister', () => {
       sandbox.stub(fs, 'writeFileSync')
       sandbox.stub(fs, 'mkdirSync')
     })
-        
+
     it('should write the state to the file', () => {
       sandbox.stub(fs, 'existsSync')
         .withArgs(persister.mobTimerDir).callsFake(() => true)
