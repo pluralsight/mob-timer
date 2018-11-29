@@ -50,7 +50,7 @@ function drawTimerArc(seconds, maxSeconds) {
   if (percent == 0) {
     return
   }
-  let begin = -(.5 * Math.PI)
+  let begin = -(0.5 * Math.PI)
   let end = begin + (2 * Math.PI * percent)
   drawArc(begin, end, theme.mobberBorderHighlightColor)
 }
