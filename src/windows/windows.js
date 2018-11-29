@@ -1,6 +1,7 @@
 const electron = require('electron')
 const { app } = electron
 const windowSnapper = require('./window-snapper')
+const path = require('path')
 
 let timerWindow, configWindow, fullscreenWindow
 let snapThreshold, secondsUntilFullscreen, timerAlwaysOnTop
@@ -19,7 +20,7 @@ exports.createTimerWindow = () => {
     resizable: false,
     alwaysOnTop: timerAlwaysOnTop,
     frame: false,
-    icon: __dirname + '/../../src/windows/img/icon.png'
+    icon: path.join(__dirname, '/../../src/windows/img/icon.png')
   })
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
