@@ -17,7 +17,6 @@ describe('state-persister', () => {
         .withArgs(persister.stateFile, 'utf-8').callsFake(() => JSON.stringify(stateData))
         .withArgs(persister.oldStateFile, 'utf-8').callsFake(() => JSON.stringify(oldStateData))
     })
-        
 
     it('should return the contents of the state.json file', () => {
       sandbox.stub(fs, 'existsSync')

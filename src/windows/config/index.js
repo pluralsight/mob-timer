@@ -16,7 +16,6 @@ const useCustomSoundCheckbox = document.getElementById('useCustomSound')
 const customSoundEl = document.getElementById('customSound')
 const timerAlwaysOnTopCheckbox = document.getElementById('timerAlwaysOnTop')
 
-
 function createMobberEl(mobber) {
   const el = document.createElement('div')
   el.classList.add('mobber')
