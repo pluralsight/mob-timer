@@ -23,7 +23,7 @@ describe('state-persister', () => {
         .withArgs(persister.stateFile).callsFake(() => true)
 
       const result = persister.read()
-      assert.deepEqual(result, stateData)
+      assert.deepStrictEqual(result, stateData)
     })
 
     it('should look for the old state file if the new one does not exist', () => {
@@ -32,7 +32,7 @@ describe('state-persister', () => {
         .withArgs(persister.oldStateFile).callsFake(() => true)
 
       const result = persister.read()
-      assert.deepEqual(result, oldStateData)
+      assert.deepStrictEqual(result, oldStateData)
     })
 
     it('should return an empty object if no state file exists', () => {
@@ -41,7 +41,7 @@ describe('state-persister', () => {
         .withArgs(persister.oldStateFile).callsFake(() => false)
 
       const result = persister.read()
-      assert.deepEqual(result, {})
+      assert.deepStrictEqual(result, {})
     })
   })
 
