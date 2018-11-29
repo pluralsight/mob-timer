@@ -373,7 +373,6 @@ describe('timer-state', () => {
   describe('getState', () => {
     describe('when getting non-default state', () => {
       before(() => {
-
         timerState.addMobber(expectedJack)
         timerState.addMobber(expectedJill)
         timerState.setSecondsPerTurn(expectedSecondsPerTurn)
