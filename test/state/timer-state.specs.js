@@ -512,7 +512,7 @@ describe('timer-state', () => {
     describe('when loading state with one mobber', () => {
       before(() => {
         state = {
-          mobbers: [{ name: 'jack' }],
+          mobbers: [{ name: 'jack' }]
         }
 
         timerState.loadState(state)

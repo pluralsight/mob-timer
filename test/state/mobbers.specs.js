@@ -46,7 +46,7 @@ describe('Mobbers', () => {
         'mobber-1',
         'mobber-3',
         'mobber-4',
-        'mobber-2',
+        'mobber-2'
       ])
     })
   })
