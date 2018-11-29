@@ -38,8 +38,7 @@
         "allowModules": [
           "electron",
           "chai",
-          "sinon",
-          "sinon-chai"
+          "sinon"
         ]
       }
     ],
