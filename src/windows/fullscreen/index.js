@@ -10,7 +10,7 @@ const nextPicEl = document.getElementById('nextPic')
 
 ipc.on('rotated', (event, data) => {
   if (!data.current) {
-    data.current = {name: "Add a mobber"}
+    data.current = { name: "Add a mobber" }
   }
   currentEl.innerHTML = data.current.name
   currentPicEl.src = data.current.image || "../img/sad-cyclops.png"

@@ -53,26 +53,26 @@ describe('Mobbers', () => {
 
   describe('addMobber', () => {
     it('should add a mobber', () => {
-      mobbers.addMobber({name: 'Test'})
+      mobbers.addMobber({ name: 'Test' })
       let result = mobbers.getAll()
       assert.equal(result[0].name, 'Test')
     })
 
     it('should add an id to the mobber if missing', () => {
-      mobbers.addMobber({name: 'Test'})
+      mobbers.addMobber({ name: 'Test' })
       let result = mobbers.getAll()
       assert.notEqual(result[0].id, undefined)
     })
 
     it('should NOT add an id to the mobber if it already has one', () => {
-      mobbers.addMobber({id: 'test-id', name: 'Test'})
+      mobbers.addMobber({ id: 'test-id', name: 'Test' })
       let result = mobbers.getAll()
       assert.equal(result[0].id, 'test-id')
     })
 
     it('should always add to the end of the list', () => {
-      mobbers.addMobber({name: 'Test 1'})
-      mobbers.addMobber({name: 'Test 2'})
+      mobbers.addMobber({ name: 'Test 1' })
+      mobbers.addMobber({ name: 'Test 2' })
       let result = mobbers.getAll()
       assert.equal(result[0].name, 'Test 1')
       assert.equal(result[1].name, 'Test 2')
@@ -86,24 +86,24 @@ describe('Mobbers', () => {
     })
 
     it('return the same mobber for current and next if there is only one mobber', () => {
-      mobbers.addMobber({name: 'Test'})
+      mobbers.addMobber({ name: 'Test' })
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test')
       assert.equal(result.next.name, 'Test')
     })
 
     it('return the current and next mobber when there are 2 mobbers', () => {
-      mobbers.addMobber({name: 'Test 1'})
-      mobbers.addMobber({name: 'Test 2'})
+      mobbers.addMobber({ name: 'Test 1' })
+      mobbers.addMobber({ name: 'Test 2' })
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 2')
     })
 
     it('should return the correct mobbers after rotating', () => {
-      mobbers.addMobber({name: 'Test 1'})
-      mobbers.addMobber({name: 'Test 2'})
-      mobbers.addMobber({name: 'Test 3'})
+      mobbers.addMobber({ name: 'Test 1' })
+      mobbers.addMobber({ name: 'Test 2' })
+      mobbers.addMobber({ name: 'Test 3' })
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 2')
@@ -111,9 +111,9 @@ describe('Mobbers', () => {
     })
 
     it('should not include disabled mobbers', () => {
-      mobbers.addMobber({name: 'Test 1'})
-      mobbers.addMobber({name: 'Test 2', disabled: true})
-      mobbers.addMobber({name: 'Test 3'})
+      mobbers.addMobber({ name: 'Test 1' })
+      mobbers.addMobber({ name: 'Test 2', disabled: true })
+      mobbers.addMobber({ name: 'Test 3' })
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 3')
@@ -128,7 +128,7 @@ describe('Mobbers', () => {
     })
 
     it('should do nothing when there is only one mobber', () => {
-      mobbers.addMobber({name: 'Test'})
+      mobbers.addMobber({ name: 'Test' })
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test')
@@ -136,8 +136,8 @@ describe('Mobbers', () => {
     })
 
     it('should rotate the mobbers when there are 2', () => {
-      mobbers.addMobber({name: 'Test 1'})
-      mobbers.addMobber({name: 'Test 2'})
+      mobbers.addMobber({ name: 'Test 1' })
+      mobbers.addMobber({ name: 'Test 2' })
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 2')
@@ -145,8 +145,8 @@ describe('Mobbers', () => {
     })
 
     it('should loop back around after the end of the list', () => {
-      mobbers.addMobber({name: 'Test 1'})
-      mobbers.addMobber({name: 'Test 2'})
+      mobbers.addMobber({ name: 'Test 1' })
+      mobbers.addMobber({ name: 'Test 2' })
       mobbers.rotate()
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
@@ -155,11 +155,11 @@ describe('Mobbers', () => {
     })
 
     it('should skip disabled mobbers', () => {
-      mobbers.addMobber({name: 'Test 1', disabled: true})
-      mobbers.addMobber({name: 'Test 2'})
-      mobbers.addMobber({name: 'Test 3', disabled: true})
-      mobbers.addMobber({name: 'Test 4', disabled: true})
-      mobbers.addMobber({name: 'Test 5', disabled: false})
+      mobbers.addMobber({ name: 'Test 1', disabled: true })
+      mobbers.addMobber({ name: 'Test 2' })
+      mobbers.addMobber({ name: 'Test 3', disabled: true })
+      mobbers.addMobber({ name: 'Test 4', disabled: true })
+      mobbers.addMobber({ name: 'Test 5', disabled: false })
       mobbers.rotate()
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
@@ -170,18 +170,18 @@ describe('Mobbers', () => {
 
   describe('removeMobber', () => {
     it('should not remove anyone if the id does not match', () => {
-      mobbers.addMobber({name: 'Test', id: 'test-id'})
-      mobbers.removeMobber({name: 'Other', id: 'other-id'})
+      mobbers.addMobber({ name: 'Test', id: 'test-id' })
+      mobbers.removeMobber({ name: 'Other', id: 'other-id' })
       let result = mobbers.getAll()
       assert.equal(result[0].name, 'Test')
     })
 
     it('should remove the mobber that matches by id', () => {
-      mobbers.addMobber({name: 'Test 1', id: '1a'})
-      mobbers.addMobber({name: 'Test 2', id: '2a'})
-      mobbers.addMobber({name: 'Test 1', id: '1b'})
-      mobbers.addMobber({name: 'Test 2', id: '2b'})
-      mobbers.removeMobber({name: 'Test 1', id: '1b'})
+      mobbers.addMobber({ name: 'Test 1', id: '1a' })
+      mobbers.addMobber({ name: 'Test 2', id: '2a' })
+      mobbers.addMobber({ name: 'Test 1', id: '1b' })
+      mobbers.addMobber({ name: 'Test 2', id: '2b' })
+      mobbers.removeMobber({ name: 'Test 1', id: '1b' })
       let result = mobbers.getAll()
       assert.equal(result.length, 3)
       assert.equal(result[0].id, '1a')
@@ -190,34 +190,34 @@ describe('Mobbers', () => {
     })
 
     it('should update correctly if the removed mobber was the current mobber', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2'})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2' })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
       mobbers.rotate()
-      mobbers.removeMobber({id: 't2'})
+      mobbers.removeMobber({ id: 't2' })
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 3')
       assert.equal(result.next.name, 'Test 1')
     })
 
     it('should wrap around correctly if the removed mobber was current and at the end of the list', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2'})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2' })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
       mobbers.rotate()
       mobbers.rotate()
-      mobbers.removeMobber({id: 't3'})
+      mobbers.removeMobber({ id: 't3' })
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 2')
     })
 
     it('should wrap around correctly even if some mobbers are disabled', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2', disabled: true})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2', disabled: true })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
       mobbers.rotate()
-      mobbers.removeMobber({id: 't3'})
+      mobbers.removeMobber({ id: 't3' })
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 1')
@@ -226,10 +226,10 @@ describe('Mobbers', () => {
 
   describe('updateMobber', () => {
     it('should replace the mobber by matching id', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2'})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
-      mobbers.updateMobber({name: 'Test 2-updated', id: 't2', image: 'image-path'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2' })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
+      mobbers.updateMobber({ name: 'Test 2-updated', id: 't2', image: 'image-path' })
       let result = mobbers.getAll()
       assert.equal(result.length, 3)
       assert.equal(result[0].name, 'Test 1')
@@ -239,8 +239,8 @@ describe('Mobbers', () => {
     })
 
     it('should not replace anything if the id does not match', () => {
-      mobbers.addMobber({name: 'Test', id: 'test-id'})
-      mobbers.updateMobber({name: 'Tester', id: 'other-id', image: 'image-path'})
+      mobbers.addMobber({ name: 'Test', id: 'test-id' })
+      mobbers.updateMobber({ name: 'Tester', id: 'other-id', image: 'image-path' })
       let result = mobbers.getAll()
       assert.equal(result.length, 1)
       assert.equal(result[0].name, 'Test')
@@ -249,56 +249,56 @@ describe('Mobbers', () => {
     })
 
     it('should not change the current mobber when enabling another', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2', disabled: true})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2', disabled: true })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
 
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 3')
       assert.equal(result.next.name, 'Test 1')
 
-      mobbers.updateMobber({name: 'Test 2', id: 't2', disabled: false})
+      mobbers.updateMobber({ name: 'Test 2', id: 't2', disabled: false })
       result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 3')
       assert.equal(result.next.name, 'Test 1')
     })
 
     it('should not change the current mobber when disabling another', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2'})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2' })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
 
       mobbers.rotate()
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 2')
       assert.equal(result.next.name, 'Test 3')
 
-      mobbers.updateMobber({name: 'Test 1', id: 't1', disabled: true})
+      mobbers.updateMobber({ name: 'Test 1', id: 't1', disabled: true })
       result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 2')
       assert.equal(result.next.name, 'Test 3')
     })
 
     it('should go to the next mobber when disabling the current mobber', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2'})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2' })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
 
       let result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 2')
 
-      mobbers.updateMobber({name: 'Test 1', id: 't1', disabled: true})
+      mobbers.updateMobber({ name: 'Test 1', id: 't1', disabled: true })
       result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 2')
       assert.equal(result.next.name, 'Test 3')
     })
 
     it('should wrap around to the first mobber when disabling the current last mobber', () => {
-      mobbers.addMobber({name: 'Test 1', id: 't1'})
-      mobbers.addMobber({name: 'Test 2', id: 't2'})
-      mobbers.addMobber({name: 'Test 3', id: 't3'})
+      mobbers.addMobber({ name: 'Test 1', id: 't1' })
+      mobbers.addMobber({ name: 'Test 2', id: 't2' })
+      mobbers.addMobber({ name: 'Test 3', id: 't3' })
 
       mobbers.rotate()
       mobbers.rotate()
@@ -306,7 +306,7 @@ describe('Mobbers', () => {
       assert.equal(result.current.name, 'Test 3')
       assert.equal(result.next.name, 'Test 1')
 
-      mobbers.updateMobber({name: 'Test 3', id: 't3', disabled: true})
+      mobbers.updateMobber({ name: 'Test 3', id: 't3', disabled: true })
       result = mobbers.getCurrentAndNextMobbers()
       assert.equal(result.current.name, 'Test 1')
       assert.equal(result.next.name, 'Test 2')

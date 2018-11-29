@@ -16,7 +16,7 @@ describe('timer-state', () => {
     events = []
     timerState = new TimerState({ Timer: TestTimer })
     timerState.setCallback((event, data) => {
-      events.push({event, data})
+      events.push({ event, data })
     })
   })
 
@@ -125,9 +125,9 @@ describe('timer-state', () => {
 
   describe('rotate', () => {
     beforeEach(() => {
-      timerState.addMobber({name: 'A'})
-      timerState.addMobber({name: 'B'})
-      timerState.addMobber({name: 'C'})
+      timerState.addMobber({ name: 'A' })
+      timerState.addMobber({ name: 'B' })
+      timerState.addMobber({ name: 'C' })
       events = []
       timerState.rotate()
     })
@@ -169,8 +169,8 @@ describe('timer-state', () => {
     })
 
     it('should contain the mobbers if there are some', () => {
-      timerState.addMobber({name: 'A'})
-      timerState.addMobber({name: 'B'})
+      timerState.addMobber({ name: 'A' })
+      timerState.addMobber({ name: 'B' })
       events = []
 
       timerState.publishConfig()
@@ -178,8 +178,8 @@ describe('timer-state', () => {
       assert.equal(event.data.mobbers[0].name, 'A')
       assert.equal(event.data.mobbers[1].name, 'B')
 
-      timerState.removeMobber({name: 'A'})
-      timerState.removeMobber({name: 'B'})
+      timerState.removeMobber({ name: 'A' })
+      timerState.removeMobber({ name: 'B' })
     })
 
     it('should publish a rotated event', () => {
@@ -188,7 +188,7 @@ describe('timer-state', () => {
   })
 
   describe('addMobber', () => {
-    beforeEach(() => timerState.addMobber({name: 'A'}))
+    beforeEach(() => timerState.addMobber({ name: 'A' }))
 
     it('should publish a configUpdated event', () => {
       var event = assertEvent('configUpdated')
@@ -205,11 +205,11 @@ describe('timer-state', () => {
 
   describe('removeMobber', () => {
     beforeEach(() => {
-      timerState.addMobber({name: 'A', id: 'a'})
-      timerState.addMobber({name: 'B', id: 'b'})
-      timerState.addMobber({name: 'C', id: 'c'})
+      timerState.addMobber({ name: 'A', id: 'a' })
+      timerState.addMobber({ name: 'B', id: 'b' })
+      timerState.addMobber({ name: 'C', id: 'c' })
       events = []
-      timerState.removeMobber({name: 'B', id: 'b'})
+      timerState.removeMobber({ name: 'B', id: 'b' })
     })
 
     it('should publish a configUpdated event', () => {
@@ -231,24 +231,24 @@ describe('timer-state', () => {
     })
 
     it('should publish a turnEnded event if the removed user was current', () => {
-      timerState.removeMobber({name: 'A'})
+      timerState.removeMobber({ name: 'A' })
       var event = assertEvent('turnEnded')
     })
 
     it('should publish a timerChange event if the removed user was current', () => {
-      timerState.removeMobber({name: 'A'})
+      timerState.removeMobber({ name: 'A' })
       var event = assertEvent('timerChange')
     })
 
     it('should publish a paused event if the removed user was current', () => {
-      timerState.removeMobber({name: 'A'})
+      timerState.removeMobber({ name: 'A' })
       var event = assertEvent('paused')
     })
 
     it('should update correctly if the removed user was current', () => {
       timerState.rotate()
       events = []
-      timerState.removeMobber({name: 'C', id: 'c'})
+      timerState.removeMobber({ name: 'C', id: 'c' })
       var event = assertEvent('rotated')
       assert.equal(event.data.current.name, 'A')
       assert.equal(event.data.next.name, 'A')
@@ -257,9 +257,9 @@ describe('timer-state', () => {
 
   describe('updateMobber', () => {
     beforeEach(() => {
-      timerState.addMobber({id: 'a', name: 'A1'})
+      timerState.addMobber({ id: 'a', name: 'A1' })
       events = []
-      timerState.updateMobber({id: 'a', name: 'A2'})
+      timerState.updateMobber({ id: 'a', name: 'A2' })
     })
 
     it('should publish a configUpdated event', () => {
@@ -269,12 +269,12 @@ describe('timer-state', () => {
     })
 
     it('should update correctly if the update disabled the current mobber', () => {
-      timerState.addMobber({id: 'b', name: 'B'})
-      timerState.addMobber({id: 'c', name: 'C'})
+      timerState.addMobber({ id: 'b', name: 'B' })
+      timerState.addMobber({ id: 'c', name: 'C' })
       timerState.rotate()
       events = []
 
-      timerState.updateMobber({id: 'b', name: 'B', disabled: true})
+      timerState.updateMobber({ id: 'b', name: 'B', disabled: true })
       
       assertEvent('paused')
       assertEvent('turnEnded')
@@ -419,8 +419,8 @@ describe('timer-state', () => {
       })
 
       let result = {}
-      let expectedJack = {name: 'jack'}
-      let expectedJill = {name: 'jill'}
+      let expectedJack = { name: 'jack' }
+      let expectedJill = { name: 'jill' }
       let expectedSecondsPerTurn = 599
       let expectedSecondsUntilFullscreen = 3
       let expectedSnapThreshold = 42
@@ -456,8 +456,8 @@ describe('timer-state', () => {
       })
 
       let result = {}
-      let expectedJack = {name: 'jack'}
-      let expectedJill = {name: 'jill'}
+      let expectedJack = { name: 'jack' }
+      let expectedJill = { name: 'jill' }
     })
   })
 
@@ -465,7 +465,7 @@ describe('timer-state', () => {
     describe('when loading state data', () => {
       before(() => {
         state = {
-          mobbers: [{name: 'jack'}, {name: 'jill'}],
+          mobbers: [{ name: 'jack' }, { name: 'jill' }],
           secondsPerTurn: 400,
           secondsUntilFullscreen: 0,
           snapThreshold: 22,
@@ -512,7 +512,7 @@ describe('timer-state', () => {
     describe('when loading state with one mobber', () => {
       before(() => {
         state = {
-          mobbers: [{name: 'jack'}],
+          mobbers: [{ name: 'jack' }],
         }
 
         timerState.loadState(state)

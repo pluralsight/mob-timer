@@ -1,5 +1,5 @@
 const ipc = require('electron').ipcRenderer
-const {dialog} = require('electron').remote
+const { dialog } = require('electron').remote
 
 const mobbersEl = document.getElementById('mobbers')
 const shuffleEl = document.getElementById('shuffle')
@@ -55,7 +55,7 @@ function selectImage(mobber) {
   var image = dialog.showOpenDialog({
     title: 'Select image',
     filters: [
-      {name: 'Images', extensions: ['jpg', 'png', 'gif']}
+      { name: 'Images', extensions: ['jpg', 'png', 'gif'] }
     ],
     properties: ['openFile']
   })
@@ -162,7 +162,7 @@ useCustomSoundCheckbox.addEventListener('change', _ => {
     const selectedMp3 = dialog.showOpenDialog({
       title: 'Select alert sound',
       filters: [
-        {name: 'MP3', extensions: ['mp3']}
+        { name: 'MP3', extensions: ['mp3'] }
       ],
       properties: ['openFile']
     })
