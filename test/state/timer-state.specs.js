@@ -6,7 +6,7 @@ describe('timer-state', () => {
   let timerState
   let events
 
-  let assertEvent = (eventName) => {
+  let assertEvent = eventName => {
     var event = events.find(x => x.event == eventName)
     assert(event, eventName + ' event not found')
     return event
