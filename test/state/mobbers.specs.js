@@ -33,7 +33,7 @@ describe('Mobbers', () => {
       Math.random.onCall(1).returns(0.5)
       Math.random.onCall(2).returns(0.7)
       Math.random.onCall(3).returns(0.9)
-      Math.random.throws(new Error("No more random should be needed!"))
+      Math.random.throws(new Error('No more random should be needed!'))
       mobbers.addMobber({ name: 'Testerson', id: 'mobber-1' })
       mobbers.addMobber({ name: 'TestersonFace', id: 'mobber-2' })
       mobbers.addMobber({ name: 'TestersonHead', id: 'mobber-3' })

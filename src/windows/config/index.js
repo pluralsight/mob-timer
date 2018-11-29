@@ -107,7 +107,7 @@ addMobberForm.addEventListener('submit', event => {
   addEl.value = ''
 })
 
-shuffleEl.addEventListener("click", event => {
+shuffleEl.addEventListener('click', event => {
   event.preventDefault()
   ipc.send('shuffleMobbers')
 })

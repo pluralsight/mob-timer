@@ -10,16 +10,16 @@ const nextPicEl = document.getElementById('nextPic')
 
 ipc.on('rotated', (event, data) => {
   if (!data.current) {
-    data.current = { name: "Add a mobber" }
+    data.current = { name: 'Add a mobber' }
   }
   currentEl.innerHTML = data.current.name
-  currentPicEl.src = data.current.image || "../img/sad-cyclops.png"
+  currentPicEl.src = data.current.image || '../img/sad-cyclops.png'
 
   if (!data.next) {
     data.next = data.current
   }
   nextEl.innerHTML = data.next.name
-  nextPicEl.src = data.next.image || "../img/sad-cyclops.png"
+  nextPicEl.src = data.next.image || '../img/sad-cyclops.png'
 })
 
 skipBtn.addEventListener('click', _ => ipc.send('skip'))
