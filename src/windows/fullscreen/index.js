@@ -22,8 +22,8 @@ ipc.on('rotated', (event, data) => {
   nextPicEl.src = data.next.image || '../img/sad-cyclops.png'
 })
 
-skipBtn.addEventListener('click', _ => ipc.send('skip'))
-startTurnBtn.addEventListener('click', _ => ipc.send('startTurn'))
-configureBtn.addEventListener('click', _ => ipc.send('configure'))
+skipBtn.addEventListener('click', () => ipc.send('skip'))
+startTurnBtn.addEventListener('click', () => ipc.send('startTurn'))
+configureBtn.addEventListener('click', () => ipc.send('configure'))
 
 ipc.send('fullscreenWindowReady')

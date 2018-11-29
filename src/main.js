@@ -21,15 +21,15 @@ function onTimerEvent(event, data) {
   }
 }
 
-ipc.on('timerWindowReady', _ => timerState.initialize())
-ipc.on('configWindowReady', _ => timerState.publishConfig())
-ipc.on('fullscreenWindowReady', _ => timerState.publishConfig())
+ipc.on('timerWindowReady', () => timerState.initialize())
+ipc.on('configWindowReady', () => timerState.publishConfig())
+ipc.on('fullscreenWindowReady', () => timerState.publishConfig())
 
-ipc.on('pause', _ => timerState.pause())
-ipc.on('unpause', _ => timerState.start())
-ipc.on('skip', _ => timerState.rotate())
-ipc.on('startTurn', _ => timerState.start())
-ipc.on('configure', _ => {
+ipc.on('pause', () => timerState.pause())
+ipc.on('unpause', () => timerState.start())
+ipc.on('skip', () => timerState.rotate())
+ipc.on('startTurn', () => timerState.start())
+ipc.on('configure', () => {
   windows.showConfigWindow()
   windows.closeFullscreenWindow()
 })

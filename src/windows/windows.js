@@ -24,16 +24,9 @@ exports.createTimerWindow = () => {
   })
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
-  timerWindow.on('closed', _ => (timerWindow = null))
+  timerWindow.on('closed', () => (timerWindow = null))
 
-  let getCenter = bounds => {
-    return {
-      x: bounds.x + (bounds.width / 2),
-      y: bounds.y + (bounds.height / 2)
-    }
-  }
-
-  timerWindow.on('move', e => {
+  timerWindow.on('move', () => {
     if (snapThreshold <= 0) {
       return
     }
@@ -75,7 +68,7 @@ exports.createConfigWindow = () => {
   })
 
   configWindow.loadURL(`file://${__dirname}/config/index.html`)
-  configWindow.on('closed', _ => (configWindow = null))
+  configWindow.on('closed', () => (configWindow = null))
 }
 
 exports.createFullscreenWindow = () => {
@@ -92,7 +85,7 @@ exports.createFullscreenWindow = () => {
   })
 
   fullscreenWindow.loadURL(`file://${__dirname}/fullscreen/index.html`)
-  fullscreenWindow.on('closed', _ => (fullscreenWindow = null))
+  fullscreenWindow.on('closed', () => (fullscreenWindow = null))
 }
 
 exports.closeFullscreenWindow = () => {
