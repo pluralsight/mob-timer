@@ -9,6 +9,7 @@
     "build-mac": "electron-packager . --platform=darwin --arch=x64 --out=dist --icon=icon --overwrite",
     "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
     "lint": "eslint .",
+    "pretest": "npm run lint",
     "test": "mocha --use_strict --recursive",
     "tdd": "mocha --use_strict --recursive -w",
     "watch": "mocha --use_strict --recursive -w"
