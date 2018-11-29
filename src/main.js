@@ -34,6 +34,8 @@ ipc.on('configure', _ => {
   windows.showConfigWindow()
   windows.closeFullscreenWindow()
 })
+
+ipc.on('shuffleMobbers', () => timerState.shuffleMobbers())
 ipc.on('addMobber', (event, mobber) => timerState.addMobber(mobber))
 ipc.on('removeMobber', (event, mobber) => timerState.removeMobber(mobber))
 ipc.on('updateMobber', (event, mobber) => timerState.updateMobber(mobber))

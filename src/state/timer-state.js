@@ -155,6 +155,11 @@ class TimerState {
     this.publishConfig()
   }
 
+  shuffleMobbers() {
+    this.mobbers.shuffleMobbers();
+    this.publishConfig();
+  }
+
   getState() {
     return {
       mobbers: this.mobbers.getAll(),

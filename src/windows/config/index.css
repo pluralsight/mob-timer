@@ -58,10 +58,18 @@ input {
   text-decoration: line-through;
 }
 
+.oneLineInputAndButton {
+  margin: 4px 0;
+}
+
 .addLabel {
   display: flex;
   align-items: center;
-  padding-top: 10px;
+}
+
+.mobberListActions {
+  margin: 4px 0 4px -5px;
+  display: flex;
 }
 
 .btn {
