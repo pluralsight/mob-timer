@@ -24,7 +24,7 @@ exports.createTimerWindow = () => {
   })
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)
-  timerWindow.on('closed', _ => timerWindow = null)
+  timerWindow.on('closed', _ => (timerWindow = null))
 
   let getCenter = bounds => {
     return {
@@ -75,7 +75,7 @@ exports.createConfigWindow = () => {
   })
 
   configWindow.loadURL(`file://${__dirname}/config/index.html`)
-  configWindow.on('closed', _ => configWindow = null)
+  configWindow.on('closed', _ => (configWindow = null))
 }
 
 exports.createFullscreenWindow = () => {
@@ -92,7 +92,7 @@ exports.createFullscreenWindow = () => {
   })
 
   fullscreenWindow.loadURL(`file://${__dirname}/fullscreen/index.html`)
-  fullscreenWindow.on('closed', _ => fullscreenWindow = null)
+  fullscreenWindow.on('closed', _ => (fullscreenWindow = null))
 }
 
 exports.closeFullscreenWindow = () => {
