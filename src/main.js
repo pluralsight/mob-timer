@@ -45,12 +45,12 @@ ipc.on('setAlertSoundTimes', (event, alertSoundTimes) => timerState.setAlertSoun
 ipc.on('setAlertSound', (event, alertSound) => timerState.setAlertSound(alertSound))
 ipc.on('setTimerAlwaysOnTop', (event, value) => timerState.setTimerAlwaysOnTop(value))
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
-app.on('activate', function () {
+app.on('activate', function() {
   windows.createTimerWindow()
 })

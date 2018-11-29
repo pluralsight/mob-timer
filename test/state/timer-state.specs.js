@@ -60,7 +60,7 @@ describe('timer-state', () => {
   describe('start', () => {
     beforeEach(() => timerState.start())
 
-    it('should start the mainTimer', function () {
+    it('should start the mainTimer', function() {
       assert.equal(timerState.mainTimer.isRunning, true)
     })
 
