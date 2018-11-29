@@ -317,11 +317,11 @@ describe('timer-state', () => {
     })
 
     it('should publish a timerChange event', () => {
-        var event = assertEvent('timerChange')
-        assert.deepEqual(event.data, {
-          secondsRemaining: 300,
-          secondsPerTurn: 300
-        })
+      var event = assertEvent('timerChange')
+      assert.deepEqual(event.data, {
+        secondsRemaining: 300,
+        secondsPerTurn: 300
+      })
     })
   })
 
