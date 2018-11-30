@@ -16,6 +16,7 @@ after_script:
 before_deploy:
 - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then tar -zcf ${TRAVIS_BUILD_DIR}/mob-timer-win32-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz dist/mob-timer-win32-x64; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run package-mac; cp ./dist/mob-timer-darwin-x64/mob-timer.dmg ${TRAVIS_BUILD_DIR}/mob-timer-darwin-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.dmg; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar -zcf ${TRAVIS_BUILD_DIR}/mob-timer-linux-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz dist/mob-timer-linux-x64; fi
 deploy:
   provider: releases
   api_key:
@@ -23,6 +24,7 @@ deploy:
   file:
   - ${TRAVIS_BUILD_DIR}/mob-timer-win32-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz
   - ${TRAVIS_BUILD_DIR}/mob-timer-darwin-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.dmg
+  - ${TRAVIS_BUILD_DIR}/mob-timer-linux-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz
   skip_cleanup: true
   on:
     tags: true
