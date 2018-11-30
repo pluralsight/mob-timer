@@ -13,6 +13,7 @@ class TimerState {
     this.alertSound = null
     this.alertSoundTimes = []
     this.timerAlwaysOnTop = true
+    this.shuffleMobbersOnStartup = false
 
     this.createTimers(options.Timer || Timer)
   }
@@ -155,6 +156,11 @@ class TimerState {
     this.publishConfig()
   }
 
+  setShuffleMobbersOnStartup(value) {
+    this.shuffleMobbersOnStartup = value
+    this.publishConfig()
+  }
+
   shuffleMobbers() {
     this.mobbers.shuffleMobbers()
     this.publishConfig()
@@ -168,7 +174,8 @@ class TimerState {
       snapThreshold: this.snapThreshold,
       alertSound: this.alertSound,
       alertSoundTimes: this.alertSoundTimes,
-      timerAlwaysOnTop: this.timerAlwaysOnTop
+      timerAlwaysOnTop: this.timerAlwaysOnTop,
+      shuffleMobbersOnStartup: this.shuffleMobbersOnStartup
     }
   }
 
@@ -189,6 +196,7 @@ class TimerState {
     if (typeof state.timerAlwaysOnTop === 'boolean') {
       this.timerAlwaysOnTop = state.timerAlwaysOnTop
     }
+    this.shuffleMobbersOnStartup = !!state.shuffleMobbersOnStartup
   }
 }
 
