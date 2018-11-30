@@ -1,7 +1,7 @@
 language: node_js
 cache: npm
 node_js:
-  - "6.2"
+  - "10.14"
 os:
   - windows
   - osx
