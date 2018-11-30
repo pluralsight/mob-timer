@@ -372,7 +372,7 @@ describe('timer-state', () => {
 
   describe('getState', () => {
     describe('when getting non-default state', () => {
-      before(() => {
+      beforeEach(() => {
         timerState.addMobber(expectedJack)
         timerState.addMobber(expectedJill)
         timerState.setSecondsPerTurn(expectedSecondsPerTurn)
@@ -429,7 +429,7 @@ describe('timer-state', () => {
     })
 
     describe('when getting default state', () => {
-      before(() => (result = timerState.getState()))
+      beforeEach(() => (result = timerState.getState()))
 
       it('should get no mobbers', () => assert(result.mobbers.length === 0))
       it('should have a default secondsPerTurn greater than zero', () => assert(result.secondsPerTurn > 0))
