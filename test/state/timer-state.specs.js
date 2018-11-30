@@ -166,6 +166,7 @@ describe('timer-state', () => {
       assert.strictEqual(event.data.snapThreshold, 25)
       assert.strictEqual(event.data.alertSound, null)
       assert.deepStrictEqual(event.data.alertSoundTimes, [])
+      assert.strictEqual(event.data.timerAlwaysOnTop, true)
     })
 
     it('should contain the mobbers if there are some', () => {
