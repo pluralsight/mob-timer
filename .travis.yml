@@ -14,12 +14,14 @@ script:
 after_script:
 - ls -R dist
 before_deploy:
+- if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then tar -zcf ${TRAVIS_BUILD_DIR}/mob-timer-win32-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz dist/mob-timer-win32-x64; fi
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run package-mac; cp ./dist/mob-timer-darwin-x64/mob-timer.dmg ${TRAVIS_BUILD_DIR}/mob-timer-darwin-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.dmg; fi
 deploy:
   provider: releases
   api_key:
     secure: YJS6a+ASQ44wVE9MRPG1EVUoLGex1iSE/fvCvjl66tudu1J8b38Go184EoZjrCMEZ3PY0l1Y+azKmF55WkxaIDl/MoXooK0LqmHLoGgjODFt2tFJeCX59uo4JFEozQn0sHT7B/bMpiqHDn6X3rJU5QYQQ2aVAYF7AsjaAsSHgrpVVIFdZXtAcFfPonXWdxhNxTLmY5KCOGn/u3KNaFRR5SHXPK0PlqYTqTo0TyJI3b0h+ewMzfoISmLIqzZG4nw2oDlIE9KGm8gtPsp2j5u1Ngf+71X1mwrthjCly4bATrUPYowj2aK6h/CrRcxtWvjDKDNnRBwmefxKfITRvxdOUfCRSOKXd+vbLFuYOT4AMr79ZtCsvhjfClZNhcCqthwzSd0lD2Zhza3peUths/hAiF5qgmzgN2ssCNYFelroSsBbA3o4FJ8OvnwS0CjTm9Y7vTi0bGyODC9gzzUOsJ10LxVVQY+nT04Xw2rAPvf7QMiWhwD81mwSty+ezYpKKQ39boGYI+EkuA9dXG7BetXtujJ4m4mg622Jmx/u1WSgrb6+wWvjne/s+9vuCIrbovpKXfFKy/guBPEl6h0hgCdpiOUWvRdxGjCMRRrEQeb7Jh1JqumyuCXNsKf6du9FPQOQdyGr7AIwWZPkv9zY3PLpe8BTOpDvak3SrryTGE3JAUg=
   file:
+  - ${TRAVIS_BUILD_DIR}/mob-timer-win32-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz
   - ${TRAVIS_BUILD_DIR}/mob-timer-darwin-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.dmg
   skip_cleanup: true
   on:
