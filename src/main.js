@@ -44,6 +44,7 @@ ipc.on('setSnapThreshold', (event, threshold) => timerState.setSnapThreshold(thr
 ipc.on('setAlertSoundTimes', (event, alertSoundTimes) => timerState.setAlertSoundTimes(alertSoundTimes))
 ipc.on('setAlertSound', (event, alertSound) => timerState.setAlertSound(alertSound))
 ipc.on('setTimerAlwaysOnTop', (event, value) => timerState.setTimerAlwaysOnTop(value))
+ipc.on('setShuffleMobbersOnStartup', (event, value) => timerState.setShuffleMobbersOnStartup(value))
 
 app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
