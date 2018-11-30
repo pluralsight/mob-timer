@@ -12,6 +12,9 @@ app.on('ready', () => {
   timerState.loadState(statePersister.read())
   windows.setConfigState(timerState.getState())
   windows.createTimerWindow()
+  if (timerState.getState().shuffleMobbersOnStartup) {
+    timerState.shuffleMobbers()
+  }
 })
 
 function onTimerEvent(event, data) {
