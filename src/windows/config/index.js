@@ -15,6 +15,7 @@ const replayAudioAfterSeconds = document.getElementById('replayAudioAfterSeconds
 const useCustomSoundCheckbox = document.getElementById('useCustomSound')
 const customSoundEl = document.getElementById('customSound')
 const timerAlwaysOnTopCheckbox = document.getElementById('timerAlwaysOnTop')
+const shuffleMobbersOnStartupCheckbox = document.getElementById('shuffleMobbersOnStartup')
 
 function createMobberEl(mobber) {
   const el = document.createElement('div')
@@ -90,6 +91,7 @@ ipc.on('configUpdated', (event, data) => {
   customSoundEl.value = data.alertSound
 
   timerAlwaysOnTopCheckbox.checked = data.timerAlwaysOnTop
+  shuffleMobbersOnStartupCheckbox.checked = data.shuffleMobbersOnStartup
 })
 
 minutesEl.addEventListener('change', () => {
@@ -178,4 +180,8 @@ useCustomSoundCheckbox.addEventListener('change', () => {
 
 timerAlwaysOnTopCheckbox.addEventListener('change', () => {
   ipc.send('setTimerAlwaysOnTop', timerAlwaysOnTopCheckbox.checked)
+})
+
+shuffleMobbersOnStartupCheckbox.addEventListener('change', () => {
+  ipc.send('setShuffleMobbersOnStartup', shuffleMobbersOnStartupCheckbox.checked)
 })

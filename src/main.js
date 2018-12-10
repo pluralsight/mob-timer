@@ -12,6 +12,9 @@ app.on('ready', () => {
   timerState.loadState(statePersister.read())
   windows.setConfigState(timerState.getState())
   windows.createTimerWindow()
+  if (timerState.getState().shuffleMobbersOnStartup) {
+    timerState.shuffleMobbers()
+  }
 })
 
 function onTimerEvent(event, data) {
@@ -44,6 +47,7 @@ ipc.on('setSnapThreshold', (event, threshold) => timerState.setSnapThreshold(thr
 ipc.on('setAlertSoundTimes', (event, alertSoundTimes) => timerState.setAlertSoundTimes(alertSoundTimes))
 ipc.on('setAlertSound', (event, alertSound) => timerState.setAlertSound(alertSound))
 ipc.on('setTimerAlwaysOnTop', (event, value) => timerState.setTimerAlwaysOnTop(value))
+ipc.on('setShuffleMobbersOnStartup', (event, value) => timerState.setShuffleMobbersOnStartup(value))
 
 app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {

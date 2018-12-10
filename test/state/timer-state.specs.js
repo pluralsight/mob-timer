@@ -166,6 +166,8 @@ describe('timer-state', () => {
       assert.strictEqual(event.data.snapThreshold, 25)
       assert.strictEqual(event.data.alertSound, null)
       assert.deepStrictEqual(event.data.alertSoundTimes, [])
+      assert.strictEqual(event.data.timerAlwaysOnTop, true)
+      assert.strictEqual(event.data.shuffleMobbersOnStartup, false)
     })
 
     it('should contain the mobbers if there are some', () => {
@@ -370,9 +372,18 @@ describe('timer-state', () => {
     })
   })
 
+  describe('when setting shuffle mobbers on startup', () => {
+    beforeEach(() => timerState.setShuffleMobbersOnStartup(true))
+
+    it('should publish a configUpdated event', () => {
+      var event = assertEvent('configUpdated')
+      assert.deepStrictEqual(event.data.shuffleMobbersOnStartup, true)
+    })
+  })
+
   describe('getState', () => {
     describe('when getting non-default state', () => {
-      before(() => {
+      beforeEach(() => {
         timerState.addMobber(expectedJack)
         timerState.addMobber(expectedJill)
         timerState.setSecondsPerTurn(expectedSecondsPerTurn)
@@ -381,6 +392,7 @@ describe('timer-state', () => {
         timerState.setAlertSound(expectedAlertSound)
         timerState.setAlertSoundTimes(expectedAlertSoundTimes)
         timerState.setTimerAlwaysOnTop(expectedTimerAlwaysOnTop)
+        timerState.setShuffleMobbersOnStartup(expectedShuffleMobbersOnStartup)
 
         result = timerState.getState()
       })
@@ -417,6 +429,10 @@ describe('timer-state', () => {
         assert.strictEqual(result.timerAlwaysOnTop, expectedTimerAlwaysOnTop)
       })
 
+      it('should get the correct shuffle mobbers on startup', () => {
+        assert.strictEqual(result.shuffleMobbersOnStartup, expectedShuffleMobbersOnStartup)
+      })
+
       let result = {}
       let expectedJack = { name: 'jack' }
       let expectedJill = { name: 'jill' }
@@ -426,10 +442,11 @@ describe('timer-state', () => {
       let expectedAlertSound = 'alert.mp3'
       let expectedAlertSoundTimes = [0, 15]
       let expectedTimerAlwaysOnTop = false
+      let expectedShuffleMobbersOnStartup = true
     })
 
     describe('when getting default state', () => {
-      before(() => (result = timerState.getState()))
+      beforeEach(() => (result = timerState.getState()))
 
       it('should get no mobbers', () => assert(result.mobbers.length === 0))
       it('should have a default secondsPerTurn greater than zero', () => assert(result.secondsPerTurn > 0))
@@ -437,6 +454,7 @@ describe('timer-state', () => {
       it('should have a null alert sound', () => assert(result.alertSound === null))
       it('should have an empty array of alert sound times', () => assert.deepStrictEqual(result.alertSoundTimes, []))
       it('should have a default timerAlwaysOnTop', () => assert.deepStrictEqual(result.timerAlwaysOnTop, true))
+      it('should have a default shuffleMobbersOnStartup', () => assert.strictEqual(result.shuffleMobbersOnStartup, false))
 
       let result = {}
     })
@@ -469,7 +487,8 @@ describe('timer-state', () => {
           snapThreshold: 22,
           alertSound: 'bell.mp3',
           alertSoundTimes: [2, 3, 5, 8],
-          timerAlwaysOnTop: false
+          timerAlwaysOnTop: false,
+          shuffleMobbersOnStartup: true
         }
 
         timerState.loadState(state)
@@ -484,6 +503,7 @@ describe('timer-state', () => {
       it('should load alertSound', () => assert.strictEqual(result.alertSound, state.alertSound))
       it('should load alertSoundTimes', () => assert.deepStrictEqual(result.alertSoundTimes, [2, 3, 5, 8]))
       it('should load timerAlwaysOnTop', () => assert.strictEqual(result.timerAlwaysOnTop, state.timerAlwaysOnTop))
+      it('should load shuffleMobbersOnStartup', () => assert.strictEqual(result.shuffleMobbersOnStartup, state.shuffleMobbersOnStartup))
 
       let result = {}
       let state = {}
@@ -503,6 +523,7 @@ describe('timer-state', () => {
       it('should have a null alertSound', () => assert.strictEqual(result.alertSound, null))
       it('should have an empty array of alertSoundTimes', () => assert.deepStrictEqual(result.alertSoundTimes, []))
       it('should have a default timerAlwaysOnTop', () => assert.strictEqual(result.timerAlwaysOnTop, true))
+      it('should have a default shuffleMobbersOnStartup', () => assert.strictEqual(result.shuffleMobbersOnStartup, false))
 
       let result = {}
     })
