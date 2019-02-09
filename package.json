@@ -7,6 +7,7 @@
     "start": "electron .",
     "build-win": "electron-packager . --platform=win32 --arch=x64 --out=dist --icon=icon --overwrite",
     "build-mac": "electron-packager . --platform=darwin --arch=x64 --out=dist --icon=icon --overwrite",
+    "package-mac": "electron-installer-dmg ./dist/mob-timer-darwin-x64/mob-timer.app mob-timer --out=./dist/mob-timer-darwin-x64 --overwrite",
     "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
     "lint": "eslint .",
     "pretest": "npm run lint",
@@ -26,6 +27,7 @@
   "homepage": "https://github.com/pluralsight/mob-timer#readme",
   "devDependencies": {
     "electron": "^1.8.3",
+    "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^12.1.0",
     "eslint": "^5.8.0",
     "eslint-config-standard": "^12.0.0",
