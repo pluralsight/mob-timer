@@ -1,4 +1,7 @@
 # Pluralsight Mob Timer
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/mob-timer/mob-timer.svg)](https://greenkeeper.io/)
+
 A cross-platform timer built on [Electron](http://electron.atom.io/)
 for doing [Mob Programming](http://mobprogramming.org/)
 
