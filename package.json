@@ -40,6 +40,7 @@
     "sinon": "^7.1.1"
   },
   "dependencies": {
+    "debounce": "^1.2.0",
     "uuid": "^3.2.1"
   }
 }
