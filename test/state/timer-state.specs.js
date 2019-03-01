@@ -1,6 +1,7 @@
 let TimerState = require('../../src/state/timer-state')
 let TestTimer = require('./test-timer')
 let assert = require('assert')
+let clipboardy = require('clipboardy')
 
 describe('timer-state', () => {
   let timerState
@@ -168,6 +169,7 @@ describe('timer-state', () => {
       assert.deepStrictEqual(event.data.alertSoundTimes, [])
       assert.strictEqual(event.data.timerAlwaysOnTop, true)
       assert.strictEqual(event.data.shuffleMobbersOnStartup, false)
+      assert.strictEqual(event.data.clearClipboardHistoryBetweenTurns, false)
     })
 
     it('should contain the mobbers if there are some', () => {
@@ -310,6 +312,21 @@ describe('timer-state', () => {
     })
   })
 
+  describe('clearClipboardHistory', () => {
+    beforeEach(() => {
+      clipboardy.writeSync('general kenboi')
+      timerState.clearClipboardHistory()
+    })
+
+    it('should have cleared the clip board', function(done) {
+      this.timeout(6100)
+      setTimeout(function() {
+        assert.strictEqual(clipboardy.readSync(), '')
+        done()
+      }, 6000)
+    })
+  })
+
   describe('setSecondsPerTurn', () => {
     beforeEach(() => timerState.setSecondsPerTurn(300))
 
@@ -381,6 +398,15 @@ describe('timer-state', () => {
     })
   })
 
+  describe('when setting clear clipboard history between turns', () => {
+    beforeEach(() => timerState.setClearClipboardHistoryBetweenTurns(true))
+
+    it('should publish a configUpdated event', () => {
+      var event = assertEvent('configUpdated')
+      assert.deepStrictEqual(event.data.clearClipboardHistoryBetweenTurns, true)
+    })
+  })
+
   describe('getState', () => {
     describe('when getting non-default state', () => {
       beforeEach(() => {
@@ -393,6 +419,7 @@ describe('timer-state', () => {
         timerState.setAlertSoundTimes(expectedAlertSoundTimes)
         timerState.setTimerAlwaysOnTop(expectedTimerAlwaysOnTop)
         timerState.setShuffleMobbersOnStartup(expectedShuffleMobbersOnStartup)
+        timerState.setClearClipboardHistoryBetweenTurns(expectedClearClipboardHistoryBetweenTurns)
 
         result = timerState.getState()
       })
@@ -433,6 +460,10 @@ describe('timer-state', () => {
         assert.strictEqual(result.shuffleMobbersOnStartup, expectedShuffleMobbersOnStartup)
       })
 
+      it('should get the correct clear clipboard history between turns', () => {
+        assert.strictEqual(result.clearClipboardHistoryBetweenTurns, expectedClearClipboardHistoryBetweenTurns)
+      })
+
       let result = {}
       let expectedJack = { name: 'jack' }
       let expectedJill = { name: 'jill' }
@@ -443,6 +474,7 @@ describe('timer-state', () => {
       let expectedAlertSoundTimes = [0, 15]
       let expectedTimerAlwaysOnTop = false
       let expectedShuffleMobbersOnStartup = true
+      let expectedClearClipboardHistoryBetweenTurns = true
     })
 
     describe('when getting default state', () => {
@@ -455,6 +487,7 @@ describe('timer-state', () => {
       it('should have an empty array of alert sound times', () => assert.deepStrictEqual(result.alertSoundTimes, []))
       it('should have a default timerAlwaysOnTop', () => assert.deepStrictEqual(result.timerAlwaysOnTop, true))
       it('should have a default shuffleMobbersOnStartup', () => assert.strictEqual(result.shuffleMobbersOnStartup, false))
+      it('should have a default clearClipboardHistoryBetweenTurns', () => assert.strictEqual(result.clearClipboardHistoryBetweenTurns, false))
 
       let result = {}
     })
@@ -488,7 +521,8 @@ describe('timer-state', () => {
           alertSound: 'bell.mp3',
           alertSoundTimes: [2, 3, 5, 8],
           timerAlwaysOnTop: false,
-          shuffleMobbersOnStartup: true
+          shuffleMobbersOnStartup: true,
+          clearClipboardHistoryBetweenTurns: true
         }
 
         timerState.loadState(state)
@@ -504,6 +538,7 @@ describe('timer-state', () => {
       it('should load alertSoundTimes', () => assert.deepStrictEqual(result.alertSoundTimes, [2, 3, 5, 8]))
       it('should load timerAlwaysOnTop', () => assert.strictEqual(result.timerAlwaysOnTop, state.timerAlwaysOnTop))
       it('should load shuffleMobbersOnStartup', () => assert.strictEqual(result.shuffleMobbersOnStartup, state.shuffleMobbersOnStartup))
+      it('should load clearClipboardHistoryBetweenTurns', () => assert.strictEqual(result.clearClipboardHistoryBetweenTurns, state.clearClipboardHistoryBetweenTurns))
 
       let result = {}
       let state = {}
@@ -524,6 +559,7 @@ describe('timer-state', () => {
       it('should have an empty array of alertSoundTimes', () => assert.deepStrictEqual(result.alertSoundTimes, []))
       it('should have a default timerAlwaysOnTop', () => assert.strictEqual(result.timerAlwaysOnTop, true))
       it('should have a default shuffleMobbersOnStartup', () => assert.strictEqual(result.shuffleMobbersOnStartup, false))
+      it('should have a default clearClipboardHistoryBetweenTurns', () => assert.strictEqual(result.clearClipboardHistoryBetweenTurns, false))
 
       let result = {}
     })

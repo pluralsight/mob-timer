@@ -1,5 +1,6 @@
 const Timer = require('./timer')
 const Mobbers = require('./mobbers')
+let clipboardy = require('clipboardy')
 
 class TimerState {
   constructor(options) {
@@ -14,6 +15,7 @@ class TimerState {
     this.alertSoundTimes = []
     this.timerAlwaysOnTop = true
     this.shuffleMobbersOnStartup = false
+    this.clearClipboardHistoryBetweenTurns = false
 
     this.createTimers(options.Timer || Timer)
   }
@@ -30,6 +32,10 @@ class TimerState {
         this.rotate()
         this.callback('turnEnded')
         this.startAlerts()
+
+        if (this.clearClipboardHistoryBetweenTurns) {
+          setTimeout(this.clearClipboardHistory, this.secondsUntilFullscreen * 1000)
+        }
       }
     })
 
@@ -166,6 +172,28 @@ class TimerState {
     this.publishConfig()
   }
 
+  setClearClipboardHistoryBetweenTurns(value) {
+    this.clearClipboardHistoryBetweenTurns = value
+    this.publishConfig()
+  }
+
+  clearClipboardHistory() {
+    const millisecondsNeededBetweenWrites = 180
+    const numberOfItemsHistoryStores = 25
+    let i = 1
+    let id = setInterval(writeToClipboard, millisecondsNeededBetweenWrites)
+
+    function writeToClipboard() {
+      if (i < numberOfItemsHistoryStores) {
+        clipboardy.writeSync(i.toString())
+        i++
+      } else {
+        clipboardy.writeSync('')
+        clearInterval(id)
+      }
+    }
+  }
+
   getState() {
     return {
       mobbers: this.mobbers.getAll(),
@@ -175,7 +203,8 @@ class TimerState {
       alertSound: this.alertSound,
       alertSoundTimes: this.alertSoundTimes,
       timerAlwaysOnTop: this.timerAlwaysOnTop,
-      shuffleMobbersOnStartup: this.shuffleMobbersOnStartup
+      shuffleMobbersOnStartup: this.shuffleMobbersOnStartup,
+      clearClipboardHistoryBetweenTurns: this.clearClipboardHistoryBetweenTurns
     }
   }
 
@@ -197,6 +226,7 @@ class TimerState {
       this.timerAlwaysOnTop = state.timerAlwaysOnTop
     }
     this.shuffleMobbersOnStartup = !!state.shuffleMobbersOnStartup
+    this.clearClipboardHistoryBetweenTurns = !!state.clearClipboardHistoryBetweenTurns
   }
 }
 

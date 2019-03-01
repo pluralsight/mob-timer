@@ -36,6 +36,7 @@
       "error",
       {
         "allowModules": [
+          "clipboardy",
           "electron",
           "chai",
           "sinon"

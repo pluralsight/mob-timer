@@ -48,6 +48,7 @@ ipc.on('setAlertSoundTimes', (event, alertSoundTimes) => timerState.setAlertSoun
 ipc.on('setAlertSound', (event, alertSound) => timerState.setAlertSound(alertSound))
 ipc.on('setTimerAlwaysOnTop', (event, value) => timerState.setTimerAlwaysOnTop(value))
 ipc.on('setShuffleMobbersOnStartup', (event, value) => timerState.setShuffleMobbersOnStartup(value))
+ipc.on('setClearClipboardHistoryBetweenTurns', (event, value) => timerState.setClearClipboardHistoryBetweenTurns(value))
 
 app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
