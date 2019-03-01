@@ -21,7 +21,7 @@ If you need a platform other than these, you will need to modify the build scrip
 
 # Development
 Run `npm install` to get the dependencies, then `npm start` to run the timer.
-Run `npm test` to start the unit tests, or `npm run integration_test` to run integration tests.
+Run `npm test` to run the unit tests once, or alternatively `npm run watch` to run them on changes.
 
 
 # Motivation
