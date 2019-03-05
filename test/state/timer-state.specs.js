@@ -1,7 +1,6 @@
 let TimerState = require('../../src/state/timer-state')
 let TestTimer = require('./test-timer')
 let assert = require('assert')
-let clipboardy = require('clipboardy')
 
 describe('timer-state', () => {
   let timerState
@@ -309,21 +308,6 @@ describe('timer-state', () => {
     it('should shuffle the mobbers', () => {
       const mobbers = timerState.getState().mobbers.map(x => x.id).join('')
       assert.notStrictEqual(mobbers, 'abcdefghij')
-    })
-  })
-
-  describe('clearClipboardHistory', () => {
-    beforeEach(() => {
-      clipboardy.writeSync('general kenboi')
-      timerState.clearClipboardHistory()
-    })
-
-    it('should have cleared the clip board', function(done) {
-      this.timeout(6100)
-      setTimeout(function() {
-        assert.strictEqual(clipboardy.readSync(), '')
-        done()
-      }, 6000)
     })
   })
 

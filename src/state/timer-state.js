@@ -1,6 +1,6 @@
 const Timer = require('./timer')
 const Mobbers = require('./mobbers')
-let clipboardy = require('clipboardy')
+const ClearClipboard = require('../clear-clipboard')
 
 class TimerState {
   constructor(options) {
@@ -34,7 +34,7 @@ class TimerState {
         this.startAlerts()
 
         if (this.clearClipboardHistoryBetweenTurns) {
-          setTimeout(this.clearClipboardHistory, this.secondsUntilFullscreen * 1000)
+          setTimeout(ClearClipboard.clearClipboardHistory, this.secondsUntilFullscreen * 1000)
         }
       }
     })
@@ -175,23 +175,6 @@ class TimerState {
   setClearClipboardHistoryBetweenTurns(value) {
     this.clearClipboardHistoryBetweenTurns = value
     this.publishConfig()
-  }
-
-  clearClipboardHistory() {
-    const millisecondsNeededBetweenWrites = 180
-    const numberOfItemsHistoryStores = 25
-    let i = 1
-    let id = setInterval(writeToClipboard, millisecondsNeededBetweenWrites)
-
-    function writeToClipboard() {
-      if (i < numberOfItemsHistoryStores) {
-        clipboardy.writeSync(i.toString())
-        i++
-      } else {
-        clipboardy.writeSync('')
-        clearInterval(id)
-      }
-    }
   }
 
   getState() {
