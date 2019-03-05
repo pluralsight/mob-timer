@@ -15,7 +15,7 @@ class TimerState {
     this.alertSoundTimes = []
     this.timerAlwaysOnTop = true
     this.shuffleMobbersOnStartup = false
-    this.clearClipboardHistoryBetweenTurns = false
+    this.clearClipboardHistoryOnTurnEnd = false
 
     this.createTimers(options.Timer || Timer)
   }
@@ -33,8 +33,8 @@ class TimerState {
         this.callback('turnEnded')
         this.startAlerts()
 
-        if (this.clearClipboardHistoryBetweenTurns) {
-          setTimeout(ClearClipboard.clearClipboardHistory, this.secondsUntilFullscreen * 1000)
+        if (this.clearClipboardHistoryOnTurnEnd) {
+          ClearClipboard.clearClipboardHistory()
         }
       }
     })
@@ -172,8 +172,8 @@ class TimerState {
     this.publishConfig()
   }
 
-  setClearClipboardHistoryBetweenTurns(value) {
-    this.clearClipboardHistoryBetweenTurns = value
+  setClearClipboardHistoryOnTurnEnd(value) {
+    this.clearClipboardHistoryOnTurnEnd = value
     this.publishConfig()
   }
 
@@ -187,7 +187,7 @@ class TimerState {
       alertSoundTimes: this.alertSoundTimes,
       timerAlwaysOnTop: this.timerAlwaysOnTop,
       shuffleMobbersOnStartup: this.shuffleMobbersOnStartup,
-      clearClipboardHistoryBetweenTurns: this.clearClipboardHistoryBetweenTurns
+      clearClipboardHistoryOnTurnEnd: this.clearClipboardHistoryOnTurnEnd
     }
   }
 
@@ -209,7 +209,7 @@ class TimerState {
       this.timerAlwaysOnTop = state.timerAlwaysOnTop
     }
     this.shuffleMobbersOnStartup = !!state.shuffleMobbersOnStartup
-    this.clearClipboardHistoryBetweenTurns = !!state.clearClipboardHistoryBetweenTurns
+    this.clearClipboardHistoryOnTurnEnd = !!state.clearClipboardHistoryOnTurnEnd
   }
 }
 
