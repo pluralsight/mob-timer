@@ -1,12 +1,12 @@
-const ClearClipboard = require('../src/clear-clipboard')
+const clipboard = require('../src/clipboard')
 const clipboardy = require('clipboardy')
 let assert = require('assert')
 
-describe('clear-clipboard', () => {
+describe('clipboard', () => {
   describe('clearClipboardHistory', () => {
     beforeEach(() => {
       clipboardy.writeSync('general kenboi')
-      ClearClipboard.clearClipboardHistory()
+      clipboard.clearClipboardHistory()
     })
 
     it('should have cleared the clip board', function(done) {

@@ -1,6 +1,6 @@
 const Timer = require('./timer')
 const Mobbers = require('./mobbers')
-const ClearClipboard = require('../clear-clipboard')
+const clipboard = require('../clipboard')
 
 class TimerState {
   constructor(options) {
@@ -34,7 +34,7 @@ class TimerState {
         this.startAlerts()
 
         if (this.clearClipboardHistoryOnTurnEnd) {
-          ClearClipboard.clearClipboardHistory()
+          clipboard.clearClipboardHistory()
         }
       }
     })
