@@ -16,6 +16,7 @@ class TimerState {
     this.timerAlwaysOnTop = true
     this.shuffleMobbersOnStartup = false
     this.clearClipboardHistoryOnTurnEnd = false
+    this.numberOfItemsClipboardHistoryStores = 25
 
     this.createTimers(options.Timer || Timer)
   }
@@ -34,7 +35,7 @@ class TimerState {
         this.startAlerts()
 
         if (this.clearClipboardHistoryOnTurnEnd) {
-          clipboard.clearClipboardHistory()
+          clipboard.clearClipboardHistory(this.numberOfItemsClipboardHistoryStores)
         }
       }
     })
@@ -177,6 +178,11 @@ class TimerState {
     this.publishConfig()
   }
 
+  setNumberOfItemsClipboardHistoryStores(value) {
+    this.numberOfItemsClipboardHistoryStores = value
+    this.publishConfig()
+  }
+
   getState() {
     return {
       mobbers: this.mobbers.getAll(),
@@ -187,7 +193,8 @@ class TimerState {
       alertSoundTimes: this.alertSoundTimes,
       timerAlwaysOnTop: this.timerAlwaysOnTop,
       shuffleMobbersOnStartup: this.shuffleMobbersOnStartup,
-      clearClipboardHistoryOnTurnEnd: this.clearClipboardHistoryOnTurnEnd
+      clearClipboardHistoryOnTurnEnd: this.clearClipboardHistoryOnTurnEnd,
+      numberOfItemsClipboardHistoryStores: this.numberOfItemsClipboardHistoryStores
     }
   }
 
@@ -210,6 +217,7 @@ class TimerState {
     }
     this.shuffleMobbersOnStartup = !!state.shuffleMobbersOnStartup
     this.clearClipboardHistoryOnTurnEnd = !!state.clearClipboardHistoryOnTurnEnd
+    this.numberOfItemsClipboardHistoryStores = Math.floor(state.numberOfItemsClipboardHistoryStores) > 0 ? Math.floor(state.numberOfItemsClipboardHistoryStores) : 1
   }
 }
 

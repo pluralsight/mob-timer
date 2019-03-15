@@ -112,3 +112,7 @@ input[type="checkbox" i] {
 .custom-sound {
   width: 145px;
 }
+
+.clipboard-history-items {
+  width: 40px;
+}
