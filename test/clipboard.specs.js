@@ -1,20 +1,31 @@
 const clipboard = require('../src/clipboard')
 const clipboardy = require('clipboardy')
+const sinon = require('sinon')
 let assert = require('assert')
 
 describe('clipboard', () => {
   describe('clearClipboardHistory', () => {
-    beforeEach(() => {
+    before(() => {
       clipboardy.writeSync('general kenboi')
-      clipboard.clearClipboardHistory()
+      sinon.spy(clipboardy, 'writeSync')
+      clipboard.clearClipboardHistory(expectedTimesWriteSyncIsCalled)
+    })
+
+    after(() => {
+      clipboardy.writeSync.restore()
     })
 
     it('should have cleared the clip board', function(done) {
-      this.timeout(6100)
       setTimeout(function() {
         assert.strictEqual(clipboardy.readSync(), '')
         done()
-      }, 6000)
+      }, 700)
     })
+
+    it('should call writeSync the correct number of times', () => {
+      sinon.assert.callCount(clipboardy.writeSync, expectedTimesWriteSyncIsCalled)
+    })
+
+    let expectedTimesWriteSyncIsCalled = 3
   })
 })
