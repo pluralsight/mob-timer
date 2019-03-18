@@ -13,12 +13,13 @@
     "test": "mocha --use_strict --recursive",
     "tdd": "mocha --use_strict --recursive -w",
     "watch": "mocha --use_strict --recursive -w",
-    "coverage": "nyc mocha --use_strict --recursive"
+    "coverage": "nyc mocha --use_strict --recursive && nyc report --reporter=text-lcov | coveralls"
   },
   "nyc": {
     "exclude": [
       "**/*.specs.js",
-      "test/**/*.*"
+      "test/**/*.*",
+      "dist/**/*.*"
     ],
     "reporter": [
       "text-summary"
@@ -37,6 +38,7 @@
   },
   "homepage": "https://mob-timer.github.io",
   "devDependencies": {
+    "coveralls": "^3.0.3",
     "electron": "^4.0.4",
     "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^13.0.1",
