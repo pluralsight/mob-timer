@@ -1,5 +1,8 @@
 {
   "name": "mob-timer",
+  "engines": {
+    "node": "10.11.0"
+  },
   "description": "A cross-platform mob-timer built on Electron for doing Mob Programming.",
   "main": "src/main.js",
   "scripts": {
