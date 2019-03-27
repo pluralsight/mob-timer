@@ -1,23 +1,39 @@
 const fs = require('fs')
 const assert = require('assert')
+const electronReleases = require('electron-releases/lite.json')
+const packageJson = require('../package.json')
+const packageLockJson = require('../package-lock.json')
 
 describe('Node versions', () => {
-  const nvmrc = fs.readFileSync('./.nvmrc', 'utf-8')
-  const travisYml = fs.readFileSync('./.travis.yml', 'utf-8')
-  const packageJson = fs.readFileSync('./package.json', 'utf-8')
+  const nodeVersionUsedByElectron = getNodeVersionUsedByElectron()
 
-  it('.nvmrc should match .travis.yml', () => {
-    const matches = travisYml.indexOf(`- "${nvmrc}"`) !== -1
-    const message = [
-      'Could not find node version from .nvmrc in .travis.yml!\n',
-      '.nvmrc', nvmrc, '.travis.yml', travisYml]
-    assert.ok(matches, message.join('\n'))
+  it(`should find node version used by electron`, () => {
+    assert.ok(nodeVersionUsedByElectron.length, `Found: ${nodeVersionUsedByElectron}`)
   })
 
-  it('.nvmrc should match package.json engines node version', () => {
-    const message = [
-      'Could not find node version from .nvmrc in package.json!\n',
-      '.nvmrc', nvmrc, 'package.json', packageJson]
-    assert.strictEqual(JSON.parse(packageJson).engines.node, nvmrc, message)
+  it(`should find node version ${nodeVersionUsedByElectron} in .nvmrc`, () => {
+    const nvmrc = fs.readFileSync('./.nvmrc', 'utf-8')
+    assert.strictEqual(nvmrc, nodeVersionUsedByElectron)
+  })
+
+  it(`should find node version ${nodeVersionUsedByElectron} in .travis.yml`, () => {
+    const travisYml = fs.readFileSync('./.travis.yml', 'utf-8')
+    const matches = travisYml.indexOf(`- "${nodeVersionUsedByElectron}"`) !== -1
+    const failMessage = [
+      `Could not find node version ${nodeVersionUsedByElectron} in .travis.yml!`,
+      travisYml
+    ]
+    assert.ok(matches, failMessage.join('\n'))
+  })
+
+  it(`should find engines node version ${nodeVersionUsedByElectron} in package.json`, () => {
+    assert.strictEqual(packageJson.engines.node, nodeVersionUsedByElectron)
   })
 })
+
+function getNodeVersionUsedByElectron() {
+  const electronVersion = packageLockJson.dependencies.electron.version
+  const electronRelease = electronReleases.find(release =>
+    release.version === electronVersion)
+  return electronRelease.deps.node
+}

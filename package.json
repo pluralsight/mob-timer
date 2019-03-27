@@ -45,6 +45,7 @@
     "electron": "^4.0.4",
     "electron-installer-dmg": "^2.0.0",
     "electron-packager": "^13.0.1",
+    "electron-releases": "^3.86.0",
     "eslint": "^5.8.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
