@@ -16,6 +16,8 @@ const useCustomSoundCheckbox = document.getElementById('useCustomSound')
 const customSoundEl = document.getElementById('customSound')
 const timerAlwaysOnTopCheckbox = document.getElementById('timerAlwaysOnTop')
 const shuffleMobbersOnStartupCheckbox = document.getElementById('shuffleMobbersOnStartup')
+const clearClipboardHistoryOnTurnEndCheckbox = document.getElementById('clearClipboardHistoryOnTurnEnd')
+const numberOfItemsClipboardHistoryStores = document.getElementById('numberOfItemsClipboardHistoryStores')
 
 function createMobberEl(mobber) {
   const el = document.createElement('div')
@@ -92,6 +94,9 @@ ipc.on('configUpdated', (event, data) => {
 
   timerAlwaysOnTopCheckbox.checked = data.timerAlwaysOnTop
   shuffleMobbersOnStartupCheckbox.checked = data.shuffleMobbersOnStartup
+  clearClipboardHistoryOnTurnEndCheckbox.checked = data.clearClipboardHistoryOnTurnEnd
+  numberOfItemsClipboardHistoryStores.value = data.numberOfItemsClipboardHistoryStores
+  numberOfItemsClipboardHistoryStores.disabled = !clearClipboardHistoryOnTurnEndCheckbox.checked
 })
 
 minutesEl.addEventListener('change', () => {
@@ -184,4 +189,13 @@ timerAlwaysOnTopCheckbox.addEventListener('change', () => {
 
 shuffleMobbersOnStartupCheckbox.addEventListener('change', () => {
   ipc.send('setShuffleMobbersOnStartup', shuffleMobbersOnStartupCheckbox.checked)
+})
+
+clearClipboardHistoryOnTurnEndCheckbox.addEventListener('change', () => {
+  numberOfItemsClipboardHistoryStores.disabled = !clearClipboardHistoryOnTurnEndCheckbox.checked
+  ipc.send('setClearClipboardHistoryOnTurnEnd', clearClipboardHistoryOnTurnEndCheckbox.checked)
+})
+
+numberOfItemsClipboardHistoryStores.addEventListener('change', () => {
+  ipc.send('setNumberOfItemsClipboardHistoryStores', Math.floor(numberOfItemsClipboardHistoryStores.value) > 0 ? Math.floor(numberOfItemsClipboardHistoryStores.value) : 1)
 })

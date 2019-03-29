@@ -1,5 +1,6 @@
 const Timer = require('./timer')
 const Mobbers = require('./mobbers')
+const clipboard = require('../clipboard')
 
 class TimerState {
   constructor(options) {
@@ -14,6 +15,8 @@ class TimerState {
     this.alertSoundTimes = []
     this.timerAlwaysOnTop = true
     this.shuffleMobbersOnStartup = false
+    this.clearClipboardHistoryOnTurnEnd = false
+    this.numberOfItemsClipboardHistoryStores = 25
 
     this.createTimers(options.Timer || Timer)
   }
@@ -30,6 +33,10 @@ class TimerState {
         this.rotate()
         this.callback('turnEnded')
         this.startAlerts()
+
+        if (this.clearClipboardHistoryOnTurnEnd) {
+          clipboard.clearClipboardHistory(this.numberOfItemsClipboardHistoryStores)
+        }
       }
     })
 
@@ -166,6 +173,16 @@ class TimerState {
     this.publishConfig()
   }
 
+  setClearClipboardHistoryOnTurnEnd(value) {
+    this.clearClipboardHistoryOnTurnEnd = value
+    this.publishConfig()
+  }
+
+  setNumberOfItemsClipboardHistoryStores(value) {
+    this.numberOfItemsClipboardHistoryStores = value
+    this.publishConfig()
+  }
+
   getState() {
     return {
       mobbers: this.mobbers.getAll(),
@@ -175,7 +192,9 @@ class TimerState {
       alertSound: this.alertSound,
       alertSoundTimes: this.alertSoundTimes,
       timerAlwaysOnTop: this.timerAlwaysOnTop,
-      shuffleMobbersOnStartup: this.shuffleMobbersOnStartup
+      shuffleMobbersOnStartup: this.shuffleMobbersOnStartup,
+      clearClipboardHistoryOnTurnEnd: this.clearClipboardHistoryOnTurnEnd,
+      numberOfItemsClipboardHistoryStores: this.numberOfItemsClipboardHistoryStores
     }
   }
 
@@ -197,6 +216,8 @@ class TimerState {
       this.timerAlwaysOnTop = state.timerAlwaysOnTop
     }
     this.shuffleMobbersOnStartup = !!state.shuffleMobbersOnStartup
+    this.clearClipboardHistoryOnTurnEnd = !!state.clearClipboardHistoryOnTurnEnd
+    this.numberOfItemsClipboardHistoryStores = Math.floor(state.numberOfItemsClipboardHistoryStores) > 0 ? Math.floor(state.numberOfItemsClipboardHistoryStores) : 1
   }
 }
 
