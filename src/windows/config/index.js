@@ -96,6 +96,7 @@ ipc.on('configUpdated', (event, data) => {
   shuffleMobbersOnStartupCheckbox.checked = data.shuffleMobbersOnStartup
   clearClipboardHistoryOnTurnEndCheckbox.checked = data.clearClipboardHistoryOnTurnEnd
   numberOfItemsClipboardHistoryStores.value = data.numberOfItemsClipboardHistoryStores
+  numberOfItemsClipboardHistoryStores.disabled = !clearClipboardHistoryOnTurnEndCheckbox.checked
 })
 
 minutesEl.addEventListener('change', () => {
