@@ -3,64 +3,30 @@
     "eslint:recommended",
     "plugin:node/recommended",
     "plugin:promise/recommended",
-    "standard"
+    "plugin:mocha/recommended",
+    "plugin:import/recommended"
   ],
   "env": {
+    "node": true,
+    "es6": true,
     "mocha": true
   },
-  "plugins": [
-    "mocha",
-    "node"
-  ],
   "globals": {
-    "expect": true
+    "document": "readonly"
   },
-  "overrides": [
-    {
-      "files": "*.spec.js",
-      "rules": {
-        "no-unused-expressions": "off"
-      }
-    }
+  "plugins": [
+    "node",
+    "promise",
+    "mocha",
+    "import"
   ],
   "rules": {
-    "array-bracket-spacing": "error",
-    "arrow-parens": [
-      2,
-      "as-needed"
-    ],
-    "eol-last": "error",
-    "generator-star-spacing": "off",
-    "mocha/no-exclusive-tests": "error",
     "node/no-unpublished-require": [
       "error",
       {
         "allowModules": [
           "electron"
         ]
-      }
-    ],
-    "no-unused-vars": [
-      2,
-      {
-        "vars": "all",
-        "args": "after-used",
-        "ignoreRestSiblings": true
-      }
-    ],
-    "space-before-function-paren": [
-      "error",
-      "never"
-    ],
-    "standard/object-curly-even-spacing": [
-      2,
-      "always"
-    ],
-    "yield-star-spacing": [
-      "error",
-      {
-        "before": false,
-        "after": true
       }
     ]
   }
