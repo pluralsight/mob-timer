@@ -5,35 +5,38 @@ const packageJson = require('../package.json')
 const packageLockJson = require('../package-lock.json')
 
 describe('Node versions', () => {
-  const nodeVersionUsedByElectron = getNodeVersionUsedByElectron()
+  const { electronVersion, nodeVersion } = getMatchingElectronReleaseInfo()
 
-  it(`should find node version used by electron`, () => {
-    assert.ok(nodeVersionUsedByElectron.length, `Found: ${nodeVersionUsedByElectron}`)
+  it(`should find node version used by electron (${electronVersion})`, () => {
+    assert.ok(nodeVersion.length, `Found: ${nodeVersion}`)
   })
 
-  it(`should find node version ${nodeVersionUsedByElectron} in .nvmrc`, () => {
+  it(`should find node version ${nodeVersion} in .nvmrc`, () => {
     const nvmrc = fs.readFileSync('./.nvmrc', 'utf-8')
-    assert.strictEqual(nvmrc, nodeVersionUsedByElectron)
+    assert.strictEqual(nvmrc, nodeVersion)
   })
 
-  it(`should find node version ${nodeVersionUsedByElectron} in .travis.yml`, () => {
+  it(`should find node version ${nodeVersion} in .travis.yml`, () => {
     const travisYml = fs.readFileSync('./.travis.yml', 'utf-8')
-    const matches = travisYml.indexOf(`- "${nodeVersionUsedByElectron}"`) !== -1
+    const matches = travisYml.indexOf(`- "${nodeVersion}"`) !== -1
     const failMessage = [
-      `Could not find node version ${nodeVersionUsedByElectron} in .travis.yml!`,
+      `Could not find node version ${nodeVersion} in .travis.yml!`,
       travisYml
     ]
     assert.ok(matches, failMessage.join('\n'))
   })
 
-  it(`should find engines node version ${nodeVersionUsedByElectron} in package.json`, () => {
-    assert.strictEqual(packageJson.engines.node, nodeVersionUsedByElectron)
+  it(`should find engines node version ${nodeVersion} in package.json`, () => {
+    assert.strictEqual(packageJson.engines.node, nodeVersion)
   })
 })
 
-function getNodeVersionUsedByElectron() {
+function getMatchingElectronReleaseInfo() {
   const electronVersion = packageLockJson.dependencies.electron.version
-  const electronRelease = electronReleases.find(release =>
+  const exactMatchElectronRelease = electronReleases.find(release =>
     release.version === electronVersion)
-  return electronRelease.deps.node
+  const majorVersionElectronRelease = electronReleases.find(release =>
+    release.version[ 0 ] === electronVersion[ 0 ])
+  const foundRelease = exactMatchElectronRelease || majorVersionElectronRelease
+  return { electronVersion: foundRelease.version, nodeVersion: foundRelease.deps.node }
 }
