@@ -4,7 +4,8 @@
     "plugin:node/recommended",
     "plugin:promise/recommended",
     "plugin:mocha/recommended",
-    "plugin:import/recommended"
+    "plugin:import/recommended",
+    "plugin:prettier/recommended"
   ],
   "env": {
     "node": true,
@@ -15,10 +16,8 @@
     "document": "readonly"
   },
   "plugins": [
-    "node",
     "promise",
-    "mocha",
-    "import"
+    "mocha"
   ],
   "rules": {
     "node/no-unpublished-require": [
@@ -28,6 +27,7 @@
           "electron"
         ]
       }
-    ]
+    ],
+    "prettier/prettier": "warn"
   }
 }
