@@ -1,26 +1,26 @@
-const fs = require('fs')
-const os = require('os')
-const path = require('path')
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
 
-const mobTimerDir = path.join(os.homedir(), '.mob-timer')
-const stateFile = path.join(mobTimerDir, 'state.json')
-const oldStateFile = path.join(os.tmpdir(), 'state.json')
+const mobTimerDir = path.join(os.homedir(), ".mob-timer");
+const stateFile = path.join(mobTimerDir, "state.json");
+const oldStateFile = path.join(os.tmpdir(), "state.json");
 
 function read() {
   if (fs.existsSync(stateFile)) {
-    return JSON.parse(fs.readFileSync(stateFile, 'utf-8'))
+    return JSON.parse(fs.readFileSync(stateFile, "utf-8"));
   }
   if (fs.existsSync(oldStateFile)) {
-    return JSON.parse(fs.readFileSync(oldStateFile, 'utf-8'))
+    return JSON.parse(fs.readFileSync(oldStateFile, "utf-8"));
   }
-  return {}
+  return {};
 }
 
 function write(state) {
   if (!fs.existsSync(mobTimerDir)) {
-    fs.mkdirSync(mobTimerDir)
+    fs.mkdirSync(mobTimerDir);
   }
-  fs.writeFileSync(stateFile, JSON.stringify(state))
+  fs.writeFileSync(stateFile, JSON.stringify(state));
 }
 
 module.exports = {
@@ -29,4 +29,4 @@ module.exports = {
   stateFile,
   oldStateFile,
   mobTimerDir
-}
+};

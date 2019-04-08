@@ -1,21 +1,21 @@
 class TestTimer {
   constructor(options, callback) {
-    this.options = options
-    this.callback = callback
-    this.isRunning = false
+    this.options = options;
+    this.callback = callback;
+    this.isRunning = false;
   }
 
   start() {
-    this.isRunning = true
+    this.isRunning = true;
   }
 
   pause() {
-    this.isRunning = false
+    this.isRunning = false;
   }
 
   reset(value) {
-    this.time = value
+    this.time = value;
   }
 }
 
-module.exports = TestTimer
+module.exports = TestTimer;

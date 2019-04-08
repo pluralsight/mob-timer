@@ -1,3 +1,3 @@
 module.exports = {
-  mobberBorderHighlightColor: '#f15b2a'
-}
+  mobberBorderHighlightColor: "#f15b2a"
+};
