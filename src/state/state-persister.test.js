@@ -1,4 +1,4 @@
-const persister = require("../../src/state/state-persister");
+const persister = require("./state-persister");
 const sinon = require("sinon");
 const fs = require("fs");
 const assert = require("assert");

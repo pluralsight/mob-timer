@@ -36,7 +36,7 @@ If you need a platform other than these, you will need to modify the build scrip
 # Development
 
 Run `npm install` to get the dependencies, then `npm start` to run the timer.
-Run `npm test` to run the unit tests once, or alternatively `npm run watch` to run them on changes.
+Run `npm test` to run the unit tests once, or alternatively `npm run watch` to run them on changes. [More information on test structure.](./test/README.md)
 
 
 # Contributing

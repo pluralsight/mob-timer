@@ -1,4 +1,4 @@
-const { snapCheck } = require("../../src/windows/window-snapper");
+const { snapCheck } = require("./window-snapper");
 const assert = require("assert");
 
 describe("window-snapper snapCheck", () => {

@@ -1,4 +1,4 @@
-let TimerState = require("../../src/state/timer-state");
+let TimerState = require("./timer-state");
 let TestTimer = require("./test-timer");
 let assert = require("assert");
 

@@ -13,14 +13,18 @@
     "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "mocha --use_strict --recursive",
-    "tdd": "mocha --use_strict --recursive -w",
-    "watch": "mocha --use_strict --recursive -w",
-    "coverage": "nyc mocha --use_strict --recursive && nyc report --reporter=text-lcov | coveralls"
+    "test": "mocha",
+    "tdd": "mocha -w",
+    "watch": "mocha -w",
+    "coverage": "nyc mocha && nyc report --reporter=text-lcov | coveralls"
+  },
+  "mocha": {
+    "spec": "!(node_modules|dist)/**/*.test.js",
+    "recursive": true
   },
   "nyc": {
     "exclude": [
-      "**/*.specs.js",
+      "**/*.test.js",
       "test/**/*.*",
       "dist/**/*.*"
     ],

@@ -1,4 +1,4 @@
-let Timer = require("../../src/state/timer");
+let Timer = require("./timer");
 let assert = require("assert");
 const sinon = require("sinon");
 

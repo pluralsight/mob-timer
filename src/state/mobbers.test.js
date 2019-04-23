@@ -1,4 +1,4 @@
-let Mobbers = require("../../src/state/mobbers");
+let Mobbers = require("./mobbers");
 let assert = require("assert");
 const sinon = require("sinon");
 
