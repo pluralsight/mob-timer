@@ -25,7 +25,10 @@ exports.createTimerWindow = () => {
     resizable: false,
     alwaysOnTop: timerAlwaysOnTop,
     frame: false,
-    icon: path.join(__dirname, "/../../src/windows/img/icon.png")
+    icon: path.join(__dirname, "/../../src/windows/img/icon.png"),
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`);
@@ -82,7 +85,10 @@ exports.createConfigWindow = () => {
   configWindow = new electron.BrowserWindow({
     width: 420,
     height: 500,
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   configWindow.loadURL(`file://${__dirname}/config/index.html`);
@@ -99,7 +105,10 @@ exports.createFullscreenWindow = () => {
     width,
     height,
     resizable: false,
-    frame: false
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   fullscreenWindow.loadURL(`file://${__dirname}/fullscreen/index.html`);
