@@ -1,0 +1,70 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:node/recommended",
+    "plugin:promise/recommended",
+    "standard"
+  ],
+  "env": {
+    "mocha": true
+  },
+  "plugins": [
+    "mocha",
+    "node"
+  ],
+  "globals": {
+    "expect": true
+  },
+  "overrides": [
+    {
+      "files": "*.spec.js",
+      "rules": {
+        "no-unused-expressions": "off"
+      }
+    }
+  ],
+  "rules": {
+    "array-bracket-spacing": "error",
+    "arrow-parens": [
+      2,
+      "as-needed"
+    ],
+    "eol-last": "error",
+    "generator-star-spacing": "off",
+    "mocha/no-exclusive-tests": "error",
+    "node/no-unpublished-require": [
+      "error",
+      {
+        "allowModules": [
+          "clipboardy",
+          "electron",
+          "chai",
+          "sinon"
+        ]
+      }
+    ],
+    "no-unused-vars": [
+      2,
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "space-before-function-paren": [
+      "error",
+      "never"
+    ],
+    "standard/object-curly-even-spacing": [
+      2,
+      "always"
+    ],
+    "yield-star-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true
+      }
+    ]
+  }
+}

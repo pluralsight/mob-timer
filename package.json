@@ -1,0 +1,44 @@
+{
+  "name": "Mobbing-with-Yash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build-win": "electron-packager . --platform=win32 --arch=x64 --out=dist --icon=icon --overwrite",
+    "build-mac": "electron-packager . --platform=darwin --arch=x64 --out=dist --icon=icon --overwrite",
+    "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "mocha --use_strict --recursive",
+    "tdd": "mocha --use_strict --recursive -w",
+    "watch": "mocha --use_strict --recursive -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pluralsight/mob-timer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pluralsight/mob-timer/issues"
+  },
+  "homepage": "https://github.com/pluralsight/mob-timer#readme",
+  "devDependencies": {
+    "electron": "^1.8.3",
+    "electron-packager": "^12.1.0",
+    "eslint": "^5.8.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "mocha": "^5.0.4",
+    "sinon": "^7.1.1"
+  },
+  "dependencies": {
+    "clipboardy": "^1.2.3",
+    "uuid": "^3.2.1"
+  }
+}

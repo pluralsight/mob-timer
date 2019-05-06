@@ -1,0 +1,166 @@
+@import url('../theme.css');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  -webkit-app-region: drag;
+  user-select: none;
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
+}
+
+.container {
+  position: relative;
+  height: 100vh;
+}
+
+.button {
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.pic {
+  border-radius: 50%;
+}
+
+.timerContainer {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.currentPic {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 76px;
+  height: 76px;
+}
+
+.timerCanvas {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+}
+
+.toggle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.overlay {
+  opacity: 0;
+}
+
+.overlay:hover {
+  opacity: .5;
+}
+
+.play {
+  background-image: url(../img/play.png);
+  background-size: 80px 80px;
+}
+
+.pause {
+  background-image: url(../img/pause.png);
+  background-size: 80px 80px;
+}
+
+.current {
+  position: absolute;
+  top: 25px;
+  left: 90px;
+  display: inline-block;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 120px;
+}
+
+.nextContainer {
+  position: absolute;
+  top: 50px;
+  left: 90px;
+  width: 100px;
+}
+
+.next {
+  position: absolute;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  border: 2px solid var(--mobber-border-color);
+}
+
+.overlay.next {
+  background-image: url(../img/skip.png);
+  background-size: 25px 25px;
+}
+
+.nextContainer span {
+  position: absolute;
+  top: 10px;
+  left: 35px;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  width: 90px;
+}
+
+.remaining {
+  position: absolute;
+  top: 7px;
+  right: 27px;
+  font-size: 16px;
+}
+
+.configure {
+  position: absolute;
+  display: block;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  background-image: url(../img/configure.png);
+  background-size: 20px 20px;
+  border: 0;
+  opacity: .5;
+}
+
+.configure:hover {
+  opacity: .7;
+}
+
+@keyframes pulse {
+  0% {
+    background: var(--timer-pulse-color-1);
+  }
+  50% {
+    background: var(--timer-pulse-color-2);
+  }
+  100% {
+    background: var(--timer-pulse-color-1);
+  }
+}
+
+.isTurnEnded {
+  animation-duration: 1s;
+  animation-name: pulse;
+  animation-iteration-count: infinite;
+  color: var(--timer-pulse-text-color);
+}
+
+.isPaused {
+  color: var(--timer-paused-text-color);
+  background: var(--timer-paused-background-color);
+}
+
+audio {
+  display: none;
+}

@@ -1,0 +1,118 @@
+@import url('../theme.css');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
+}
+
+input {
+  height: 22px;
+}
+
+.container {
+  margin: 20px;
+}
+
+.minutes {
+  width: 40px;
+}
+
+.mobber {
+  display: flex;
+  padding: 4px;
+  align-items: center;
+}
+
+.mobber .image {
+  margin-right: 5px;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--mobber-border-color);
+  cursor: pointer;
+}
+
+.mobber .image:hover {
+  border: 2px solid var(--mobber-border-highlight-color);
+}
+
+.mobber:nth-child(odd) {
+  background-color: var(--table-stripe-color);
+}
+
+.mobber .btn:first-of-type {
+  display: block;
+  margin-left: auto;
+}
+
+.mobber.disabled .image {
+  opacity: .3;
+}
+
+.mobber.disabled .name {
+  font-style: italic;
+  color: var(--disabled-text-color);
+  text-decoration: line-through;
+}
+
+.oneLineInputAndButton {
+  margin: 4px 0;
+}
+
+.addLabel {
+  display: flex;
+  align-items: center;
+}
+
+.mobberListActions {
+  margin: 4px 0 4px -5px;
+  display: flex;
+}
+
+.btn {
+  background-color: var(--button-background-color);
+  border: 0;
+  border-radius: 3px;
+  padding: 7px 10px;
+  color: var(--button-text-color);
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 18px;
+  border-bottom: 1px solid var(--main-text-color);
+  margin-top: 20px;
+}
+
+input[type="checkbox" i] {
+  position: relative;
+  vertical-align: middle;
+}
+
+.settings > div {
+  margin-bottom: 10px;
+}
+
+.fullscreen-seconds {
+  width: 40px;
+}
+
+.replay-audio-seconds {
+  width: 40px;
+}
+
+#replayAudioContainer.disabled {
+  color: var(--disabled-text-color);
+}
+
+.custom-sound {
+  width: 145px;
+}
+
+.clipboard-history-items {
+  width: 40px;
+}

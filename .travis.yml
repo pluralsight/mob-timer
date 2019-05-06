@@ -1,0 +1,15 @@
+language: node_js
+cache: npm
+node_js:
+  - "10.14"
+os:
+  - windows
+  - osx
+  - linux
+script:
+  - npm run test
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then npm run build-win; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build-mac; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build-linux; fi
+after_script:
+  - ls -R dist
