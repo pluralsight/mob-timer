@@ -7,9 +7,9 @@ class TimerState {
     if (!options) {
       options = {}
     }
-    this.secondsPerTurn = 600
+    this.secondsPerTurn = 900
     this.mobbers = new Mobbers()
-    this.secondsUntilFullscreen = 30
+    this.secondsUntilFullscreen = 90
     this.snapThreshold = 25
     this.alertSound = null
     this.alertSoundTimes = []
@@ -18,6 +18,8 @@ class TimerState {
     this.clearClipboardHistoryOnTurnEnd = false
     this.numberOfItemsClipboardHistoryStores = 25
 
+    this.currentMobber = 0
+    this.secondsRemaining = this.secondsPerTurn
     this.createTimers(options.Timer || Timer)
   }
 
@@ -26,9 +28,11 @@ class TimerState {
   }
 
   createTimers(TimerClass) {
+    console.log('Timer state createTimers.')
     this.mainTimer = new TimerClass({ countDown: true, time: this.secondsPerTurn }, secondsRemaining => {
       this.dispatchTimerChange(secondsRemaining)
       if (secondsRemaining < 0) {
+        console.log('seconds remaining < 0')
         this.pause()
         this.rotate()
         this.callback('turnEnded')
@@ -46,13 +50,16 @@ class TimerState {
   }
 
   dispatchTimerChange(secondsRemaining) {
+    this.secondsRemaining = secondsRemaining
     this.callback('timerChange', {
       secondsRemaining,
+      timeRemaining: this.getTimeRemaining(secondsRemaining),
       secondsPerTurn: this.secondsPerTurn
     })
   }
 
   reset() {
+    console.log('Timer state reset.')
     this.mainTimer.reset(this.secondsPerTurn)
     this.dispatchTimerChange(this.secondsPerTurn)
   }
@@ -69,6 +76,7 @@ class TimerState {
   }
 
   start() {
+    console.log('Timer state start.')
     this.mainTimer.start()
     this.callback('started')
     this.stopAlerts()
@@ -81,18 +89,29 @@ class TimerState {
   }
 
   rotate() {
+    console.log('Timer state rotate.')
     this.reset()
     this.mobbers.rotate()
+    this.currentMobber = this.mobbers.currentMobber
     this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
 
   initialize() {
-    this.rotate()
-    this.callback('turnEnded')
-    this.publishConfig()
+    console.log('Timer state initialize.')
+    let data = this.mobbers.getCurrentAndNextMobbers()
+    data.timeRemaining = this.getTimeRemaining(this.secondsRemaining)
+    this.callback('initialized', data)
+    const isTimerRunning = this.secondsRemaining < this.secondsPerTurn
+    if (isTimerRunning) {
+      console.log('started')
+      this.callback('started')
+    }
   }
 
   publishConfig() {
+    console.log('Timer state publishConfig.')
+    this.reset()
+    this.initialize()
     this.callback('configUpdated', this.getState())
     this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
@@ -184,6 +203,7 @@ class TimerState {
   }
 
   getState() {
+    console.log('Timer state getState.')
     return {
       mobbers: this.mobbers.getAll(),
       secondsPerTurn: this.secondsPerTurn,
@@ -194,21 +214,25 @@ class TimerState {
       timerAlwaysOnTop: this.timerAlwaysOnTop,
       shuffleMobbersOnStartup: this.shuffleMobbersOnStartup,
       clearClipboardHistoryOnTurnEnd: this.clearClipboardHistoryOnTurnEnd,
-      numberOfItemsClipboardHistoryStores: this.numberOfItemsClipboardHistoryStores
+      numberOfItemsClipboardHistoryStores: this.numberOfItemsClipboardHistoryStores,
+      currentMobber: this.currentMobber,
+      secondsRemaining: this.secondsRemaining
     }
   }
 
   loadState(state) {
+    console.log('Load state.')
     if (state.mobbers) {
-      state.mobbers.forEach(x => this.addMobber(x))
+      console.log('Number of mobbers: ' + state.mobbers.length)
+      state.mobbers.forEach(x => this.mobbers.addMobber(x))
     }
 
-    this.setSecondsPerTurn(state.secondsPerTurn || this.secondsPerTurn)
+    this.secondsPerTurn = state.secondsPerTurn || this.secondsPerTurn
     if (typeof state.secondsUntilFullscreen === 'number') {
-      this.setSecondsUntilFullscreen(state.secondsUntilFullscreen)
+      this.secondsUntilFullscreen = state.secondsUntilFullscreen
     }
     if (typeof state.snapThreshold === 'number') {
-      this.setSnapThreshold(state.snapThreshold)
+      this.snapThreshold = state.snapThreshold
     }
     this.alertSound = state.alertSound || null
     this.alertSoundTimes = state.alertSoundTimes || []
@@ -218,6 +242,27 @@ class TimerState {
     this.shuffleMobbersOnStartup = !!state.shuffleMobbersOnStartup
     this.clearClipboardHistoryOnTurnEnd = !!state.clearClipboardHistoryOnTurnEnd
     this.numberOfItemsClipboardHistoryStores = Math.floor(state.numberOfItemsClipboardHistoryStores) > 0 ? Math.floor(state.numberOfItemsClipboardHistoryStores) : 1
+
+    if (typeof state.currentMobber === 'number') {
+      this.currentMobber = state.currentMobber
+      this.mobbers.currentMobber = state.currentMobber
+    }
+
+    if (typeof state.secondsRemaining === 'number') {
+      this.secondsRemaining = state.secondsRemaining
+    }
+  }
+
+  getTimeRemaining(secondsRemaining) {
+    let minutes = parseInt(secondsRemaining / 60).toString()
+    if (minutes.length == 1) {
+      minutes = '0' + minutes
+    }
+    let seconds = parseInt(secondsRemaining % 60).toString()
+    if (seconds.length == 1) {
+      seconds = '0' + seconds
+    }
+    return (minutes + ':' + seconds)
   }
 }
 

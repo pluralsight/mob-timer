@@ -1,5 +1,5 @@
 const electron = require('electron')
-const { app } = electron
+const { app, BrowserWindow, Menu } = electron
 const windowSnapper = require('./window-snapper')
 const path = require('path')
 
@@ -11,15 +11,17 @@ exports.createTimerWindow = () => {
     return
   }
 
+  createApplicationMenu()
   let { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
-  timerWindow = new electron.BrowserWindow({
+  timerWindow = new BrowserWindow({
     x: width - 220,
-    y: height - 90,
+    y: height - 110,
     width: 220,
-    height: 90,
+    height: 110,
     resizable: false,
+    fullscreenable: false,
+    maximizable: false,
     alwaysOnTop: timerAlwaysOnTop,
-    frame: false,
     icon: path.join(__dirname, '/../../src/windows/img/icon.png')
   })
 
@@ -61,7 +63,7 @@ exports.createConfigWindow = () => {
     return
   }
 
-  configWindow = new electron.BrowserWindow({
+  configWindow = new BrowserWindow({
     width: 420,
     height: 500,
     autoHideMenuBar: true
@@ -131,7 +133,7 @@ exports.setConfigState = data => {
 
 function createAlwaysOnTopFullscreenInterruptingWindow(options) {
   return whileAppDockHidden(() => {
-    const window = new electron.BrowserWindow(options)
+    const window = new BrowserWindow(options)
     window.setAlwaysOnTop(true, 'screen-saver')
     return window
   })
@@ -148,4 +150,38 @@ function whileAppDockHidden(work) {
     app.dock.show()
   }
   return result
+}
+
+function createApplicationMenu() {
+  const template = [
+    ...(process.platform === 'darwin' ? [{
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        {
+          label: 'Preferences',
+          accelerator: 'CommandOrControl+,',
+          click() { exports.showConfigWindow() }
+        },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideothers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    }] : []),
+    { role: 'windowMenu' },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Learn More',
+          click() { electron.shell.openExternal('http://yashfiles.blogspot.com/') }
+        }
+      ]
+    }
+  ]
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 }

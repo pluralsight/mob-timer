@@ -112,6 +112,13 @@ body {
   width: 90px;
 }
 
+.remaining {
+  position: absolute;
+  top: 7px;
+  right: 27px;
+  font-size: 16px;
+}
+
 .configure {
   position: absolute;
   display: block;
