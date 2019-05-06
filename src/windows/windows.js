@@ -103,7 +103,7 @@ exports.dispatchEvent = (event, data) => {
   if (event === 'alert' && data === secondsUntilFullscreen) {
     exports.createFullscreenWindow()
   }
-  if (event === 'stopAlerts') {
+  if (event === 'started' || event === 'rotated') {
     exports.closeFullscreenWindow()
   }
 

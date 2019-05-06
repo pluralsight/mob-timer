@@ -15,16 +15,16 @@ app.on('ready', () => {
   timerState.setCallback(onTimerEvent)
   const state = statePersister.read()
   timerState.loadState(state)
-  windows.setConfigState(state)
-  windows.createTimerWindow()
   if (state.shuffleMobbersOnStartup) {
     timerState.shuffleMobbers()
   }
+  windows.setConfigState(timerState.getState())
+  windows.createTimerWindow()
   createTrayIconAndMenu()
 })
 
 function createTrayIconAndMenu() {
-  tray = new Tray(path.join(__dirname, '/../src/windows/img/icon@3x.png'))
+  tray = new Tray(path.join(__dirname, '/../src/windows/img/trayIcon.png'))
   tray.setToolTip('Mobbing-with-Yash')
   const contextMenu = Menu.buildFromTemplate([
     { role: 'quit' }
@@ -37,7 +37,7 @@ function onTimerEvent(event, data) {
   if (event === 'configUpdated') {
     statePersister.write(timerState.getState())
   }
-  if (event === 'initialized') {
+  if (event === 'initialized' || event === 'timerChange') {
     if (tray) {
       tray.setTitle(data.timeRemaining)
     }
@@ -46,12 +46,16 @@ function onTimerEvent(event, data) {
 
 ipc.on('timerWindowReady', () => timerState.initialize())
 ipc.on('configWindowReady', () => timerState.publishConfig())
-ipc.on('fullscreenWindowReady', () => timerState.publishConfig())
+ipc.on('fullscreenWindowReady', () => {
+  timerState.stopAlerts()
+  timerState.publishConfig()
+})
 
 ipc.on('pause', () => timerState.pause())
 ipc.on('unpause', () => timerState.start())
 ipc.on('skip', () => timerState.rotate())
 ipc.on('startTurn', () => timerState.start())
+ipc.on('close', () => windows.closeFullscreenWindow())
 ipc.on('configure', () => {
   windows.showConfigWindow()
   windows.closeFullscreenWindow()

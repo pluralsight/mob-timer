@@ -9,7 +9,7 @@ class TimerState {
     }
     this.secondsPerTurn = 900
     this.mobbers = new Mobbers()
-    this.secondsUntilFullscreen = 90
+    this.secondsUntilFullscreen = 60
     this.snapThreshold = 25
     this.alertSound = null
     this.alertSoundTimes = []
@@ -20,19 +20,22 @@ class TimerState {
 
     this.currentMobber = 0
     this.secondsRemaining = this.secondsPerTurn
-    this.createTimers(options.Timer || Timer)
+    this.TimerClass = options.Timer || Timer
+    if (this.TimerClass !== Timer) {
+      console.log('Testing')
+      this.createTimers()
+    }
   }
 
   setCallback(callback) {
     this.callback = callback
   }
 
-  createTimers(TimerClass) {
+  createTimers() {
     console.log('Timer state createTimers.')
-    this.mainTimer = new TimerClass({ countDown: true, time: this.secondsPerTurn }, secondsRemaining => {
+    this.mainTimer = new this.TimerClass({ countDown: true, time: this.secondsPerTurn }, secondsRemaining => {
       this.dispatchTimerChange(secondsRemaining)
       if (secondsRemaining < 0) {
-        console.log('seconds remaining < 0')
         this.pause()
         this.rotate()
         this.callback('turnEnded')
@@ -44,7 +47,7 @@ class TimerState {
       }
     })
 
-    this.alertsTimer = new TimerClass({ countDown: false }, alertSeconds => {
+    this.alertsTimer = new this.TimerClass({ countDown: false }, alertSeconds => {
       this.callback('alert', alertSeconds)
     })
   }
@@ -61,6 +64,7 @@ class TimerState {
   reset() {
     console.log('Timer state reset.')
     this.mainTimer.reset(this.secondsPerTurn)
+    this.stopAlerts()
     this.dispatchTimerChange(this.secondsPerTurn)
   }
 
@@ -72,6 +76,7 @@ class TimerState {
 
   stopAlerts() {
     this.alertsTimer.pause()
+    this.alertsTimer.reset(0)
     this.callback('stopAlerts')
   }
 
@@ -93,6 +98,7 @@ class TimerState {
     this.reset()
     this.mobbers.rotate()
     this.currentMobber = this.mobbers.currentMobber
+    this.callback('configUpdated', this.getState())
     this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
   }
 
@@ -110,10 +116,8 @@ class TimerState {
 
   publishConfig() {
     console.log('Timer state publishConfig.')
-    this.reset()
-    this.initialize()
     this.callback('configUpdated', this.getState())
-    this.callback('rotated', this.mobbers.getCurrentAndNextMobbers())
+    this.initialize()
   }
 
   addMobber(mobber) {
@@ -153,6 +157,7 @@ class TimerState {
 
   setSecondsPerTurn(value) {
     this.secondsPerTurn = value
+    this.secondsRemaining = value
     this.publishConfig()
     this.reset()
   }
@@ -203,7 +208,6 @@ class TimerState {
   }
 
   getState() {
-    console.log('Timer state getState.')
     return {
       mobbers: this.mobbers.getAll(),
       secondsPerTurn: this.secondsPerTurn,
@@ -227,10 +231,13 @@ class TimerState {
       state.mobbers.forEach(x => this.mobbers.addMobber(x))
     }
 
-    this.secondsPerTurn = state.secondsPerTurn || this.secondsPerTurn
+    if (typeof state.secondsPerTurn === 'number') {
+      this.secondsPerTurn = state.secondsPerTurn
+    }
     if (typeof state.secondsUntilFullscreen === 'number') {
       this.secondsUntilFullscreen = state.secondsUntilFullscreen
     }
+    console.log('Seconds untill fullscreen: ' + this.secondsUntilFullscreen)
     if (typeof state.snapThreshold === 'number') {
       this.snapThreshold = state.snapThreshold
     }
@@ -247,10 +254,9 @@ class TimerState {
       this.currentMobber = state.currentMobber
       this.mobbers.currentMobber = state.currentMobber
     }
+    this.secondsRemaining = this.secondsPerTurn
 
-    if (typeof state.secondsRemaining === 'number') {
-      this.secondsRemaining = state.secondsRemaining
-    }
+    this.createTimers()
   }
 
   getTimeRemaining(secondsRemaining) {
