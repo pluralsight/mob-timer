@@ -13,16 +13,19 @@ exports.createTimerWindow = () => {
 
   createApplicationMenu()
   let { width, height } = electron.screen.getPrimaryDisplay().workAreaSize
+  const mobWinWidth = 250
+  const mobWinHeight = 144
   timerWindow = new BrowserWindow({
-    x: width - 220,
-    y: height - 110,
-    width: 220,
-    height: 110,
+    x: width - mobWinWidth,
+    y: height - mobWinHeight,
+    width: mobWinWidth,
+    height: mobWinHeight,
     resizable: false,
     fullscreenable: false,
     maximizable: false,
     alwaysOnTop: timerAlwaysOnTop,
-    icon: path.join(__dirname, '/../../src/windows/img/icon.png')
+    icon: path.join(__dirname, '/../../src/windows/img/icon.png'),
+    autoHideMenuBar: true
   })
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`)

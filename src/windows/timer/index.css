@@ -26,8 +26,8 @@ body {
 
 .timerContainer {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 25px;
+  left: 18px;
 }
 
 .currentPic {
@@ -70,8 +70,8 @@ body {
 
 .current {
   position: absolute;
-  top: 25px;
-  left: 90px;
+  top: 40px;
+  left: 105px;
   display: inline-block;
   font-size: 16px;
   white-space: nowrap;
@@ -82,8 +82,8 @@ body {
 
 .nextContainer {
   position: absolute;
-  top: 50px;
-  left: 90px;
+  top: 65px;
+  left: 105px;
   width: 100px;
 }
 
@@ -102,7 +102,7 @@ body {
 
 .nextContainer span {
   position: absolute;
-  top: 10px;
+  top: 8px;
   left: 35px;
   font-size: 11px;
   white-space: nowrap;
@@ -114,16 +114,16 @@ body {
 
 .remaining {
   position: absolute;
-  top: 7px;
-  right: 27px;
+  top: 22px;
+  right: 42px;
   font-size: 16px;
 }
 
 .configure {
   position: absolute;
   display: block;
-  top: 5px;
-  right: 5px;
+  top: 20px;
+  right: 18px;
   width: 20px;
   height: 20px;
   background-color: transparent;
