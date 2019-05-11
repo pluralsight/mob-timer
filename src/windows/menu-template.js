@@ -102,7 +102,7 @@ exports.trayMenuTemplate = [
       {
         label: 'Preferences',
         accelerator: 'CommandOrControl+,',
-        click() { exports.showConfigWindow() }
+        click() { windows.showConfigWindow() }
       }
     ]
   },
