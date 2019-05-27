@@ -308,10 +308,13 @@ describe("timer-state", () => {
       timerState.shuffleMobbers();
     });
 
-    it("should publish a configUpdated event", () =>
-      assertEvent("configUpdated"));
+    it("should publish a configUpdated event", () => {
+      assertEvent("configUpdated");
+    });
 
-    it("should publish a rotated event", () => assertEvent("rotated"));
+    it("should publish a rotated event", () => {
+      assertEvent("rotated");
+    });
 
     it("should shuffle the mobbers", () => {
       const mobbers = timerState
