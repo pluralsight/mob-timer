@@ -308,10 +308,13 @@ describe("timer-state", () => {
       timerState.shuffleMobbers();
     });
 
-    it("should publish a configUpdated event", () =>
-      assertEvent("configUpdated"));
+    it("should publish a configUpdated event", () => {
+      assertEvent("configUpdated");
+    });
 
-    it("should publish a rotated event", () => assertEvent("rotated"));
+    it("should publish a rotated event", () => {
+      assertEvent("rotated");
+    });
 
     it("should shuffle the mobbers", () => {
       const mobbers = timerState
@@ -428,7 +431,7 @@ describe("timer-state", () => {
         );
       });
 
-      it("should get the correct seconds until fullscreen", () => {
+      it("should get the correct snap threshold", () => {
         assert.strictEqual(result.snapThreshold, expectedSnapThreshold);
       });
 
@@ -484,7 +487,7 @@ describe("timer-state", () => {
     });
 
     describe("when there is one mobber", () => {
-      before(() => {
+      beforeAll(() => {
         timerState.addMobber(expectedJack);
 
         result = timerState.getState();
@@ -503,7 +506,7 @@ describe("timer-state", () => {
 
   describe("loadState", () => {
     describe("when loading state data", () => {
-      before(() => {
+      beforeAll(() => {
         state = {
           mobbers: [{ name: "jack" }, { name: "jill" }],
           secondsPerTurn: 400,
@@ -548,7 +551,7 @@ describe("timer-state", () => {
     });
 
     describe("when loading an empty state", () => {
-      before(() => {
+      beforeAll(() => {
         timerState.loadState({});
 
         result = timerState.getState();
@@ -575,7 +578,7 @@ describe("timer-state", () => {
     });
 
     describe("when loading state with one mobber", () => {
-      before(() => {
+      beforeAll(() => {
         state = {
           mobbers: [{ name: "jack" }]
         };

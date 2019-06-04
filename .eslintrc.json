@@ -3,21 +3,20 @@
     "eslint:recommended",
     "plugin:node/recommended",
     "plugin:promise/recommended",
-    "plugin:mocha/recommended",
+    "plugin:jest/recommended",
     "plugin:import/recommended",
     "plugin:prettier/recommended"
   ],
   "env": {
     "node": true,
     "es6": true,
-    "mocha": true
+    "jest": true
   },
   "globals": {
     "document": "readonly"
   },
   "plugins": [
-    "promise",
-    "mocha"
+    "promise"
   ],
   "rules": {
     "node/no-unpublished-require": [

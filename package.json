@@ -11,27 +11,26 @@
     "build-mac": "electron-packager . --platform=darwin --arch=x64 --out=dist --icon=icon --overwrite",
     "package-mac": "electron-installer-dmg ./dist/mob-timer-darwin-x64/mob-timer.app mob-timer --out=./dist/mob-timer-darwin-x64 --overwrite",
     "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
-    "lint": "eslint .",
+    "lint": "eslint --format codeframe .",
     "pretest": "npm run lint",
-    "test": "mocha",
-    "tdd": "mocha -w",
-    "watch": "mocha -w",
-    "coverage": "nyc mocha && nyc report --reporter=text-lcov | coveralls"
+    "test": "jest .",
+    "tdd": "jest --watch",
+    "watch": "jest --watch",
+    "coverage": "jest --coverage --coverageReporters=text-lcov | coveralls"
   },
-  "mocha": {
-    "spec": "!(node_modules|dist)/**/*.test.js",
-    "recursive": true
-  },
-  "nyc": {
-    "exclude": [
-      "**/*.test.js",
-      "test/**/*.*",
-      "dist/**/*.*"
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/dist"
     ],
-    "reporter": [
+    "coverageReporters": [
       "text-summary"
     ],
-    "all": true
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.test.js",
+      "!src/**/test-*.js"
+    ],
+    "collectCoverage": true
   },
   "repository": {
     "type": "git",
@@ -53,12 +52,11 @@
     "eslint": "^5.8.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-node": "^9.0.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-promise": "^4.0.1",
-    "mocha": "^6.1.4",
-    "nyc": "^14.0.0",
+    "jest": "^24.8.0",
     "prettier": "^1.16.4",
     "sinon": "^7.1.1"
   },
