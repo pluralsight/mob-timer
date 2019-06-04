@@ -7,11 +7,21 @@ os:
   - osx
   - linux
 script:
-  - if [[ "$TRAVIS_OS_NAME" != "linux" ]]; then npm run test; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run coverage; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then npm run build-win; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build-mac; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build-linux; fi
+  - if [[ "$TRAVIS_OS_NAME" != "linux" ]]; then
+      npm run test;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      npm run coverage;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      npm run build-win;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      npm run build-mac;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      npm run build-linux;
+    fi
 after_script:
   - ls -R dist
 before_deploy:
