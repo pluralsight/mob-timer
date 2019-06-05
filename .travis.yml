@@ -37,7 +37,7 @@ deploy:
     secure: l0K8rtIoYlPio10BgyLbHMveNj9SOjtfk6wL3ZipQV6WHm/7yUy4CWNgE3FC510zyMew6LpONx27GAsdY+UdPFeXO4TyRDHP9LU4TTq7zxKPZ7v6afBmOlmcjTPuTX4hmn7TSgPBcOsp1jv64IgLpDMaLIyO1xxMi3BTwc3yPZO2ndjUKKafseEdOg1tMnQENzHnN52Zc0opJxnapHIhPSuwvEA4WTzH97b0uqHWfsK8DalraAMEZ35tBKdMP7lpxJ9ErgxNb3XH0SGs8WHi9xrpxDzzpBNCOHfu/8FzNAFy0NCnpuHaQPjViVsxI9wfwqUok1oKgrAVik9sXG9y09NPH+9RwwE/2kqGUcKnD1PF0xKzADQvDdv/4X4hFPOovJRNVUfUJwy7mt8CXZnum8ntMeR9BY9QLnjk9PoSCodY9eqEsIBenaxwA944ePb2CZMzTn9Jj51mHSFJWVTgKIzVx3L+LsYLFALSv/j6X+NSnMJI0eNhF544vDbngRBfNQF0fajPTvECiFqnmstkHupbs0nNKRlmLXwNS4oaVKWUUzjozFUaOwf/c3tIZMePvALGOy4Gc36UYHLQuJLivwCcEb/yDNB7oGuQ+vRrDCZ7F0JfWbxIIgjmDFtwgPGeHFKeZR3oneweeM75PMsaRk8zln0vaMZ8wuUWk8ERZhw=
   file:
     - "${TRAVIS_BUILD_DIR}/dist/mob-timer-win32-x64.zip"
-    - "${TRAVIS_BUILD_DIR}/dist/mob-timer-darwin-x64.dmg"
+    - "${TRAVIS_BUILD_DIR}/dist/mob-timer-darwin-x64.zip"
     - "${TRAVIS_BUILD_DIR}/dist/mob-timer-linux-x64.zip"
   skip_cleanup: true
   on:
