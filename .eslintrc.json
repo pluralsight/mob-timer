@@ -27,6 +27,13 @@
         ]
       }
     ],
+    "complexity": "error",
+    "max-lines": [
+      "error",
+      700
+    ],
+    "max-depth": "error",
+    "max-params": "error",
     "no-restricted-modules": [
       "error",
       {
