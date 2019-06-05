@@ -8,9 +8,11 @@
   "scripts": {
     "start": "electron .",
     "build-win": "electron-packager . --platform=win32 --arch=x64 --out=dist --icon=icon --overwrite",
+    "package-win": "bestzip dist/mob-timer-win32-x64.zip ./dist/mob-timer-win32-x64",
     "build-mac": "electron-packager . --platform=darwin --arch=x64 --out=dist --icon=icon --overwrite",
-    "package-mac": "electron-installer-dmg ./dist/mob-timer-darwin-x64/mob-timer.app mob-timer --out=./dist/mob-timer-darwin-x64 --overwrite",
+    "package-mac": "electron-installer-dmg ./dist/mob-timer-darwin-x64/mob-timer.app mob-timer --out=./dist --overwrite",
     "build-linux": "electron-packager . --platform=linux --arch=x64 --out=dist --icon=icon --overwrite",
+    "package-linux": "bestzip dist/mob-timer-linux-x64.zip ./dist/mob-timer-linux-x64",
     "lint": "eslint --format codeframe .",
     "pretest": "npm run lint",
     "test": "jest .",
@@ -44,6 +46,8 @@
   },
   "homepage": "https://mob-timer.github.io",
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "bestzip": "^2.1.4",
     "coveralls": "^3.0.3",
     "electron": "^5.0.0",
     "electron-installer-dmg": "^2.0.0",

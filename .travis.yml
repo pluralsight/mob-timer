@@ -7,28 +7,38 @@ os:
   - osx
   - linux
 script:
-  - if [[ "$TRAVIS_OS_NAME" != "linux" ]]; then npm run test; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run coverage; fi
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then npm run build-win; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build-mac; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build-linux; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      npm run test;
+      npm run build-win;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      npm run test;
+      npm run build-mac;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      npm run coverage;
+      npm run build-linux;
+    fi
 after_script:
   - ls -R dist
 before_deploy:
-  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then tar -zcf ${TRAVIS_BUILD_DIR}/mob-timer-win32-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz
-    dist/mob-timer-win32-x64; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run package-mac; cp ./dist/mob-timer-darwin-x64/mob-timer.dmg
-    ${TRAVIS_BUILD_DIR}/mob-timer-darwin-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.dmg; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar -zcf ${TRAVIS_BUILD_DIR}/mob-timer-linux-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz
-    dist/mob-timer-linux-x64; fi
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
+      npm run package-win;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      npm run package-mac;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      npm run package-linux;
+    fi
 deploy:
   provider: releases
   api_key:
     secure: l0K8rtIoYlPio10BgyLbHMveNj9SOjtfk6wL3ZipQV6WHm/7yUy4CWNgE3FC510zyMew6LpONx27GAsdY+UdPFeXO4TyRDHP9LU4TTq7zxKPZ7v6afBmOlmcjTPuTX4hmn7TSgPBcOsp1jv64IgLpDMaLIyO1xxMi3BTwc3yPZO2ndjUKKafseEdOg1tMnQENzHnN52Zc0opJxnapHIhPSuwvEA4WTzH97b0uqHWfsK8DalraAMEZ35tBKdMP7lpxJ9ErgxNb3XH0SGs8WHi9xrpxDzzpBNCOHfu/8FzNAFy0NCnpuHaQPjViVsxI9wfwqUok1oKgrAVik9sXG9y09NPH+9RwwE/2kqGUcKnD1PF0xKzADQvDdv/4X4hFPOovJRNVUfUJwy7mt8CXZnum8ntMeR9BY9QLnjk9PoSCodY9eqEsIBenaxwA944ePb2CZMzTn9Jj51mHSFJWVTgKIzVx3L+LsYLFALSv/j6X+NSnMJI0eNhF544vDbngRBfNQF0fajPTvECiFqnmstkHupbs0nNKRlmLXwNS4oaVKWUUzjozFUaOwf/c3tIZMePvALGOy4Gc36UYHLQuJLivwCcEb/yDNB7oGuQ+vRrDCZ7F0JfWbxIIgjmDFtwgPGeHFKeZR3oneweeM75PMsaRk8zln0vaMZ8wuUWk8ERZhw=
   file:
-    - "${TRAVIS_BUILD_DIR}/mob-timer-win32-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz"
-    - "${TRAVIS_BUILD_DIR}/mob-timer-darwin-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.dmg"
-    - "${TRAVIS_BUILD_DIR}/mob-timer-linux-x64-${TRAVIS_TAG}-${TRAVIS_COMMIT}.tar.gz"
+    - "${TRAVIS_BUILD_DIR}/dist/mob-timer-win32-x64.zip"
+    - "${TRAVIS_BUILD_DIR}/dist/mob-timer-darwin-x64.dmg"
+    - "${TRAVIS_BUILD_DIR}/dist/mob-timer-linux-x64.zip"
   skip_cleanup: true
   on:
     tags: true
