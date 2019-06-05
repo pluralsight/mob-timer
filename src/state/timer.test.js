@@ -1,5 +1,4 @@
 let Timer = require("./timer");
-let assert = require("assert");
 const sinon = require("sinon");
 
 describe("Timer", () => {
@@ -27,18 +26,15 @@ describe("Timer", () => {
   describe("on construction", () => {
     describe("with specified options", () => {
       it("should have the specified rateMilliseconds value", () => {
-        assert.strictEqual(
-          timer.rateMilliseconds,
-          timerOptions.rateMilliseconds
-        );
+        expect(timer.rateMilliseconds).toBe(timerOptions.rateMilliseconds);
       });
 
       it("should have the specified value", () => {
-        assert.strictEqual(timer.time, timerOptions.time);
+        expect(timer.time).toBe(timerOptions.time);
       });
 
       it("should have a change value based on the specified countDown", () => {
-        assert.strictEqual(timer.change, -1);
+        expect(timer.change).toBe(-1);
       });
     });
 
@@ -49,15 +45,15 @@ describe("Timer", () => {
       });
 
       it("should have the default rateMilliseconds value", () => {
-        assert.strictEqual(timer.rateMilliseconds, 1000);
+        expect(timer.rateMilliseconds).toBe(1000);
       });
 
       it("should have the default time value", () => {
-        assert.strictEqual(timer.time, 0);
+        expect(timer.time).toBe(0);
       });
 
       it("should have the default change value", () => {
-        assert.strictEqual(timer.change, 1);
+        expect(timer.change).toBe(1);
       });
     });
   });
@@ -66,7 +62,7 @@ describe("Timer", () => {
     it("should generate callbacks when counting down", () => {
       timer.start();
       clock.tick(50);
-      assert.strictEqual(callbacks.join(","), "49,48");
+      expect(callbacks.join(",")).toBe("49,48");
     });
 
     it("should generate callbacks when counting up", () => {
@@ -74,7 +70,7 @@ describe("Timer", () => {
       createTimer();
       timer.start();
       clock.tick(50);
-      assert.strictEqual(callbacks.join(","), "51,52");
+      expect(callbacks.join(",")).toBe("51,52");
     });
   });
 
@@ -84,14 +80,14 @@ describe("Timer", () => {
       clock.tick(50);
       timer.pause();
       clock.tick(100);
-      assert.strictEqual(callbacks.join(","), "49,48");
+      expect(callbacks.join(",")).toBe("49,48");
     });
   });
 
   describe("reset", () => {
     it("should set a new time value when the timer is not running", () => {
       timer.reset(42);
-      assert.strictEqual(timer.time, 42);
+      expect(timer.time).toBe(42);
     });
 
     it("should set a new time value when the timer is running", () => {
@@ -99,7 +95,7 @@ describe("Timer", () => {
       clock.tick(50);
       timer.reset(20);
       clock.tick(40);
-      assert.strictEqual(callbacks.join(","), "49,48,19,18");
+      expect(callbacks.join(",")).toBe("49,48,19,18");
     });
   });
 });

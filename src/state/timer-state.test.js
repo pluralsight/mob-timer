@@ -1,6 +1,5 @@
 let TimerState = require("./timer-state");
 let TestTimer = require("./test-timer");
-let assert = require("assert");
 
 describe("timer-state", () => {
   let timerState;
@@ -8,7 +7,8 @@ describe("timer-state", () => {
 
   let assertEvent = eventName => {
     var event = events.find(x => x.event === eventName);
-    assert(event, eventName + " event not found");
+    var failureMessage = event ? undefined : eventName + " event not found";
+    expect(failureMessage).toBeUndefined();
     return event;
   };
 
@@ -25,7 +25,7 @@ describe("timer-state", () => {
 
     it("should publish a timerChange event", () => {
       var event = assertEvent("timerChange");
-      assert.deepStrictEqual(event.data, {
+      expect(event.data).toEqual({
         secondsRemaining: 600,
         secondsPerTurn: 600
       });
@@ -33,7 +33,7 @@ describe("timer-state", () => {
 
     it("should publish a rotated event", () => {
       var event = assertEvent("rotated");
-      assert.deepStrictEqual(event.data, { current: null, next: null });
+      expect(event.data).toEqual({ current: null, next: null });
     });
 
     it("should publish a turnEnded event", () => {
@@ -50,7 +50,7 @@ describe("timer-state", () => {
 
     it("should publish a timerChange event", () => {
       var event = assertEvent("timerChange");
-      assert.deepStrictEqual(event.data, {
+      expect(event.data).toEqual({
         secondsRemaining: 600,
         secondsPerTurn: 600
       });
@@ -61,7 +61,7 @@ describe("timer-state", () => {
     beforeEach(() => timerState.start());
 
     it("should start the mainTimer", function() {
-      assert.strictEqual(timerState.mainTimer.isRunning, true);
+      expect(timerState.mainTimer.isRunning).toBe(true);
     });
 
     it("should publish a started event", () => {
@@ -75,7 +75,7 @@ describe("timer-state", () => {
     it("should publish a timerChange event when the timer calls back", () => {
       timerState.mainTimer.callback(599);
       var event = assertEvent("timerChange");
-      assert.deepStrictEqual(event.data, {
+      expect(event.data).toEqual({
         secondsRemaining: 599,
         secondsPerTurn: 600
       });
@@ -87,19 +87,19 @@ describe("timer-state", () => {
       assertEvent("paused");
       assertEvent("rotated");
       var alertEvent = assertEvent("alert");
-      assert.strictEqual(alertEvent.data, 0);
+      expect(alertEvent.data).toBe(0);
     });
 
     it("should start the alertsTimer after the timer is up", () => {
-      assert.strictEqual(timerState.alertsTimer.isRunning, false);
+      expect(timerState.alertsTimer.isRunning).toBe(false);
       timerState.mainTimer.callback(-1);
-      assert.strictEqual(timerState.alertsTimer.isRunning, true);
+      expect(timerState.alertsTimer.isRunning).toBe(true);
     });
 
     it("should publish alert events after the time is up", () => {
       timerState.alertsTimer.callback(1);
       var event = assertEvent("alert");
-      assert.strictEqual(event.data, 1);
+      expect(event.data).toBe(1);
     });
   });
 
@@ -116,10 +116,10 @@ describe("timer-state", () => {
 
     it("should stop the mainTimer", () => {
       timerState.start();
-      assert.strictEqual(timerState.mainTimer.isRunning, true);
+      expect(timerState.mainTimer.isRunning).toBe(true);
 
       timerState.pause();
-      assert.strictEqual(timerState.mainTimer.isRunning, false);
+      expect(timerState.mainTimer.isRunning).toBe(false);
     });
   });
 
@@ -134,17 +134,22 @@ describe("timer-state", () => {
 
     it("should publish a rotated event", () => {
       var event = assertEvent("rotated");
-      assert.strictEqual(
-        event.data.current.name,
-        "B",
-        "expected B to be current"
-      );
-      assert.strictEqual(event.data.next.name, "C", "expected C to be next");
+
+      const actual = {
+        currentName: event.data.current.name,
+        nextName: event.data.next.name
+      };
+
+      const expectations = {
+        currentName: "B",
+        nextName: "C"
+      };
+      expect(actual).toEqual(expectations);
     });
 
     it("should publish a timerChange event", () => {
       var event = assertEvent("timerChange");
-      assert.deepStrictEqual(event.data, {
+      expect(event.data).toEqual({
         secondsRemaining: 600,
         secondsPerTurn: 600
       });
@@ -154,12 +159,16 @@ describe("timer-state", () => {
       events = [];
       timerState.rotate();
       var event = assertEvent("rotated");
-      assert.strictEqual(
-        event.data.current.name,
-        "C",
-        "expected C to be current"
-      );
-      assert.strictEqual(event.data.next.name, "A", "expected A to be next");
+      const actual = {
+        currentName: event.data.current.name,
+        nextName: event.data.next.name
+      };
+
+      const expectations = {
+        currentName: "C",
+        nextName: "A"
+      };
+      expect(actual).toEqual(expectations);
     });
   });
 
@@ -168,14 +177,14 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.deepStrictEqual(event.data.mobbers, []);
-      assert.strictEqual(event.data.secondsPerTurn, 600);
-      assert.strictEqual(event.data.secondsUntilFullscreen, 30);
-      assert.strictEqual(event.data.snapThreshold, 25);
-      assert.strictEqual(event.data.alertSound, null);
-      assert.deepStrictEqual(event.data.alertSoundTimes, []);
-      assert.strictEqual(event.data.timerAlwaysOnTop, true);
-      assert.strictEqual(event.data.shuffleMobbersOnStartup, false);
+      expect(event.data.mobbers).toEqual([]);
+      expect(event.data.secondsPerTurn).toBe(600);
+      expect(event.data.secondsUntilFullscreen).toBe(30);
+      expect(event.data.snapThreshold).toBe(25);
+      expect(event.data.alertSound).toBe(null);
+      expect(event.data.alertSoundTimes).toEqual([]);
+      expect(event.data.timerAlwaysOnTop).toBe(true);
+      expect(event.data.shuffleMobbersOnStartup).toBe(false);
     });
 
     it("should contain the mobbers if there are some", () => {
@@ -185,8 +194,8 @@ describe("timer-state", () => {
 
       timerState.publishConfig();
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.mobbers[0].name, "A");
-      assert.strictEqual(event.data.mobbers[1].name, "B");
+      expect(event.data.mobbers[0].name).toBe("A");
+      expect(event.data.mobbers[1].name).toBe("B");
 
       timerState.removeMobber({ name: "A" });
       timerState.removeMobber({ name: "B" });
@@ -202,14 +211,22 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.mobbers[0].name, "A");
-      assert.strictEqual(event.data.secondsPerTurn, 600);
+      expect(event.data.mobbers[0].name).toBe("A");
+      expect(event.data.secondsPerTurn).toBe(600);
     });
 
     it("should publish a rotated event", () => {
       var event = assertEvent("rotated");
-      assert.strictEqual(event.data.current.name, "A");
-      assert.strictEqual(event.data.next.name, "A");
+      const actual = {
+        currentName: event.data.current.name,
+        nextName: event.data.next.name
+      };
+
+      const expectations = {
+        currentName: "A",
+        nextName: "A"
+      };
+      expect(actual).toEqual(expectations);
     });
   });
 
@@ -224,20 +241,28 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.mobbers[0].name, "A");
-      assert.strictEqual(event.data.mobbers[1].name, "C");
-      assert.strictEqual(event.data.secondsPerTurn, 600);
+      expect(event.data.mobbers[0].name).toBe("A");
+      expect(event.data.mobbers[1].name).toBe("C");
+      expect(event.data.secondsPerTurn).toBe(600);
     });
 
     it("should publish a rotated event", () => {
       var event = assertEvent("rotated");
-      assert.strictEqual(event.data.current.name, "A");
-      assert.strictEqual(event.data.next.name, "C");
+      const actual = {
+        currentName: event.data.current.name,
+        nextName: event.data.next.name
+      };
+
+      const expectations = {
+        currentName: "A",
+        nextName: "C"
+      };
+      expect(actual).toEqual(expectations);
     });
 
     it("should NOT publish a turnEnded event if the removed user was NOT current", () => {
       var event = events.find(x => x.event === "turnEnded");
-      assert.strictEqual(event, undefined);
+      expect(event).toBe(undefined);
     });
 
     it("should publish a turnEnded event if the removed user was current", () => {
@@ -260,8 +285,8 @@ describe("timer-state", () => {
       events = [];
       timerState.removeMobber({ name: "C", id: "c" });
       var event = assertEvent("rotated");
-      assert.strictEqual(event.data.current.name, "A");
-      assert.strictEqual(event.data.next.name, "A");
+      expect(event.data.current.name).toBe("A");
+      expect(event.data.next.name).toBe("A");
     });
   });
 
@@ -274,8 +299,8 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.mobbers[0].name, "A2");
-      assert.strictEqual(event.data.secondsPerTurn, 600);
+      expect(event.data.mobbers[0].name).toBe("A2");
+      expect(event.data.secondsPerTurn).toBe(600);
     });
 
     it("should update correctly if the update disabled the current mobber", () => {
@@ -290,10 +315,10 @@ describe("timer-state", () => {
       assertEvent("turnEnded");
       assertEvent("configUpdated");
       var rotatedEvent = assertEvent("rotated");
-      assert.strictEqual(rotatedEvent.data.current.name, "C");
-      assert.strictEqual(rotatedEvent.data.next.name, "A2");
+      expect(rotatedEvent.data.current.name).toBe("C");
+      expect(rotatedEvent.data.next.name).toBe("A2");
       var timerChangeEvent = assertEvent("timerChange");
-      assert.deepStrictEqual(timerChangeEvent.data, {
+      expect(timerChangeEvent.data).toEqual({
         secondsRemaining: 600,
         secondsPerTurn: 600
       });
@@ -321,7 +346,7 @@ describe("timer-state", () => {
         .getState()
         .mobbers.map(x => x.id)
         .join("");
-      assert.notStrictEqual(mobbers, "abcdefghij");
+      expect(mobbers).not.toBe("abcdefghij");
     });
   });
 
@@ -330,12 +355,12 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.secondsPerTurn, 300);
+      expect(event.data.secondsPerTurn).toBe(300);
     });
 
     it("should publish a timerChange event", () => {
       var event = assertEvent("timerChange");
-      assert.deepStrictEqual(event.data, {
+      expect(event.data).toEqual({
         secondsRemaining: 300,
         secondsPerTurn: 300
       });
@@ -347,7 +372,7 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.secondsUntilFullscreen, 5);
+      expect(event.data.secondsUntilFullscreen).toBe(5);
     });
   });
 
@@ -356,7 +381,7 @@ describe("timer-state", () => {
 
     it("should publish configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.snapThreshold, 100);
+      expect(event.data.snapThreshold).toBe(100);
     });
   });
 
@@ -365,7 +390,7 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.strictEqual(event.data.alertSound, "new-sound.mp3");
+      expect(event.data.alertSound).toBe("new-sound.mp3");
     });
   });
 
@@ -374,7 +399,7 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.deepStrictEqual(event.data.alertSoundTimes, [1, 2, 3]);
+      expect(event.data.alertSoundTimes).toEqual([1, 2, 3]);
     });
   });
 
@@ -383,7 +408,7 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.deepStrictEqual(event.data.timerAlwaysOnTop, false);
+      expect(event.data.timerAlwaysOnTop).toEqual(false);
     });
   });
 
@@ -392,7 +417,7 @@ describe("timer-state", () => {
 
     it("should publish a configUpdated event", () => {
       var event = assertEvent("configUpdated");
-      assert.deepStrictEqual(event.data.shuffleMobbersOnStartup, true);
+      expect(event.data.shuffleMobbersOnStartup).toEqual(true);
     });
   });
 
@@ -416,40 +441,38 @@ describe("timer-state", () => {
         var actualJack = result.mobbers.find(x => x.name === expectedJack.name);
         var actualJill = result.mobbers.find(x => x.name === expectedJill.name);
 
-        assert.deepStrictEqual(expectedJack, actualJack);
-        assert.deepStrictEqual(expectedJill, actualJill);
+        expect(expectedJack).toEqual(actualJack);
+        expect(expectedJill).toEqual(actualJill);
       });
 
       it("should get correct seconds per turn", () => {
-        assert.strictEqual(result.secondsPerTurn, expectedSecondsPerTurn);
+        expect(result.secondsPerTurn).toBe(expectedSecondsPerTurn);
       });
 
       it("should get the correct seconds until fullscreen", () => {
-        assert.strictEqual(
-          result.secondsUntilFullscreen,
+        expect(result.secondsUntilFullscreen).toBe(
           expectedSecondsUntilFullscreen
         );
       });
 
       it("should get the correct snap threshold", () => {
-        assert.strictEqual(result.snapThreshold, expectedSnapThreshold);
+        expect(result.snapThreshold).toBe(expectedSnapThreshold);
       });
 
       it("should get the correct alert sound", () => {
-        assert.strictEqual(result.alertSound, expectedAlertSound);
+        expect(result.alertSound).toBe(expectedAlertSound);
       });
 
       it("should get the correct alert sound times", () => {
-        assert.strictEqual(result.alertSoundTimes, expectedAlertSoundTimes);
+        expect(result.alertSoundTimes).toBe(expectedAlertSoundTimes);
       });
 
       it("should get the correct timer always on top", () => {
-        assert.strictEqual(result.timerAlwaysOnTop, expectedTimerAlwaysOnTop);
+        expect(result.timerAlwaysOnTop).toBe(expectedTimerAlwaysOnTop);
       });
 
       it("should get the correct shuffle mobbers on startup", () => {
-        assert.strictEqual(
-          result.shuffleMobbersOnStartup,
+        expect(result.shuffleMobbersOnStartup).toBe(
           expectedShuffleMobbersOnStartup
         );
       });
@@ -469,19 +492,20 @@ describe("timer-state", () => {
     describe("when getting default state", () => {
       beforeEach(() => (result = timerState.getState()));
 
-      it("should get no mobbers", () => assert(result.mobbers.length === 0));
+      it("should get no mobbers", () =>
+        expect(result.mobbers.length).toEqual(0));
       it("should have a default secondsPerTurn greater than zero", () =>
-        assert(result.secondsPerTurn > 0));
+        expect(result.secondsPerTurn).toBeGreaterThan(0));
       it("should have a default snapThreshold greater than zero", () =>
-        assert(result.snapThreshold > 0));
+        expect(result.snapThreshold).toBeGreaterThan(0));
       it("should have a null alert sound", () =>
-        assert(result.alertSound === null));
+        expect(result.alertSound).toBeNull());
       it("should have an empty array of alert sound times", () =>
-        assert.deepStrictEqual(result.alertSoundTimes, []));
+        expect(result.alertSoundTimes).toEqual([]));
       it("should have a default timerAlwaysOnTop", () =>
-        assert.deepStrictEqual(result.timerAlwaysOnTop, true));
+        expect(result.timerAlwaysOnTop).toEqual(true));
       it("should have a default shuffleMobbersOnStartup", () =>
-        assert.strictEqual(result.shuffleMobbersOnStartup, false));
+        expect(result.shuffleMobbersOnStartup).toBe(false));
 
       let result = {};
     });
@@ -496,7 +520,7 @@ describe("timer-state", () => {
       it("should get correct mobber", () => {
         var actualJack = result.mobbers.find(x => x.name === expectedJack.name);
 
-        assert.deepStrictEqual(expectedJack, actualJack);
+        expect(expectedJack).toEqual(actualJack);
       });
 
       let result = {};
@@ -524,25 +548,23 @@ describe("timer-state", () => {
       });
 
       it("should load mobbers", () =>
-        assert.deepStrictEqual(result.mobbers, state.mobbers));
+        expect(result.mobbers).toEqual(state.mobbers));
       it("should load secondsPerTurn", () =>
-        assert.strictEqual(result.secondsPerTurn, state.secondsPerTurn));
+        expect(result.secondsPerTurn).toBe(state.secondsPerTurn));
       it("should load secondsUntilFullscreen", () =>
-        assert.strictEqual(
-          result.secondsUntilFullscreen,
+        expect(result.secondsUntilFullscreen).toBe(
           state.secondsUntilFullscreen
         ));
       it("should load snapThreshold", () =>
-        assert.strictEqual(result.snapThreshold, state.snapThreshold));
+        expect(result.snapThreshold).toBe(state.snapThreshold));
       it("should load alertSound", () =>
-        assert.strictEqual(result.alertSound, state.alertSound));
+        expect(result.alertSound).toBe(state.alertSound));
       it("should load alertSoundTimes", () =>
-        assert.deepStrictEqual(result.alertSoundTimes, [2, 3, 5, 8]));
+        expect(result.alertSoundTimes).toEqual([2, 3, 5, 8]));
       it("should load timerAlwaysOnTop", () =>
-        assert.strictEqual(result.timerAlwaysOnTop, state.timerAlwaysOnTop));
+        expect(result.timerAlwaysOnTop).toBe(state.timerAlwaysOnTop));
       it("should load shuffleMobbersOnStartup", () =>
-        assert.strictEqual(
-          result.shuffleMobbersOnStartup,
+        expect(result.shuffleMobbersOnStartup).toBe(
           state.shuffleMobbersOnStartup
         ));
 
@@ -558,21 +580,21 @@ describe("timer-state", () => {
       });
 
       it("should NOT load any mobbers", () =>
-        assert.strictEqual(result.mobbers.length, 0));
+        expect(result.mobbers.length).toBe(0));
       it("should have a default secondsPerTurn greater than zero", () =>
-        assert(result.secondsPerTurn > 0));
+        expect(result.secondsPerTurn).toBeGreaterThan(0));
       it("should have a default secondsUntilFullscreen greater than zero", () =>
-        assert(result.secondsUntilFullscreen > 0));
+        expect(result.secondsUntilFullscreen).toBeGreaterThan(0));
       it("should have a default snapThreshold greater than zero", () =>
-        assert(result.snapThreshold > 0));
+        expect(result.snapThreshold).toBeGreaterThan(0));
       it("should have a null alertSound", () =>
-        assert.strictEqual(result.alertSound, null));
+        expect(result.alertSound).toBe(null));
       it("should have an empty array of alertSoundTimes", () =>
-        assert.deepStrictEqual(result.alertSoundTimes, []));
+        expect(result.alertSoundTimes).toEqual([]));
       it("should have a default timerAlwaysOnTop", () =>
-        assert.strictEqual(result.timerAlwaysOnTop, true));
+        expect(result.timerAlwaysOnTop).toBe(true));
       it("should have a default shuffleMobbersOnStartup", () =>
-        assert.strictEqual(result.shuffleMobbersOnStartup, false));
+        expect(result.shuffleMobbersOnStartup).toBe(false));
 
       let result = {};
     });
@@ -589,7 +611,7 @@ describe("timer-state", () => {
       });
 
       it("should load one mobber", () =>
-        assert.deepStrictEqual(state.mobbers, result.mobbers));
+        expect(state.mobbers).toEqual(result.mobbers));
 
       let result = {};
       let state = {};

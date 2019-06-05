@@ -1,5 +1,4 @@
 const { snapCheck } = require("./window-snapper");
-const assert = require("assert");
 
 describe("window-snapper snapCheck", () => {
   const fullHdScreen = { x: 0, y: 0, width: 1920, height: 1080 };
@@ -9,7 +8,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 0;
     const act = () => snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.throws(act);
+    expect(act).toThrow();
   });
 
   it("should not snap if far from edges", () => {
@@ -22,7 +21,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = { x: 0, y: 0, width: 200, height: 200 };
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 11,
       y: 11,
       width: 178,
@@ -36,7 +35,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 0,
       y: 11,
       width: 220,
@@ -50,7 +49,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 0,
       y: 0,
       width: 220,
@@ -64,7 +63,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 14,
       y: 0,
       width: 220,
@@ -78,7 +77,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 1700,
       y: 0,
       width: 220,
@@ -92,7 +91,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 1700,
       y: 13,
       width: 220,
@@ -106,7 +105,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 1700,
       y: 990,
       width: 220,
@@ -120,7 +119,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 1685,
       y: 990,
       width: 220,
@@ -134,7 +133,7 @@ describe("window-snapper snapCheck", () => {
     const screenBounds = fullHdScreen;
     const snapThreshold = 10;
     const result = snapCheck(windowBounds, screenBounds, snapThreshold);
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       x: 0,
       y: 990,
       width: 220,

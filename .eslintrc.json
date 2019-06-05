@@ -26,6 +26,17 @@
           "electron"
         ]
       }
+    ],
+    "no-restricted-modules": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "assert",
+            "message": "\n\tPlease use the global expect provided by jest instead.\n\tDocumentation at https://jestjs.io/docs/en/expect.html\n"
+          }
+        ]
+      }
     ]
   }
 }

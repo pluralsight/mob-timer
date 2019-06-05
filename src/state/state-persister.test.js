@@ -1,7 +1,6 @@
 const persister = require("./state-persister");
 const sinon = require("sinon");
 const fs = require("fs");
-const assert = require("assert");
 
 describe("state-persister", () => {
   const sandbox = sinon.createSandbox();
@@ -28,7 +27,7 @@ describe("state-persister", () => {
         .callsFake(() => true);
 
       const result = persister.read();
-      assert.deepStrictEqual(result, stateData);
+      expect(result).toEqual(stateData);
     });
 
     it("should look for the old state file if the new one does not exist", () => {
@@ -40,7 +39,7 @@ describe("state-persister", () => {
         .callsFake(() => true);
 
       const result = persister.read();
-      assert.deepStrictEqual(result, oldStateData);
+      expect(result).toEqual(oldStateData);
     });
 
     it("should return an empty object if no state file exists", () => {
@@ -52,7 +51,7 @@ describe("state-persister", () => {
         .callsFake(() => false);
 
       const result = persister.read();
-      assert.deepStrictEqual(result, {});
+      expect(result).toEqual({});
     });
   });
 
