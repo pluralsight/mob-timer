@@ -32,7 +32,8 @@ exports.createTimerWindow = () => {
     icon: path.join(__dirname, "/../../src/windows/img/icon.png"),
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    maximizable: false
   });
 
   timerWindow.loadURL(`file://${__dirname}/timer/index.html`);

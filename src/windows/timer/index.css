@@ -13,6 +13,14 @@ body {
 .container {
   position: relative;
   height: 100vh;
+  display: grid;
+  grid-template-columns: min-content auto min-content;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: "current current-name configure"
+                       "current next         next";
+  padding: 6px;
+  box-sizing: border-box;
+  grid-gap: 0 6px;
 }
 
 .button {
@@ -25,15 +33,14 @@ body {
 }
 
 .timerContainer {
-  position: absolute;
-  top: 5px;
-  left: 5px;
+  position: relative;
+  grid-area: current;
 }
 
 .currentPic {
   position: absolute;
-  top: 1px;
-  left: 1px;
+  top: 2px;
+  left: 2px;
   width: 76px;
   height: 76px;
 }
@@ -69,26 +76,26 @@ body {
 }
 
 .current {
-  position: absolute;
-  top: 25px;
-  left: 90px;
   display: inline-block;
   font-size: 16px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 120px;
+  align-self: center;
+  grid-area: current-name;
 }
 
 .nextContainer {
-  position: absolute;
-  top: 50px;
-  left: 90px;
-  width: 100px;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: min-content auto;
+  align-items: center;
+  grid-gap: 5px;
+  grid-area: next;
 }
 
 .next {
-  position: absolute;
   border-radius: 50%;
   width: 25px;
   height: 25px;
@@ -98,25 +105,19 @@ body {
 .overlay.next {
   background-image: url(../img/skip.png);
   background-size: 25px 25px;
+  position: absolute;
 }
 
 .nextContainer span {
-  position: absolute;
-  top: 10px;
-  left: 35px;
   font-size: 11px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
-  width: 90px;
 }
 
 .configure {
-  position: absolute;
   display: block;
-  top: 5px;
-  right: 5px;
   width: 20px;
   height: 20px;
   background-color: transparent;
@@ -124,6 +125,7 @@ body {
   background-size: 20px 20px;
   border: 0;
   opacity: .5;
+  grid-area: configure;
 }
 
 .configure:hover {
