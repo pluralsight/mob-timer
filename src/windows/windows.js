@@ -6,7 +6,7 @@ const { debounce } = require("debounce");
 const {
   showConfigWindow,
   sendEventToConfigWindow
-} = require("./config/initialize");
+} = require("./config/initialize").initialize();
 
 let timerWindow, fullscreenWindow;
 let snapThreshold, secondsUntilFullscreen, timerAlwaysOnTop;

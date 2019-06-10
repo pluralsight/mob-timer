@@ -1,18 +1,15 @@
 const { BrowserWindow } = require("electron");
+const { asLazySingletonWindow } = require("../lazy-singleton-window");
 
-let configWindow;
+exports.initialize = () => {
+  const { showWindow, trySendEvent } = asLazySingletonWindow(
+    createConfigWindow
+  );
 
-exports.showConfigWindow = () => {
-  if (configWindow) {
-    configWindow.showWindow();
-    return;
-  }
-  configWindow = createConfigWindow();
-  configWindow.onClose(() => (configWindow = null));
-};
-
-exports.sendEventToConfigWindow = (event, data) => {
-  configWindow && configWindow.sendEvent(event, data);
+  return {
+    showConfigWindow: showWindow,
+    sendEventToConfigWindow: trySendEvent
+  };
 };
 
 const createConfigWindow = () => {
@@ -27,10 +24,5 @@ const createConfigWindow = () => {
 
   configWindowInstance.loadURL(`file://${__dirname}/index.html`);
 
-  return {
-    showWindow: () => configWindowInstance.show(),
-    onClose: callback => configWindowInstance.on("closed", callback),
-    sendEvent: (event, data) =>
-      configWindowInstance.webContents.send(event, data)
-  };
+  return configWindowInstance;
 };

@@ -32,7 +32,8 @@
       "!src/**/*.test.js",
       "!src/**/test-*.js"
     ],
-    "collectCoverage": true
+    "collectCoverage": true,
+    "resetMocks": true
   },
   "repository": {
     "type": "git",
