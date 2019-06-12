@@ -1,19 +1,19 @@
 :root {
-  --theme-primary-color: #f15b2a;
-  --theme-secondary-color: #ec008c;
+  --theme-primary-color: #428bca;
+  --theme-secondary-color: #7a00ec;
 
-  --main-text-color: #000;
-  --main-background-color: #fff;
+  --main-text-color: #330000;
+  --main-background-color: #fdfdfd;
   --disabled-text-color: #999;
   --table-stripe-color: #dcdcdc;
 
-  --button-text-color: #fff;
+  --button-text-color: #fdfdfd;
   --button-background-color: var(--theme-primary-color);
 
-  --mobber-border-color: #eee;
+  --mobber-border-color: #D3D3D3;
   --mobber-border-highlight-color: var(--theme-primary-color);
 
-  --timer-pulse-text-color: #fff;
+  --timer-pulse-text-color: #fdfdfd;
   --timer-pulse-color-1: var(--theme-primary-color);
   --timer-pulse-color-2: var(--theme-secondary-color);
   

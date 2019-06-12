@@ -1,79 +1,109 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Mob Timer Configuration</title>
-    <link rel="stylesheet" href="./index.css">
-  </head>
-  <body>
-    <div class="container">
-      <div class="time">
-        <label for="minutes">
-          Each turn lasts:
-          <input type="number" id="minutes" min="1" class="minutes" /> minutes
+
+<head>
+  <meta charset="utf-8">
+  <title>Mob Timer Configuration</title>
+  <link rel="stylesheet" href="../../../node_modules/typeface-work-sans/index.css">
+  <link rel="stylesheet" href="../../../node_modules/pretty-checkbox/dist/pretty-checkbox.min.css">
+  <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="time">
+      <label for="minutes">
+        Each turn lasts:
+        <input type="number" id="minutes" min="1" class="minutes" /> minutes
+      </label>
+    </div>
+    <div class="mobbers">
+      <h1>Mobbers</h1>
+      <div id="mobbers"></div>
+      <form id="addMobberForm" class="oneLineInputAndButton">
+        <label for="add" class="addLabel">
+          <input type="text" id="add" />
+          <button class="btn add">Add</button>
         </label>
-      </div>
-      <div class="mobbers">
-        <h1>Mobbers</h1>
-        <div id="mobbers"></div>
-        <form id="addMobberForm" class="oneLineInputAndButton">
-          <label for="add" class="addLabel">
-            <input type="text" id="add" />
-            <button class="btn add">Add</button>
-          </label>
-        </form>
-        <div class="mobberListActions">
-          <button id="shuffle" class="btn">Shuffle Mobbers</button>
-        </div>
-      </div>
-      <div class="settings">
-        <h1>Additional Settings</h1>
-        <div>
-          Fullscreen view appears after:
-          <input type="number" id="fullscreen-seconds" min="0" class="fullscreen-seconds"/> seconds
-        </div>
-        <div class="snap-to-edges-checkbox">
-          <label>
-            <input type="checkbox" id="snap-to-edges"/>
-            Snap window to edges of the screen
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" id="alertAudio" class="settings-checkbox"/>
-            Play an alert sound when the turn ends
-          </label>
-        </div>
-        <div id="replayAudioContainer">
-          <label>
-            <input type="checkbox" id="replayAlertAudio"/>
-            Play the sound again after:
-          </label>
-          <input type="number" id="replayAudioAfterSeconds" min="1" class="replay-audio-seconds"/> seconds
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" id="useCustomSound"/>
-            Use a custom sound:
-          </label>
-          <input type="text" id="customSound" class="custom-sound" disabled/>
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" id="timerAlwaysOnTop" class="settings-checkbox"/>
-            Timer window floats above other windows
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" id="shuffleMobbersOnStartup" class="settings-checkbox"/>
-            Shuffle mobbers on startup
-          </label>
-        </div>
+      </form>
+      <div class="mobberListActions">
+        <button id="shuffle" class="btn">Shuffle Mobbers</button>
       </div>
     </div>
-    <script type="text/javascript">
-      require('./index.js')
-    </script>
-  </body>
+    <div>
+      <h1>Additional Settings</h1>
+      <ul class="additional-settings">
+        <li class="additional-settings__item">
+          Fullscreen view appears after:
+          <input type="number" id="fullscreen-seconds" min="0" class="fullscreen-seconds" /> seconds
+        </li>
+        <li class="additional-settings__item">
+          <div class="pretty p-switch p-fill">
+            <input type="checkbox" id="snap-to-edges" />
+            <div class="state p-primary">
+              <label>Snap window to edges of the screen</label>
+            </div>
+          </div>
+        </li>
+        <li class="additional-settings__item">
+          <div class="pretty p-switch p-fill">
+            <input type="checkbox" id="alertAudio" />
+            <div class="state p-primary">
+              <label>
+                Play an alert sound when the turn ends
+              </label>
+            </div>
+          </div>
+        </li>
+        <li id="replayAudioContainer" class="additional-settings__item">
+          <div class="pretty p-switch p-fill">
+            <input type="checkbox" id="replayAlertAudio" />
+            <div class="state p-primary">
+              <label>
+                Play the sound again after:
+              </label>
+            </div>
+          </div>
+          <input type="number" id="replayAudioAfterSeconds" min="1" class="replay-audio-seconds" />
+          <span class="replay-audio-seconds-suffix">seconds</span>
+        </li>
+        <li class="additional-settings__item">
+          <div class="pretty p-switch p-fill">
+            <input type="checkbox" id="useCustomSound" />
+            <div class="state p-primary">
+              <label>
+                Use a custom sound:
+              </label>
+            </div>
+          </div>
+          <input type="text" id="customSound" class="custom-sound" disabled />
+        </li>
+        <li class="additional-settings__item">
+          <div class="pretty p-switch p-fill">
+            <input type="checkbox" id="timerAlwaysOnTop" />
+            <div class="state p-primary">
+              <label>
+                Timer window floats above other windows
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="additional-settings__item">
+          <div class="pretty p-switch p-fill">
+            <input type="checkbox" id="shuffleMobbersOnStartup" />
+            <div class="state p-primary">
+              <label>
+                Shuffle mobbers on startup
+              </label>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <script type="text/javascript">
+    require('./index.js')
+  </script>
+</body>
+
 </html>

@@ -1,4 +1,4 @@
-const theme = require("../theme.js");
+const { getTheme } = require("../theme.js");
 
 const ipc = require("electron").ipcRenderer;
 
@@ -19,19 +19,34 @@ let paused = true;
 let alertSoundTimes = [];
 
 ipc.on("timerChange", (event, data) => {
+  const { mobberBorderHighlightColor, mobberBorderColor } = getTheme();
   clearCanvas();
-  drawTimerCircle();
-  drawTimerArc(data.secondsRemaining, data.secondsPerTurn);
+  drawTimerCircle(mobberBorderColor);
+  drawTimerArc(
+    data.secondsRemaining,
+    data.secondsPerTurn,
+    mobberBorderHighlightColor
+  );
 });
 
 function clearCanvas() {
   context.clearRect(0, 0, timerCanvas.width, timerCanvas.height);
 }
 
-function drawTimerCircle() {
+function drawTimerCircle(color) {
   const begin = 0;
   const end = 2 * Math.PI;
-  drawArc(begin, end, "#EEEEEE");
+  drawArc(begin, end, color);
+}
+
+function drawTimerArc(seconds, maxSeconds, color) {
+  let percent = 1 - seconds / maxSeconds;
+  if (percent === 0) {
+    return;
+  }
+  let begin = -(0.5 * Math.PI);
+  let end = begin + 2 * Math.PI * percent;
+  drawArc(begin, end, color);
 }
 
 function drawArc(begin, end, color) {
@@ -43,16 +58,6 @@ function drawArc(begin, end, color) {
   context.strokeStyle = color;
   context.lineWidth = 10;
   context.stroke();
-}
-
-function drawTimerArc(seconds, maxSeconds) {
-  let percent = 1 - seconds / maxSeconds;
-  if (percent === 0) {
-    return;
-  }
-  let begin = -(0.5 * Math.PI);
-  let end = begin + 2 * Math.PI * percent;
-  drawArc(begin, end, theme.mobberBorderHighlightColor);
 }
 
 ipc.on("rotated", (event, data) => {

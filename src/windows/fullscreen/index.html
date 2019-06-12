@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Mob Timer</title>
-    <link rel="stylesheet" href="./index.css">
-  </head>
-  <body>
 
-    <div id="container" class="container">
+<head>
+  <meta charset="utf-8">
+  <title>Mob Timer</title>
+  <link rel="stylesheet" href="../../../node_modules/typeface-work-sans/index.css">
+  <link rel="stylesheet" href="./index.css">
+</head>
 
-      <div class="current">
-        <img id="currentPic" class="pic"/>
-        <br/>
-        <span id="current">{name}</span>, please sit at the keyboard
-      </div>
-      <div class="controls">
-        <button id="startTurn" class="btn">Start</button>
-        <button id="skip" class="btn skip">Skip</button>
-        <button id="configure" class="btn">Configure</button>
-      </div>
-      <div class="next">
-        Up Next: <img id="nextPic" class="pic"> <span id="next">{name}</span>
-      </div>
+<body>
 
+  <div id="container" class="container">
+
+    <div class="current">
+      <img id="currentPic" class="pic" />
+      <br />
+      <span id="current">{name}</span>, please sit at the keyboard
+    </div>
+    <div class="controls">
+      <button id="startTurn" class="btn">Start</button>
+      <button id="skip" class="btn skip">Skip</button>
+      <button id="configure" class="btn">Configure</button>
+    </div>
+    <div class="next">
+      Up Next: <img id="nextPic" class="pic"> <span id="next">{name}</span>
     </div>
 
+  </div>
 
-    <script type="text/javascript">
-      require('./index.js')
-    </script>
-  </body>
+
+  <script type="text/javascript">
+    require('./index.js')
+  </script>
+</body>
+
 </html>

@@ -3,7 +3,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
   color: var(--main-text-color);
   background-color: var(--main-background-color);
 }
@@ -14,6 +14,7 @@ input {
 
 .container {
   margin: 20px;
+  min-width: 24rem;
 }
 
 .minutes {
@@ -86,15 +87,21 @@ h1 {
   font-size: 18px;
   border-bottom: 1px solid var(--main-text-color);
   margin-top: 20px;
+  font-variant: all-small-caps;
+  font-weight: 400;
 }
 
 input[type="checkbox" i] {
-  position: relative;
   vertical-align: middle;
 }
 
-.settings > div {
-  margin-bottom: 10px;
+.additional-settings {
+  list-style-type: none;
+    padding: 0;
+}
+
+.additional-settings__item {
+  margin-top: 1em;
 }
 
 .fullscreen-seconds {
@@ -103,12 +110,18 @@ input[type="checkbox" i] {
 
 .replay-audio-seconds {
   width: 40px;
+  margin-left: -1em;
 }
 
 #replayAudioContainer.disabled {
   color: var(--disabled-text-color);
 }
 
+#replayAudioContainer.disabled .replay-audio-seconds-suffix {
+  opacity: 0.5;
+}
+
 .custom-sound {
   width: 145px;
+  margin-left: -1em;
 }

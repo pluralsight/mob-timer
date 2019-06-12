@@ -3,7 +3,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
   -webkit-app-region: drag;
   user-select: none;
   color: var(--main-text-color);
@@ -125,11 +125,13 @@ body {
   background-size: 20px 20px;
   border: 0;
   opacity: .5;
+  transition: all 0.2s ease;
   grid-area: configure;
 }
 
 .configure:hover {
   opacity: .7;
+  transform: rotate(-180deg);
 }
 
 @keyframes pulse {
