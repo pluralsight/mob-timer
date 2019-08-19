@@ -8,16 +8,13 @@ os:
   - linux
 script:
   - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
-      npm run test;
-      npm run build-win;
+      npm run travis-script-win;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      npm run test;
-      npm run build-mac;
+      npm run travis-script-mac;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      npm run coverage;
-      npm run build-linux;
+      npm run travis-script-linux;
     fi
 after_script:
   - ls -R dist
