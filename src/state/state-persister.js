@@ -1,10 +1,9 @@
 const fs = require("fs");
-const os = require("os");
-const path = require("path");
-
-const mobTimerDir = path.join(os.homedir(), ".mob-timer");
-const stateFile = path.join(mobTimerDir, "state.json");
-const oldStateFile = path.join(os.tmpdir(), "state.json");
+const {
+  stateFile,
+  oldStateFile,
+  mobTimerDir
+} = require("./state-persister-paths");
 
 function read() {
   if (fs.existsSync(stateFile)) {
@@ -20,13 +19,10 @@ function write(state) {
   if (!fs.existsSync(mobTimerDir)) {
     fs.mkdirSync(mobTimerDir);
   }
-  fs.writeFileSync(stateFile, JSON.stringify(state));
+  fs.writeFileSync(stateFile, JSON.stringify(state, null, 2));
 }
 
 module.exports = {
   read,
-  write,
-  stateFile,
-  oldStateFile,
-  mobTimerDir
+  write
 };
