@@ -24,20 +24,20 @@ function onTimerEvent(event, data) {
   }
 }
 
-ipc.on("timerWindowReady", () => timerState.initialize());
-ipc.on("configWindowReady", () => timerState.publishConfig());
-ipc.on("fullscreenWindowReady", () => timerState.publishConfig());
+ipc.on("timerWindowReady", timerState.initialize);
+ipc.on("configWindowReady", timerState.publishConfig);
+ipc.on("fullscreenWindowReady", timerState.publishConfig);
+ipc.on("pause", timerState.pause);
+ipc.on("unpause", timerState.start);
+ipc.on("skip", timerState.rotate);
+ipc.on("startTurn", timerState.start);
+ipc.on("shuffleMobbers", timerState.shuffleMobbers);
 
-ipc.on("pause", () => timerState.pause());
-ipc.on("unpause", () => timerState.start());
-ipc.on("skip", () => timerState.rotate());
-ipc.on("startTurn", () => timerState.start());
 ipc.on("configure", () => {
   windows.showConfigWindow();
   windows.closeFullscreenWindow();
 });
 
-ipc.on("shuffleMobbers", () => timerState.shuffleMobbers());
 ipc.on("addMobber", (event, mobber) => timerState.addMobber(mobber));
 ipc.on("removeMobber", (event, mobber) => timerState.removeMobber(mobber));
 ipc.on("updateMobber", (event, mobber) => timerState.updateMobber(mobber));
