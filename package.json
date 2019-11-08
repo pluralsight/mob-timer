@@ -1,7 +1,7 @@
 {
   "name": "mob-timer",
   "engines": {
-    "node": "12.4.0"
+    "node": "12.8.1"
   },
   "description": "A cross-platform mob-timer built on Electron for doing Mob Programming.",
   "main": "src/main.js",
@@ -53,9 +53,9 @@
     "@babel/core": "^7.5.5",
     "coveralls": "^3.0.6",
     "cross-zip-cli": "^1.0.0",
-    "electron": "^6.0.0",
-    "electron-packager": "^14.0.0",
-    "electron-releases": "^3.209.0",
+    "electron": "^7.0.1",
+    "electron-packager": "^14.1.0",
+    "electron-releases": "^3.274.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.2",
