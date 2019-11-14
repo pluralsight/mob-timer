@@ -56,16 +56,19 @@ function createMobberEl(mobber) {
 }
 
 function selectImage(mobber) {
-  var image = dialog.showOpenDialog({
-    title: "Select image",
-    filters: [{ name: "Images", extensions: ["jpg", "png", "gif"] }],
-    properties: ["openFile"]
-  });
-
-  if (image) {
-    mobber.image = image[0];
-    ipc.send("updateMobber", mobber);
-  }
+  return dialog
+    .showOpenDialog({
+      title: "Select image",
+      filters: [{ name: "Images", extensions: ["jpg", "png", "gif"] }],
+      properties: ["openFile"]
+    })
+    .then(selection => {
+      if (!selection.canceled) {
+        mobber.image = selection.filePaths[0];
+        ipc.send("updateMobber", mobber);
+      }
+      return;
+    });
 }
 
 function toggleMobberDisabled(mobber) {
@@ -160,23 +163,23 @@ function updateAlertControls() {
 }
 
 useCustomSoundCheckbox.addEventListener("change", () => {
-  let mp3 = null;
-
   if (useCustomSoundCheckbox.checked) {
-    const selectedMp3 = dialog.showOpenDialog({
-      title: "Select alert sound",
-      filters: [{ name: "MP3", extensions: ["mp3"] }],
-      properties: ["openFile"]
-    });
-
-    if (selectedMp3) {
-      mp3 = selectedMp3[0];
-    } else {
-      useCustomSoundCheckbox.checked = false;
-    }
+    return dialog
+      .showOpenDialog({
+        title: "Select alert sound",
+        filters: [{ name: "MP3", extensions: ["mp3"] }],
+        properties: ["openFile"]
+      })
+      .then(selection => {
+        if (!selection.canceled) {
+          const mp3 = selection.filePaths[0];
+          ipc.send("setAlertSound", mp3);
+        } else {
+          useCustomSoundCheckbox.checked = false;
+        }
+        return;
+      });
   }
-
-  ipc.send("setAlertSound", mp3);
 });
 
 timerAlwaysOnTopCheckbox.addEventListener("change", () => {
