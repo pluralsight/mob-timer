@@ -323,6 +323,21 @@ describe("timer-state", () => {
         secondsPerTurn: 600
       });
     });
+
+    it("should update correctly if the update enabled a mobber in list of only disabled mobbers", () => {
+      timerState.updateMobber({ id: "a", name: "A2", disabled: true });
+      timerState.addMobber({ id: "b", name: "B", disabled: true });
+      timerState.addMobber({ id: "c", name: "C", disabled: true });
+      timerState.rotate();
+      events = [];
+
+      timerState.updateMobber({ id: "b", name: "B", disabled: false });
+
+      assertEvent("configUpdated");
+      var rotatedEvent = assertEvent("rotated");
+      expect(rotatedEvent.data.current.name).toBe("B");
+      expect(rotatedEvent.data.next.name).toBe("B");
+    });
   });
 
   describe("shuffleMobbers", () => {
