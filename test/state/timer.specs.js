@@ -8,6 +8,11 @@ describe('Timer', () => {
   let callbacks
   let clock
 
+  const mockDateNow = () => {
+    let calls = 0
+    return () => { calls++; return calls * 1000 }
+  }
+
   let createTimer = () => {
     timer = new Timer(timerOptions, x => callbacks.push(x))
   }
@@ -34,8 +39,8 @@ describe('Timer', () => {
         assert.strictEqual(timer.time, timerOptions.time)
       })
 
-      it('should have a change value based on the specified countDown', () => {
-        assert.strictEqual(timer.change, -1)
+      it('should know if it is counting up or down based on the specified countDown', () => {
+        assert.strictEqual(timer.countDown, true)
       })
     })
 
@@ -53,15 +58,15 @@ describe('Timer', () => {
         assert.strictEqual(timer.time, 0)
       })
 
-      it('should have the default change value', () => {
-        assert.strictEqual(timer.change, 1)
+      it('should have the default countDown value', () => {
+        assert.strictEqual(timer.countDown, false)
       })
     })
   })
 
   describe('start', () => {
     it('should generate callbacks when counting down', () => {
-      timer.start()
+      timer.start(mockDateNow())
       clock.tick(50)
       assert.strictEqual(callbacks.join(','), '49,48')
     })
@@ -69,7 +74,7 @@ describe('Timer', () => {
     it('should generate callbacks when counting up', () => {
       timerOptions.countDown = false
       createTimer()
-      timer.start()
+      timer.start(mockDateNow())
       clock.tick(50)
       assert.strictEqual(callbacks.join(','), '51,52')
     })
@@ -77,7 +82,7 @@ describe('Timer', () => {
 
   describe('pause', () => {
     it('should stop further callbacks from occuring', () => {
-      timer.start()
+      timer.start(mockDateNow())
       clock.tick(50)
       timer.pause()
       clock.tick(100)
@@ -92,9 +97,10 @@ describe('Timer', () => {
     })
 
     it('should set a new time value when the timer is running', () => {
-      timer.start()
+      const mockedNow = mockDateNow()
+      timer.start(mockedNow)
       clock.tick(50)
-      timer.reset(20)
+      timer.reset(20, mockedNow)
       clock.tick(40)
       assert.strictEqual(callbacks.join(','), '49,48,19,18')
     })
