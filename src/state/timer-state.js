@@ -119,7 +119,7 @@ class TimerState {
 
   updateMobber(mobber) {
     const currentMobber = this.mobbers.getCurrentAndNextMobbers().current
-    const disablingCurrentMobber = (currentMobber.id === mobber.id && mobber.disabled)
+    const disablingCurrentMobber = (currentMobber && currentMobber.id === mobber.id && mobber.disabled)
 
     this.mobbers.updateMobber(mobber)
 
