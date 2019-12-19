@@ -119,4 +119,6 @@ toggleBtn.addEventListener("click", () => {
 nextBtn.addEventListener("click", () => ipc.send("skip"));
 configureBtn.addEventListener("click", () => ipc.send("configure"));
 
+const { mobberBorderColor } = getTheme();
+drawTimerCircle(mobberBorderColor);
 ipc.send("timerWindowReady");

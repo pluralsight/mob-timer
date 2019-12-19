@@ -1,4 +1,10 @@
 const electron = require("electron");
+
+if (process.env.NODE_ENV !== "test") {
+  require("electron-reload")(__dirname);
+  console.log("(Hard reload managed with nodemon, ignore the above log)");
+}
+
 const { app, ipcMain: ipc } = electron;
 
 let windows = require("./windows/windows");

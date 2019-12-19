@@ -4,6 +4,7 @@ module.exports = {
     on: jest.fn()
   },
   app: {
-    on: jest.fn()
+    on: jest.fn(),
+    getAppPath: jest.fn()
   }
 };

@@ -31,6 +31,10 @@ describe("timer-state", () => {
       });
     });
 
+    it("should publish a paused event", () => {
+      assertEvent("paused");
+    });
+
     it("should publish a rotated event", () => {
       var event = assertEvent("rotated");
       expect(event.data).toEqual({ current: null, next: null });

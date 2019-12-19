@@ -90,6 +90,7 @@ class TimerState {
   }
 
   initialize() {
+    this.pause();
     this.rotate();
     this.callback("turnEnded");
     this.publishConfig();
