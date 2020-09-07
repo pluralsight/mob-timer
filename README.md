@@ -24,7 +24,7 @@ You can either build the mob-timer from source or [download a pre-built version]
 
 ## Build mob-timer
 
-Run `npm install` and then one of the following commands for your respective operating system:
+Run `npm ci` and then one of the following commands for your respective operating system:
 - Windows: `npm run build-win`
 - Mac OS X: `npm run build-mac`
 - Linux: `npm run build-linux` (You may need to install `libcanberra-gtk-module`)
@@ -35,7 +35,7 @@ If you need a platform other than these, you will need to modify the build scrip
 
 # Development
 
-Run `npm install` to get the dependencies, then `npm start` to run the timer.
+Run `npm ci` to get the dependencies, then `npm start` to run the timer.
 Run `npm test` to run the unit tests once, or alternatively `npm run watch` to run them on changes. [More information on test structure.](./test/README.md)
 
 
