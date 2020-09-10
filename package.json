@@ -61,29 +61,29 @@
   },
   "homepage": "https://mob-timer.github.io",
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "coveralls": "^3.0.6",
+    "@babel/core": "^7.11.6",
+    "coveralls": "^3.1.0",
     "cross-zip-cli": "^1.0.0",
     "electron": "^10.1.1",
-    "electron-packager": "^14.1.0",
+    "electron-packager": "^14.2.1",
     "electron-releases": "^3.507.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^23.0.0",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
-    "prettier": "^1.18.2",
-    "sinon": "^8.0.0"
+    "prettier": "^1.19.1",
+    "sinon": "^8.1.1"
   },
   "dependencies": {
     "debounce": "^1.2.0",
     "electron-reload": "^1.5.0",
     "pretty-checkbox": "^3.0.3",
     "typeface-work-sans": "0.0.72",
-    "uuid": "^3.2.1"
+    "uuid": "^3.4.0"
   }
 }
