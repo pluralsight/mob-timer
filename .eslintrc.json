@@ -45,6 +45,12 @@
           }
         ]
       }
+    ],
+    "jest/expect-expect": [
+      "error",
+      {
+        "assertFunctionNames": ["expect", "assertEvent", "sinon.assert"]
+      }
     ]
   }
 }
