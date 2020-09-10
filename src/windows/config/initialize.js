@@ -18,7 +18,8 @@ const createConfigWindow = () => {
     height: 680,
     autoHideMenuBar: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true //This should be disabled to get better security, but is used for showOpenDialog as of now!
     }
   });
 
