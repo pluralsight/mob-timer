@@ -7,6 +7,14 @@ describe("Timer", () => {
   let callbacks;
   let clock;
 
+  const mockDateNow = () => {
+    let calls = 0;
+    return () => {
+      calls++;
+      return calls * 1000;
+    };
+  };
+
   let createTimer = () => {
     timer = new Timer(timerOptions, x => callbacks.push(x));
   };
@@ -33,8 +41,8 @@ describe("Timer", () => {
         expect(timer.time).toBe(timerOptions.time);
       });
 
-      it("should have a change value based on the specified countDown", () => {
-        expect(timer.change).toBe(-1);
+      it("should know if it is counting up or down based on the specified countDown", () => {
+        expect(timer.countDown).toBe(true);
       });
     });
 
@@ -52,15 +60,15 @@ describe("Timer", () => {
         expect(timer.time).toBe(0);
       });
 
-      it("should have the default change value", () => {
-        expect(timer.change).toBe(1);
+      it("should have the default countDown value", () => {
+        expect(timer.countDown).toBe(false);
       });
     });
   });
 
   describe("start", () => {
     it("should generate callbacks when counting down", () => {
-      timer.start();
+      timer.start(mockDateNow());
       clock.tick(50);
       expect(callbacks.join(",")).toBe("49,48");
     });
@@ -68,7 +76,7 @@ describe("Timer", () => {
     it("should generate callbacks when counting up", () => {
       timerOptions.countDown = false;
       createTimer();
-      timer.start();
+      timer.start(mockDateNow());
       clock.tick(50);
       expect(callbacks.join(",")).toBe("51,52");
     });
@@ -76,7 +84,7 @@ describe("Timer", () => {
 
   describe("pause", () => {
     it("should stop further callbacks from occuring", () => {
-      timer.start();
+      timer.start(mockDateNow());
       clock.tick(50);
       timer.pause();
       clock.tick(100);
@@ -91,9 +99,10 @@ describe("Timer", () => {
     });
 
     it("should set a new time value when the timer is running", () => {
-      timer.start();
+      const mockedDateNow = mockDateNow();
+      timer.start(mockedDateNow);
       clock.tick(50);
-      timer.reset(20);
+      timer.reset(20, mockedDateNow);
       clock.tick(40);
       expect(callbacks.join(",")).toBe("49,48,19,18");
     });

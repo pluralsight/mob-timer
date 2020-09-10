@@ -50,7 +50,7 @@ class TimerState {
 
   dispatchTimerChange(secondsRemaining) {
     this.callback("timerChange", {
-      secondsRemaining,
+      secondsRemaining: secondsRemaining < 0 ? 0 : secondsRemaining,
       secondsPerTurn: this.secondsPerTurn
     });
   }
