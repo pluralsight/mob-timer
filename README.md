@@ -1,6 +1,10 @@
 # Pluralsight Mob Timer
 A cross-platform timer built on [Electron](http://electron.atom.io/)
-for doing [Mob Programming](http://mobprogramming.org/)
+for doing [Mob Programming](http://mobprogramming.org/).
+
+**Heads up!** There is also an [extension](https://marketplace.visualstudio.com/items?itemName=pluralsight.live-share-mob-timer)
+for Visual Studio Code's Live Share experience.
+This is a different, standalone, project.
 
 ![Example Timer Image](timer-example.png)
 
