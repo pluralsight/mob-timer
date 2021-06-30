@@ -15,6 +15,7 @@ app.on('ready', () => {
   if (timerState.getState().shuffleMobbersOnStartup) {
     timerState.shuffleMobbers()
   }
+  windows.createTrayIconAndMenu()
 })
 
 function onTimerEvent(event, data) {
@@ -26,15 +27,22 @@ function onTimerEvent(event, data) {
 
 ipc.on('timerWindowReady', () => timerState.initialize())
 ipc.on('configWindowReady', () => timerState.publishConfig())
-ipc.on('fullscreenWindowReady', () => timerState.publishConfig())
+ipc.on('fullscreenWindowReady', () => {
+  timerState.stopAlerts()
+  timerState.publishConfig()
+})
 
+ipc.on('reset', () => timerState.reset(true))
 ipc.on('pause', () => timerState.pause())
 ipc.on('unpause', () => timerState.start())
 ipc.on('skip', () => timerState.rotate())
-ipc.on('startTurn', () => timerState.start())
-ipc.on('configure', () => {
-  windows.showConfigWindow()
+ipc.on('startTurn', () => {
   windows.closeFullscreenWindow()
+  timerState.start()
+})
+ipc.on('configure', () => {
+  windows.closeFullscreenWindow()
+  windows.showConfigWindow()
 })
 
 ipc.on('shuffleMobbers', () => timerState.shuffleMobbers())

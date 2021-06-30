@@ -52,8 +52,13 @@ class TimerState {
     })
   }
 
-  reset() {
+  reset(stop = false) {
+    if (stop) {
+      this.mainTimer.pause()
+      this.callback('turnEnded')
+    }
     this.mainTimer.reset(this.secondsPerTurn)
+    this.stopAlerts()
     this.dispatchTimerChange(this.secondsPerTurn)
   }
 
@@ -65,6 +70,7 @@ class TimerState {
 
   stopAlerts() {
     this.alertsTimer.pause()
+    this.alertsTimer.reset(0)
     this.callback('stopAlerts')
   }
 

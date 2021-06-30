@@ -1,7 +1,8 @@
 {
   "name": "mob-timer",
   "version": "1.0.0",
-  "description": "",
+  "productName": "Mob Timer",
+  "description": "A timer for mob programming.",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
@@ -18,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/pluralsight/mob-timer.git"
   },
-  "author": "",
+  "author": "Pluralsight",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pluralsight/mob-timer/issues"

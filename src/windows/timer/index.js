@@ -55,7 +55,13 @@ function drawTimerArc(seconds, maxSeconds) {
   drawArc(begin, end, theme.mobberBorderHighlightColor)
 }
 
-ipc.on('rotated', (event, data) => {
+function drawInitialState() {
+  drawOverlays(true)
+  containerEl.classList.remove('isPaused')
+  containerEl.classList.add('isTurnEnded')
+}
+
+function drawMobbers(data) {
   if (!data.current) {
     data.current = { name: 'Add a mobber' }
   }
@@ -67,29 +73,61 @@ ipc.on('rotated', (event, data) => {
   }
   nextPicEl.src = data.next.image || '../img/sad-cyclops.png'
   nextEl.innerHTML = data.next.name
+}
+
+function drawOverlays(isPaused) {
+  if (!paused && isPaused) {
+    containerEl.classList.remove('isTurnEnded')
+    containerEl.classList.add('isPaused')
+  }
+  paused = isPaused
+  if (!isPaused) {
+    containerEl.classList.remove('isTurnEnded')
+    containerEl.classList.remove('isPaused')
+    toggleBtn.classList.remove('play')
+    toggleBtn.classList.add('pause')
+  } else {
+    toggleBtn.classList.add('play')
+    toggleBtn.classList.remove('pause')
+  }
+}
+
+ipc.on('rotated', (event, data) => {
+  drawMobbers(data)
+  drawOverlays(true)
+})
+
+ipc.on('skip', () => {
+  skip()
+})
+
+ipc.on('reset', () => {
+  drawOverlays(true)
+  containerEl.classList.remove('isPaused')
+  containerEl.classList.add('isTurnEnded')
+  reset()
+})
+
+ipc.on('pause', () => {
+  drawOverlays(true)
+  pause()
+})
+
+ipc.on('start', () => {
+  drawOverlays(false)
+  start()
 })
 
 ipc.on('paused', () => {
-  paused = true
-  containerEl.classList.add('isPaused')
-  toggleBtn.classList.add('play')
-  toggleBtn.classList.remove('pause')
+  drawOverlays(true)
 })
 
 ipc.on('started', () => {
-  paused = false
-  containerEl.classList.remove('isPaused')
-  containerEl.classList.remove('isTurnEnded')
-  toggleBtn.classList.remove('play')
-  toggleBtn.classList.add('pause')
+  drawOverlays(false)
 })
 
 ipc.on('turnEnded', () => {
-  paused = true
-  containerEl.classList.remove('isPaused')
-  containerEl.classList.add('isTurnEnded')
-  toggleBtn.classList.add('play')
-  toggleBtn.classList.remove('pause')
+  drawInitialState()
 })
 
 ipc.on('configUpdated', (event, data) => {
@@ -109,9 +147,25 @@ ipc.on('stopAlerts', () => {
 })
 
 toggleBtn.addEventListener('click', () => {
-  paused ? ipc.send('unpause') : ipc.send('pause')
+  paused ? start() : pause()
 })
-nextBtn.addEventListener('click', () => ipc.send('skip'))
+nextBtn.addEventListener('click', () => skip())
 configureBtn.addEventListener('click', () => ipc.send('configure'))
+
+function skip() {
+  ipc.send('skip')
+}
+
+function reset() {
+  ipc.send('reset')
+}
+
+function pause() {
+  ipc.send('pause')
+}
+
+function start() {
+  ipc.send('unpause')
+}
 
 ipc.send('timerWindowReady')
